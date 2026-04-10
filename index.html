@@ -415,14 +415,15 @@ const NFT_PRICE_ETH = "1.0";
 
 // ─── IPFS IMAGE CONFIG ────────────────────────────────
 // From setBaseURI TX: ipfs://bafybeiatrcby77hcmcex3v25t33o2j5cgstu5ojdkkovk7wgpzkhoatlue/
-const BASE_CID   = "bafybeiatrcby77hcmcex3v25t33o2j5cgstu5ojdkkovk7wgpzkhoatlue";
-// Multiple gateways for reliability
-const GATEWAYS   = [
+const BASE_CID = "bafybeiatrcby77hcmcex3v25t33o2j5cgstu5ojdkkovk7wgpzkhoatlue";
+// Gateways — NO cloudflare-ipfs.com (DNS dead), ordered by speed
+const GATEWAYS = [
   "https://ipfs.io/ipfs/",
-  "https://cloudflare-ipfs.com/ipfs/",
-  "https://gateway.pinata.cloud/ipfs/",
   "https://dweb.link/ipfs/",
+  "https://w3s.link/ipfs/",
   "https://nftstorage.link/ipfs/",
+  "https://gateway.pinata.cloud/ipfs/",
+  "https://4everland.io/ipfs/",
 ];
 
 const RARITY = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
@@ -481,12 +482,12 @@ let filt="all", srch="", modalId=null;
 let wcUri=null;
 
 // ═══════════════════════════════════════════════════════
-// IMAGE URL HELPERS — fixed with correct CID from setBaseURI TX
+// IMAGE LOADING — fetch with timeout to skip dead gateways fast
 // ═══════════════════════════════════════════════════════
 function buildIpfsUrls(id) {
-  // Primary: use on-chain imageURI if available and valid
   const d = cdata[id] || {};
   const urls = [];
+  // 1. On-chain imageURI if set
   if (d.imgURI) {
     if (d.imgURI.startsWith("ipfs://")) {
       const hash = d.imgURI.slice(7);
@@ -495,29 +496,63 @@ function buildIpfsUrls(id) {
       urls.push(d.imgURI);
     }
   }
-  // Fallback: construct from setBaseURI CID (bafybeiatrcby77...)
+  // 2. Fallback: baseURI + tokenId + .png (from setBaseURI TX)
   GATEWAYS.forEach(gw => urls.push(`${gw}${BASE_CID}/${id}.png`));
-  return urls;
+  return [...new Set(urls)]; // dedupe
 }
 
-// Try to load image with gateway fallback
-function loadImgWithFallback(imgEl, id) {
+// Race: fetch with 8s timeout — skips ERR_NAME_NOT_RESOLVED instantly
+async function fetchWithTimeout(url, ms) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const r = await fetch(url, { signal: ctrl.signal, mode: "no-cors" });
+    // no-cors = opaque response, status=0 but no exception = gateway reachable
+    return url;
+  } catch(e) {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Try each gateway sequentially, skip dead ones fast
+async function loadImgWithFallback(imgEl, id) {
   const urls = buildIpfsUrls(id);
-  let idx = 0;
-  function tryNext() {
-    if (idx >= urls.length) {
-      // All gateways failed — show emoji placeholder
+
+  function showPlaceholder() {
+    try {
       const ph = document.createElement("div");
       ph.className = "nft-ph";
       ph.textContent = "◈🪙";
-      imgEl.parentNode.replaceChild(ph, imgEl);
+      if (imgEl.parentNode) imgEl.parentNode.replaceChild(ph, imgEl);
+    } catch(e) {}
+  }
+
+  for (const url of urls) {
+    // Try loading directly — use Promise race with a timeout
+    const loaded = await new Promise(resolve => {
+      const timer = setTimeout(() => {
+        imgEl.onload = null;
+        imgEl.onerror = null;
+        resolve(false);
+      }, 8000); // 8s per gateway
+
+      imgEl.onload = () => { clearTimeout(timer); resolve(true); };
+      imgEl.onerror = () => { clearTimeout(timer); resolve(false); };
+      imgEl.src = url;
+    });
+
+    if (loaded) {
+      // Remove spinner (grid cards have il-N spinners, modal doesn't)
+      const spinner = document.getElementById("il-" + id);
+      if (spinner) spinner.remove();
+      imgEl.style.opacity = "1";
       return;
     }
-    const url = urls[idx++];
-    imgEl.onerror = tryNext;
-    imgEl.src = url;
   }
-  tryNext();
+  // All gateways failed
+  showPlaceholder();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -652,9 +687,7 @@ function renderGrid() {
       <div class="nft-glow"></div>
       <div class="nft-img-wrap">
         <div class="img-loading" id="il-${n.id}"><div class="img-loading-spin"></div></div>
-        <img class="nft-img" id="img-${n.id}" alt="${name}" loading="lazy"
-          style="opacity:0;transition:opacity .3s"
-          onload="this.style.opacity='1';var il=document.getElementById('il-${n.id}');if(il)il.remove()"/>
+        <img class="nft-img" id="img-${n.id}" alt="${name}" loading="lazy" style="opacity:0;transition:opacity .3s"/>
         <div class="rb r${r}">${RARITY[r]}</div>
         <div class="tid">#${n.id}</div>
       </div>
@@ -715,7 +748,7 @@ function openModal(id) {
   const mi = document.getElementById("modal-img");
   mi.style.display = "block";
   mi.style.opacity = "0";
-  mi.onload = () => { mi.style.opacity = "1"; mi.style.transition = "opacity .3s"; };
+  mi.style.transition = "opacity .3s";
   loadImgWithFallback(mi, id);
 
   document.getElementById("modal-rows").innerHTML = `
