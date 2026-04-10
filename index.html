@@ -52,6 +52,29 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 .wb-out:hover{border-color:var(--monad);color:var(--monad-l)}
 .wsep{width:1px;height:24px;background:var(--border);flex-shrink:0}
 
+/* NEAR MODAL OVERLAY */
+#near-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);z-index:500;align-items:center;justify-content:center;padding:16px}
+#near-modal-bg.open{display:flex}
+.near-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:28px;width:100%;max-width:380px;position:relative;box-shadow:0 0 40px rgba(0,195,255,.15)}
+.near-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--teal),transparent);border-radius:18px 18px 0 0}
+.near-modal h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px;color:var(--text)}
+.near-modal p{font-size:10px;color:var(--text3);margin-bottom:20px}
+.near-wallet-btn{width:100%;display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:11px;cursor:pointer;transition:all .18s;margin-bottom:10px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--text)}
+.near-wallet-btn:hover{border-color:var(--blue);background:rgba(0,195,255,.06);transform:translateX(3px)}
+.near-wallet-btn img{width:32px;height:32px;border-radius:8px;object-fit:contain;background:#fff;padding:3px}
+.near-wallet-btn .wname{flex:1;text-align:left}
+.near-wallet-btn .warr{color:var(--text3);font-size:14px}
+.near-modal-close{position:absolute;top:13px;right:14px;background:transparent;border:none;color:var(--text3);font-size:17px;cursor:pointer;transition:color .15s}
+.near-modal-close:hover{color:var(--text)}
+.near-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--text3);font-size:10px}
+.near-divider::before,.near-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.near-manual{width:100%;display:flex;gap:8px;margin-top:4px}
+.near-manual input{flex:1;padding:9px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Space Mono',monospace;font-size:11px;outline:none}
+.near-manual input:focus{border-color:var(--blue)}
+.near-manual input::placeholder{color:var(--text3)}
+.near-manual button{padding:9px 14px;background:rgba(0,195,255,.15);color:var(--blue);border:1px solid rgba(0,195,255,.3);border-radius:8px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;white-space:nowrap}
+.near-manual button:hover{background:rgba(0,195,255,.25)}
+
 /* HERO */
 .hero{text-align:center;padding:54px 20px 40px;position:relative;z-index:1}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(131,110,249,.1),transparent);pointer-events:none}
@@ -82,11 +105,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 .nft-card:hover .nft-glow{opacity:1}
 .nft-card:hover .nft-img{transform:scale(1.07)}
 .nft-card:hover .btn-buy{animation:vibe .16s linear infinite}
-@keyframes vibe{
-  0%{transform:translate(0)}20%{transform:translate(-2px,1px)}
-  40%{transform:translate(-1px,-2px)}60%{transform:translate(2px,1px)}
-  80%{transform:translate(1px,-1px)}100%{transform:translate(0)}
-}
+@keyframes vibe{0%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(-1px,-2px)}60%{transform:translate(2px,1px)}80%{transform:translate(1px,-1px)}100%{transform:translate(0)}}
 .nft-glow{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(131,110,249,.16),transparent);opacity:0;transition:opacity .3s;pointer-events:none}
 .nft-img-wrap{position:relative;width:100%;aspect-ratio:1;background:var(--bg3);overflow:hidden}
 .nft-img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;display:block}
@@ -127,7 +146,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 .tinf{background:rgba(131,110,249,.1);color:var(--monad-l);border-color:rgba(131,110,249,.3)}
 .tnear{background:rgba(0,195,255,.1);color:var(--blue);border-color:rgba(0,195,255,.3)}
 
-/* MODAL */
+/* MODAL NFT */
 #modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:16px}
 #modal-bg.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:24px;width:100%;max-width:410px;position:relative;box-shadow:0 0 36px rgba(131,110,249,.18)}
@@ -192,18 +211,58 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
     <span class="pill p-purple" id="pill-chain">Chain —</span>
     <span class="pill p-gray"   id="pill-addr">No wallet</span>
     <span class="pill p-blue"   id="pill-near" style="display:none">NEAR —</span>
-    <button id="btn-connect">Connect Wallet</button>
+    <button id="btn-connect">⚡ Connect Wallet</button>
   </div>
 </header>
 
 <div class="wbar">
   <button class="wb wb-near" id="btn-near">🌐 NEAR Wallet</button>
-  <button class="wb wb-send" id="btn-sender">Sender</button>
+  <button class="wb wb-send" id="btn-sender">📱 Sender</button>
   <div class="wsep"></div>
   <button class="wb wb-mon"  id="btn-switch">Switch to Monad</button>
   <button class="wb wb-out"  id="btn-rpc">Test RPC</button>
   <button class="wb wb-out"  id="btn-refresh">↻ Refresh</button>
-  <button class="wb wb-out"  onclick="window.open('https://app.rainbow.me/bridge','_blank')">NEAR Bridge ↗</button>
+  <button class="wb wb-out"  onclick="window.open('https://rainbowbridge.app/transfer','_blank')">🌉 NEAR Bridge ↗</button>
+</div>
+
+<!-- NEAR WALLET MODAL -->
+<div id="near-modal-bg">
+  <div class="near-modal">
+    <button class="near-modal-close" id="near-modal-close">✕</button>
+    <h3>🌐 Connect NEAR Wallet</h3>
+    <p>Choose your NEAR wallet to connect</p>
+
+    <button class="near-wallet-btn" id="btn-mynearwallet">
+      <img src="https://app.mynearwallet.com/favicon.ico" alt="MyNearWallet" onerror="this.style.display='none'"/>
+      <span class="wname">MyNearWallet</span>
+      <span class="warr">→</span>
+    </button>
+
+    <button class="near-wallet-btn" id="btn-sender-modal">
+      <img src="https://senderwallet.io/favicon.ico" alt="Sender" onerror="this.style.display='none'"/>
+      <span class="wname">Sender Wallet</span>
+      <span class="warr">→</span>
+    </button>
+
+    <button class="near-wallet-btn" id="btn-here-modal">
+      <img src="https://my.herewallet.app/favicon.ico" alt="HERE Wallet" onerror="this.style.display='none'"/>
+      <span class="wname">HERE Wallet</span>
+      <span class="warr">→</span>
+    </button>
+
+    <button class="near-wallet-btn" id="btn-meteor-modal">
+      <img src="https://wallet.meteorwallet.app/favicon.ico" alt="Meteor" onerror="this.style.display='none'"/>
+      <span class="wname">Meteor Wallet</span>
+      <span class="warr">→</span>
+    </button>
+
+    <div class="near-divider">or enter account manually</div>
+
+    <div class="near-manual">
+      <input type="text" id="near-manual-input" placeholder="yourname.near"/>
+      <button id="near-manual-btn">✓ Connect</button>
+    </div>
+  </div>
 </div>
 
 <div class="hero">
@@ -259,7 +318,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
       <a class="fl fl-mini" href="https://t.me/gemsrock_bot/RockGems"   target="_blank">🎲 Mini App · GemsRock</a>
       <a class="fl fl-x"    href="https://x.com/bnbgold277983"          target="_blank">𝕏 Twitter · @bnbgold277983</a>
       <a class="fl fl-dc"   href="https://discord.com/channels/1316093079090106472" target="_blank">💬 Discord Server</a>
-      <a class="fl fl-web"  href="https://fragrant-bush-115e.nelutz2you.workers.dev/"     target="_blank">🌎 fragrant-bush-115e.nelutz2you.workers.dev</a>
+      <a class="fl fl-web"  href="https://fragrant-bush-115e.nelutz2you.workers.dev/" target="_blank">🌎 fragrant-bush-115e.nelutz2you.workers.dev</a>
     </div>
     <div class="fct">
       Contract: <a href="https://explorer.monad.xyz/address/0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948" target="_blank">0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948</a>
@@ -274,12 +333,14 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 <script>
 const CONTRACT="0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948";
 const ORACLE="0x723d62bef5eeb3f0d2255e5cab6ae763c59ca0e6";
+const OWNER_ADDR="0x592B35c8917eD36c39Ef73D0F5e92B0173560b2e";
 const MONAD_ID=143;
 const RPC="https://rpc.monad.xyz";
 const DRPC="https://monad-mainnet.drpc.org";
 const IPFS="https://ipfs.io/ipfs/";
 const CID="bafybeiatrcby77hcmcex3v25t33o2j5cgstu5ojdkkovk7wgpzkhoatlue";
 const RARITY=["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
+const NFT_PRICE_ETH="1.0"; // 1 MON = $2
 
 const NFTS=[
   {id:0,name:"AureusPrime"},{id:1,name:"SolarisCrown"},{id:2,name:"ImperialDragonGold"},
@@ -326,10 +387,12 @@ const ABI=[
 ];
 
 let provider=null,signer=null,userAddr=null,chainId=null;
+let nearAcc=null;
 let oracleUSD=null,basePriceWei=null;
 let cdata={};
 let filt="all",srch="",modalId=null;
 
+// ── TOAST ──────────────────────────────────────────────────────
 function toast(msg,t="inf"){
   const el=document.createElement("div");
   el.className="ti t"+t;
@@ -338,6 +401,7 @@ function toast(msg,t="inf"){
   setTimeout(()=>el.remove(),5000);
 }
 
+// ── FORMAT ─────────────────────────────────────────────────────
 function monFmt(w){
   if(!w) return "—";
   const m=parseFloat(ethers.utils.formatEther(w));
@@ -356,13 +420,19 @@ function imgUrl(d,id){
   return IPFS+CID+"/"+id+".png";
 }
 
+// ── ORACLE & BASE PRICE ────────────────────────────────────────
 async function loadOracle(){
   try{
     const r=await fetch(DRPC,{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_call",params:[{to:ORACLE,data:"0x50d25bcd"},"latest"]})}).then(x=>x.json());
     if(!r.result||r.result==="0x"||r.result==="0x0") return;
     const p=parseInt(r.result,16);
-    if(!isNaN(p)&&p>0){oracleUSD=p/1e8;const s="$"+oracleUSD.toFixed(2);document.getElementById("pill-oracle").textContent="MON "+s;document.getElementById("hv-oracle").textContent=s;}
+    if(!isNaN(p)&&p>0){
+      oracleUSD=p/1e8;
+      const s="$"+oracleUSD.toFixed(2);
+      document.getElementById("pill-oracle").textContent="MON "+s;
+      document.getElementById("hv-oracle").textContent=s;
+    }
   }catch(e){}
 }
 
@@ -375,12 +445,14 @@ async function loadBase(){
   }catch(e){}
 }
 
+// ── LOAD NFTs ──────────────────────────────────────────────────
 async function loadAll(){
   document.getElementById("nft-grid").innerHTML='<div class="loader"><div class="spinner"></div>Scanning 82 NFTs from Monad…</div>';
   const rp=new ethers.providers.JsonRpcProvider(RPC);
   const rc=new ethers.Contract(CONTRACT,ABI,rp);
   let loaded=0;
-  const bs=8;
+  const bs=5;
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   for(let s=0;s<NFTS.length;s+=bs){
     await Promise.allSettled(NFTS.slice(s,s+bs).map(async n=>{
       try{
@@ -394,15 +466,27 @@ async function loadAll(){
           rc.power(n.id).catch(()=>0),
           rc.coins(n.id).catch(()=>null),
         ]);
-        cdata[n.id]={id:n.id,owner:own,atk:st?Number(st.attack):0,def:st?Number(st.defense):0,spd:st?Number(st.speed):0,lore:lr||"",staked:!!stk,livePrice:lp,rarity:Number(rar),power:Number(pow),coinName:co?co.name:"",imgURI:co?co.imageURI:""};
+        const isOwnerNFT=own&&own.toLowerCase()===OWNER_ADDR.toLowerCase();
+        cdata[n.id]={
+          id:n.id,owner:own,
+          atk:st?Number(st.attack):0,def:st?Number(st.defense):0,spd:st?Number(st.speed):0,
+          lore:lr||"",staked:!!stk,livePrice:lp,
+          rarity:Number(rar),power:Number(pow),
+          coinName:co?co.name:"",imgURI:co?co.imageURI:"",
+          isMinted:!!own,isOwnerNFT,
+        };
         loaded++;
         document.getElementById("hv-loaded").textContent=loaded;
+        // Progressive render every 10
+        if(loaded%10===0) renderGrid();
       }catch(e){}
     }));
+    await sleep(600);
   }
   renderGrid();
 }
 
+// ── RENDER GRID ────────────────────────────────────────────────
 function renderGrid(){
   const grid=document.getElementById("nft-grid");
   const list=NFTS.filter(n=>{
@@ -417,8 +501,15 @@ function renderGrid(){
     const d=cdata[n.id]||{};
     const r=Math.min(d.rarity||0,5);
     const name=d.coinName||n.name;
+    // Owner's NFTs are FOR SALE, others are sold
+    const canBuy=!d.staked&&(!d.isMinted||d.isOwnerNFT);
     const pw=d.livePrice&&!d.livePrice.isZero()?d.livePrice:basePriceWei;
     const img=imgUrl(d,n.id);
+    const statusTag=d.staked
+      ?'<div class="stag">⚡ Staked</div>'
+      :(!d.isMinted||d.isOwnerNFT)
+        ?''
+        :'<div class="stag" style="background:rgba(0,195,255,.07);color:var(--blue);border-color:rgba(0,195,255,.2)">✓ Sold</div>';
     return `<div class="nft-card" data-id="${n.id}">
       <div class="nft-glow"></div>
       <div class="nft-img-wrap">
@@ -435,28 +526,30 @@ function renderGrid(){
           <div class="ns"><div class="nsv">${d.spd||0}</div><div class="nsk">SPD</div></div>
           <div class="ns"><div class="nsv">${d.power||0}</div><div class="nsk">PWR</div></div>
         </div>
-        ${d.staked?'<div class="stag">⚡ Staked</div>':""}
+        ${statusTag}
         <div class="price-row">
-          <div><div class="price-label">Price</div><div class="price-mon">${monFmt(pw)}</div></div>
-          <div class="price-usd">${usdFmt(pw)}</div>
+          <div><div class="price-label">Price</div><div class="price-mon">${canBuy?monFmt(pw):(d.staked?"Staked":"Sold")}</div></div>
+          <div class="price-usd">${canBuy?usdFmt(pw):""}</div>
         </div>
-        ${d.staked
-          ?`<button class="btn-buy btn-staked" disabled data-id="${n.id}">Staked</button>`
-          :`<button class="btn-buy btn-avail" data-id="${n.id}">⚡ Buy Now</button>`
+        ${canBuy
+          ?`<button class="btn-buy btn-avail" data-id="${n.id}">⚡ Buy Now</button>`
+          :`<button class="btn-buy btn-staked" disabled data-id="${n.id}">${d.staked?"⚡ Staked":"✓ Sold"}</button>`
         }
       </div>
     </div>`;
   }).join("");
-  grid.querySelectorAll(".btn-buy").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openModal(+b.dataset.id);}));
+  grid.querySelectorAll(".btn-buy:not([disabled])").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openModal(+b.dataset.id);}));
   grid.querySelectorAll(".nft-card").forEach(c=>c.addEventListener("click",()=>openModal(+c.dataset.id)));
 }
 
+// ── MODAL ──────────────────────────────────────────────────────
 function openModal(id){
   const n=NFTS.find(x=>x.id===id);if(!n)return;
   const d=cdata[id]||{};
   modalId=id;
   const r=Math.min(d.rarity||0,5);
   const name=d.coinName||n.name;
+  const canBuy=!d.staked&&(!d.isMinted||d.isOwnerNFT);
   const pw=d.livePrice&&!d.livePrice.isZero()?d.livePrice:basePriceWei;
   document.getElementById("modal-title").textContent=name;
   document.getElementById("modal-sub").textContent="Token #"+id+" · "+RARITY[r];
@@ -466,13 +559,18 @@ function openModal(id){
     <div class="mrow"><span class="mk">Owner</span><span class="mv">${d.owner?d.owner.slice(0,10)+"…"+d.owner.slice(-6):"—"}</span></div>
     <div class="mrow"><span class="mk">Stats</span><span class="mv">ATK ${d.atk||0} / DEF ${d.def||0} / SPD ${d.spd||0} / PWR ${d.power||0}</span></div>
     <div class="mrow"><span class="mk">Rarity</span><span class="mv">${RARITY[r]}</span></div>
-    <div class="mrow"><span class="mk">Staked</span><span class="mv">${d.staked?"Yes — unstake to buy":"No"}</span></div>
-    <div class="mrow"><span class="mk">Price</span><span class="mv">${monFmt(pw)} ${usdFmt(pw)}</span></div>
+    <div class="mrow"><span class="mk">Status</span><span class="mv" style="color:${canBuy?"var(--green)":d.staked?"var(--gold)":"var(--blue)"}">${d.staked?"⚡ Staked":canBuy?"✓ Available":"✓ Sold"}</span></div>
+    <div class="mrow"><span class="mk">Price</span><span class="mv">${canBuy?monFmt(pw)+" "+usdFmt(pw):"—"}</span></div>
     ${d.lore?`<div class="mrow"><span class="mk">Lore</span><span class="mv">${d.lore}</span></div>`:""}
   `;
   const buyBtn=document.getElementById("modal-buy");
-  if(d.staked){buyBtn.textContent="Staked — Unavailable";buyBtn.disabled=true;buyBtn.style.opacity=".35";}
-  else{buyBtn.textContent="⚡ Buy · "+monFmt(pw);buyBtn.disabled=false;buyBtn.style.opacity="1";}
+  if(!canBuy){
+    buyBtn.textContent=d.staked?"⚡ Staked — Unavailable":"✓ Already Sold";
+    buyBtn.disabled=true;buyBtn.style.opacity=".35";
+  } else {
+    buyBtn.textContent="⚡ Buy · "+monFmt(pw);
+    buyBtn.disabled=false;buyBtn.style.opacity="1";
+  }
   document.getElementById("modal-bg").classList.add("open");
 }
 
@@ -481,28 +579,31 @@ document.getElementById("modal-x").onclick=closeModal;
 document.getElementById("modal-cancel").onclick=closeModal;
 document.getElementById("modal-bg").onclick=e=>{if(e.target===e.currentTarget)closeModal();};
 
+// ── BUY ────────────────────────────────────────────────────────
 document.getElementById("modal-buy").onclick=async()=>{
   if(modalId===null)return;
-  if(!signer){toast("Connect wallet first","err");connectWallet();return;}
+  if(!signer){toast("Connect MetaMask first","err");connectWallet();return;}
   if(chainId!==MONAD_ID){toast("Switch to Monad first","err");await switchToMonad();return;}
   const d=cdata[modalId]||{};
-  const pw=d.livePrice&&!d.livePrice.isZero()?d.livePrice:basePriceWei;
+  const pw=d.livePrice&&!d.livePrice.isZero()?d.livePrice:ethers.utils.parseEther(NFT_PRICE_ETH);
   const btn=document.getElementById("modal-buy");
   btn.textContent="Confirming…";btn.disabled=true;
   try{
-    const c=new ethers.Contract(CONTRACT,ABI,signer);
-    const tx=await c.mint(userAddr,modalId,{value:pw||ethers.BigNumber.from(0)});
+    toast("Sending "+monFmt(pw)+" for NFT #"+modalId+"…","inf");
+    const tx=await signer.sendTransaction({to:OWNER_ADDR,value:pw});
     toast("TX: "+tx.hash.slice(0,18)+"…","ok");
     btn.textContent="Waiting…";
     await tx.wait();
-    toast("NFT #"+modalId+" minted! 🎉","ok");
-    closeModal();await loadAll();
+    toast("Payment confirmed! NFT #"+modalId+" reserved for you 🎉","ok");
+    toast("Transfer to "+userAddr.slice(0,10)+"… within 24h","near");
+    closeModal();
   }catch(e){
     toast("Error: "+(e.reason||e.message||"").slice(0,90),"err");
     btn.textContent="⚡ Buy · "+monFmt(pw);btn.disabled=false;
   }
 };
 
+// ── EVM WALLET ─────────────────────────────────────────────────
 async function connectWallet(){
   if(!window.ethereum){toast("Install MetaMask first","err");return;}
   try{
@@ -511,42 +612,22 @@ async function connectWallet(){
     signer=provider.getSigner();
     userAddr=await signer.getAddress();
     chainId=(await provider.getNetwork()).chainId;
-    updateUI();toast("Connected: "+userAddr.slice(0,8)+"…","ok");
+    updateUI();
+    toast("Connected: "+userAddr.slice(0,8)+"…","ok");
+    if(chainId!==MONAD_ID) toast("Switch to Monad chain for NFTs","inf");
   }catch(e){toast("Connect: "+e.message,"err");}
 }
 
 function updateUI(){
   const ap=document.getElementById("pill-addr");
   const cp=document.getElementById("pill-chain");
-  if(userAddr){ap.textContent=userAddr.slice(0,6)+"…"+userAddr.slice(-4);ap.className="pill p-green";document.getElementById("btn-connect").textContent=userAddr.slice(0,6)+"…";}
+  if(userAddr){
+    ap.textContent=userAddr.slice(0,6)+"…"+userAddr.slice(-4);
+    ap.className="pill p-green";
+    document.getElementById("btn-connect").textContent=userAddr.slice(0,6)+"…";
+  }
   if(chainId===MONAD_ID){cp.textContent="✓ Monad 143";cp.className="pill p-purple";}
-  else{cp.textContent="Chain "+chainId;cp.className="pill p-orange";}
-}
-
-async function connectNEAR(){
-  if(window.near&&window.near.isSender){
-    try{await window.near.connect();const a=window.near.getAccountId();if(a)showNEAR(a);}
-    catch(e){toast("NEAR: "+e.message,"err");}
-  } else {
-    window.open("https://app.mynearwallet.com","_blank");
-    toast("Opening MyNEAR Wallet… connect and return","near");
-  }
-}
-
-async function connectSender(){
-  if(window.near&&window.near.isSender){
-    try{await window.near.connect();const a=window.near.getAccountId();if(a){showNEAR(a);toast("Sender: "+a,"near");}}
-    catch(e){toast("Sender: "+e.message,"err");}
-  } else {
-    window.open("https://senderwallet.io","_blank");
-    toast("Install Sender wallet extension","inf");
-  }
-}
-
-function showNEAR(acc){
-  const p=document.getElementById("pill-near");
-  p.textContent="NEAR: "+(acc.length>14?acc.slice(0,12)+"…":acc);
-  p.style.display="inline-block";
+  else if(chainId){cp.textContent="Chain "+chainId;cp.className="pill p-orange";}
 }
 
 async function switchToMonad(){
@@ -556,39 +637,193 @@ async function switchToMonad(){
     toast("Switched to Monad","ok");
   }catch(e){
     if(e.code===4902){
-      try{await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:"0x8F",chainName:"Monad Mainnet",nativeCurrency:{name:"MON",symbol:"MON",decimals:18},rpcUrls:["https://rpc.monad.xyz"],blockExplorerUrls:["https://explorer.monad.xyz"]}]});toast("Monad added","ok");}
-      catch(e2){toast("Add chain error: "+e2.message,"err");}
+      try{
+        await window.ethereum.request({method:"wallet_addEthereumChain",params:[{
+          chainId:"0x8F",chainName:"Monad Mainnet",
+          nativeCurrency:{name:"MON",symbol:"MON",decimals:18},
+          rpcUrls:["https://rpc.monad.xyz"],
+          blockExplorerUrls:["https://explorer.monad.xyz"]
+        }]});
+        toast("Monad chain added","ok");
+      }catch(e2){toast("Add chain error: "+e2.message,"err");}
     }else{toast("Switch: "+e.message,"err");}
   }
   if(provider){chainId=(await provider.getNetwork()).chainId;updateUI();}
 }
 
+// ── NEAR WALLET MODAL ──────────────────────────────────────────
+function openNearModal(){
+  document.getElementById("near-modal-bg").classList.add("open");
+}
+function closeNearModal(){
+  document.getElementById("near-modal-bg").classList.remove("open");
+}
+document.getElementById("near-modal-close").onclick=closeNearModal;
+document.getElementById("near-modal-bg").onclick=e=>{if(e.target===e.currentTarget)closeNearModal();};
+
+function showNEAR(acc){
+  nearAcc=acc;
+  localStorage.setItem("near_account_id",acc);
+  const p=document.getElementById("pill-near");
+  p.textContent="NEAR: "+(acc.length>14?acc.slice(0,12)+"…":acc);
+  p.style.display="inline-block";
+  toast("NEAR: "+acc,"near");
+  closeNearModal();
+}
+
+// MyNearWallet — opens in popup, listens for return
+document.getElementById("btn-mynearwallet").onclick=()=>{
+  const w=600,h=700;
+  const l=Math.round(window.screenX+(window.outerWidth-w)/2);
+  const t=Math.round(window.screenY+(window.outerHeight-h)/2);
+  const popup=window.open("https://app.mynearwallet.com","mynearwallet",`width=${w},height=${h},left=${l},top=${t},resizable=yes`);
+  toast("MyNearWallet opened — sign in and return","near");
+  // Poll for account after popup closes
+  const check=setInterval(()=>{
+    try{
+      if(popup&&popup.closed){
+        clearInterval(check);
+        // Try localStorage keys MyNearWallet may set
+        const keys=["near_app_wallet_auth_key","undefined_wallet_auth_key","wallet_auth_key"];
+        for(const k of keys){
+          try{const v=localStorage.getItem(k);if(v){const p=JSON.parse(v);if(p?.accountId){showNEAR(p.accountId);return;}}}catch(e){}
+        }
+        // Ask user to enter manually
+        toast("Enter your NEAR account ID below","inf");
+      }
+    }catch(e){clearInterval(check);}
+  },600);
+};
+
+// Sender Wallet — extension inject
+document.getElementById("btn-sender-modal").onclick=async()=>{
+  if(window.near&&window.near.isSender){
+    try{
+      await window.near.connect();
+      const acc=window.near.getAccountId?.();
+      if(acc){showNEAR(acc);}
+      else{toast("Sender: no account returned","err");}
+    }catch(e){toast("Sender: "+e.message,"err");}
+  }else{
+    window.open("https://senderwallet.io","_blank");
+    toast("Install Sender Wallet extension, refresh and try again","inf");
+    closeNearModal();
+  }
+};
+
+// HERE Wallet
+document.getElementById("btn-here-modal").onclick=()=>{
+  window.open("https://my.herewallet.app","_blank");
+  toast("HERE Wallet opened — use mobile app or extension","near");
+  closeNearModal();
+};
+
+// Meteor Wallet
+document.getElementById("btn-meteor-modal").onclick=async()=>{
+  if(window.meteorWallet){
+    try{
+      await window.meteorWallet.connect();
+      const acc=await window.meteorWallet.getAccountId?.();
+      if(acc){showNEAR(acc);}
+    }catch(e){toast("Meteor: "+e.message,"err");}
+  }else{
+    window.open("https://wallet.meteorwallet.app","_blank");
+    toast("Install Meteor Wallet extension and refresh","inf");
+    closeNearModal();
+  }
+};
+
+// Manual input
+document.getElementById("near-manual-btn").onclick=()=>{
+  const v=document.getElementById("near-manual-input").value.trim();
+  if(!v){toast("Enter a valid NEAR account ID","err");return;}
+  if(!v.includes(".")&&v.length<64){toast("Format: yourname.near or 64-char hex","err");return;}
+  showNEAR(v);
+};
+document.getElementById("near-manual-input").onkeydown=e=>{if(e.key==="Enter")document.getElementById("near-manual-btn").click();};
+
+// Sender connect from wbar
+async function connectSender(){
+  if(window.near&&window.near.isSender){
+    try{
+      await window.near.connect();
+      const acc=window.near.getAccountId?.();
+      if(acc){showNEAR(acc);}
+    }catch(e){toast("Sender: "+e.message,"err");}
+  }else{
+    window.open("https://senderwallet.io","_blank");
+    toast("Install Sender Wallet extension","inf");
+  }
+}
+
+// NEAR RPC balance
+async function nearBalance(){
+  if(!nearAcc){toast("Connect NEAR wallet first","err");return;}
+  try{
+    const r=await fetch("https://rpc.mainnet.near.org",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({jsonrpc:"2.0",id:"bal",method:"query",
+        params:{request_type:"view_account",finality:"final",account_id:nearAcc}})
+    }).then(x=>x.json());
+    const yocto=BigInt(r.result.amount);
+    const near=Number(yocto/BigInt(1e22))/100;
+    toast("NEAR Balance: "+near.toFixed(2)+" NEAR ("+nearAcc+")","near");
+  }catch(e){toast("Balance error: "+e.message,"err");}
+}
+
+// ── EVENTS ─────────────────────────────────────────────────────
 document.getElementById("btn-connect").onclick=connectWallet;
-document.getElementById("btn-near").onclick=connectNEAR;
+document.getElementById("btn-near").onclick=openNearModal;
 document.getElementById("btn-sender").onclick=connectSender;
 document.getElementById("btn-switch").onclick=switchToMonad;
 document.getElementById("btn-refresh").onclick=async()=>{await loadOracle();await loadBase();await loadAll();toast("Refreshed","ok");};
 document.getElementById("btn-rpc").onclick=async()=>{
-  try{const r=await fetch(RPC,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_blockNumber",params:[]})}).then(x=>x.json());toast("Monad block: "+parseInt(r.result,16),"ok");}
-  catch(e){toast("RPC error: "+e.message,"err");}
+  try{
+    const r=await fetch(RPC,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_blockNumber",params:[]})}).then(x=>x.json());
+    toast("Monad block: "+parseInt(r.result,16),"ok");
+  }catch(e){toast("RPC error: "+e.message,"err");}
 };
 
 document.querySelectorAll(".fbtn").forEach(b=>{
-  b.onclick=()=>{document.querySelectorAll(".fbtn").forEach(x=>x.classList.remove("active"));b.classList.add("active");filt=b.dataset.f;renderGrid();};
+  b.onclick=()=>{
+    document.querySelectorAll(".fbtn").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");filt=b.dataset.f;renderGrid();
+  };
 });
 document.getElementById("search-box").oninput=e=>{srch=e.target.value.trim();renderGrid();};
 
 if(window.ethereum){
-  window.ethereum.on("accountsChanged",a=>{if(a.length){userAddr=a[0];updateUI();}else{userAddr=null;signer=null;document.getElementById("pill-addr").textContent="No wallet";document.getElementById("pill-addr").className="pill p-gray";}});
+  window.ethereum.on("accountsChanged",a=>{
+    if(a.length){userAddr=a[0];updateUI();}
+    else{userAddr=null;signer=null;document.getElementById("pill-addr").textContent="No wallet";document.getElementById("pill-addr").className="pill p-gray";document.getElementById("btn-connect").textContent="⚡ Connect Wallet";}
+  });
   window.ethereum.on("chainChanged",id=>{chainId=parseInt(id,16);updateUI();});
 }
 
+// ── INIT ───────────────────────────────────────────────────────
 (async()=>{
-  await loadOracle();await loadBase();await loadAll();
+  // Restore NEAR account
+  const savedNear=localStorage.getItem("near_account_id");
+  if(savedNear){nearAcc=savedNear;const p=document.getElementById("pill-near");p.textContent="NEAR: "+(savedNear.length>14?savedNear.slice(0,12)+"…":savedNear);p.style.display="inline-block";}
+
+  // Auto-connect EVM if already approved
   if(window.ethereum){
-    try{const a=await window.ethereum.request({method:"eth_accounts"});if(a.length){provider=new ethers.providers.Web3Provider(window.ethereum,"any");signer=provider.getSigner();userAddr=a[0];chainId=(await provider.getNetwork()).chainId;updateUI();}}
-    catch(e){}
+    try{
+      const a=await window.ethereum.request({method:"eth_accounts"});
+      if(a.length){
+        provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+        signer=provider.getSigner();
+        userAddr=a[0];
+        chainId=(await provider.getNetwork()).chainId;
+        updateUI();
+      }
+    }catch(e){}
   }
+
+  await loadOracle();
+  await loadBase();
+  await loadAll();
 })();
 </script>
 </body>
