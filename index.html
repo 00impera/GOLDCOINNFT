@@ -634,7 +634,7 @@ function renderGrid() {
   grid.innerHTML = list.map(n => {
     const d = cdata[n.id] || {};
     const r = Math.min(d.rarity || 0, 5);
-    const name = d.coinName || n.name;
+    const name = NFTS.find(x => x.id === n.id)?.name || d.coinName || n.name;
     const canBuy = !d.staked && (!d.isMinted || d.isOwnerNFT);
     // FIX 5 aplicat: folosim helper isZeroBN
     const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : basePriceWei;
@@ -696,7 +696,7 @@ function openModal(id) {
   const d = cdata[id] || {};
   modalId = id;
   const r = Math.min(d.rarity || 0, 5);
-  const name = d.coinName || n.name;
+ const name = NFTS.find(x => x.id === id)?.name || d.coinName || n.name;
   const canBuy = !d.staked && (!d.isMinted || d.isOwnerNFT);
   const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : basePriceWei;
 
