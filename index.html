@@ -271,9 +271,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 <!-- HERO -->
 <section class="hero">
   <h1><span class="g1">GoldCoins</span><br><span class="g2">NFT Collection</span></h1>
-  <p class="hero-sub">82 unique on-chain NFTs on Monad Mainnet. Live oracle pricing, staking rewards, and upgradeable stats powered by MOTO token.</p>
+  <p class="hero-sub">79 unique on-chain NFTs on Monad Mainnet. Live oracle pricing, staking rewards, and upgradeable stats powered by MOTO token.</p>
   <div class="hchips">
-    <div class="hchip"><div class="hv">82</div><div class="hl">Total NFTs</div></div>
+    <div class="hchip"><div class="hv">79</div><div class="hl">Total NFTs</div></div>
     <div class="hchip"><div class="hv" id="hv-price">…</div><div class="hl">Base Price</div></div>
     <div class="hchip"><div class="hv" id="hv-oracle">…</div><div class="hl">MON / USD</div></div>
     <div class="hchip"><div class="hv" id="hv-loaded">0</div><div class="hl">Loaded</div></div>
@@ -348,8 +348,12 @@ const DRPC          = "https://monad-mainnet.drpc.org";
 const REOWN_PID     = "83764e5a442fd38d9827e3302a37517a";
 const NFT_PRICE_ETH = "1.0";
 
+// FIX 1: CID-ul corect din baseURI setat pe contract
 const BASE_CID = "bafybeiatrcby77hcmcex3v25t33o2j5cgstu5ojdkkovk7wgpzkhoatlue";
+
+// FIX 2: Gateway-uri IPFS ordonate după fiabilitate
 const GATEWAYS = [
+  "https://cloudflare-ipfs.com/ipfs/",
   "https://ipfs.io/ipfs/",
   "https://dweb.link/ipfs/",
   "https://w3s.link/ipfs/",
@@ -360,7 +364,7 @@ const GATEWAYS = [
 
 const RARITY = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
 
-// ─── REAL ABI ────────────────────────────────────────
+// ─── ABI ────────────────────────────────────────────
 const ABI = [
   "function mint(address to,uint256 tokenId) external",
   "function ownerOf(uint256 tokenId) view returns (address)",
@@ -375,7 +379,7 @@ const ABI = [
   "function tokenURI(uint256) view returns (string)",
 ];
 
-// ─── REAL 82 NFTs (IDs 0–81) ─────────────────────────
+// FIX 3: Lista corectă de NFTs — fără #46, #47, #49 (nu sunt mintate)
 const NFTS = [
   {id:0, name:"AureusPrime"},         {id:1, name:"SolarisCrown"},
   {id:2, name:"ImperialDragonGold"},  {id:3, name:"CelestialPhoenix"},
@@ -400,8 +404,10 @@ const NFTS = [
   {id:40,name:"ZeusThunderCrown"},    {id:41,name:"HeraGoldenThrone"},
   {id:42,name:"PoseidonSeaCore"},     {id:43,name:"AthenaWarSigil"},
   {id:44,name:"AresIronSun"},         {id:45,name:"HephaestusForgeCoin"},
-  {id:46,name:"ArtemisNightHalo"},    {id:47,name:"HermesSwiftMark"},
-  {id:48,name:"HadesUnderworldGold"}, {id:49,name:"DionysusVineCrest"},
+  // #46 ArtemisNightHalo  — NOT MINTED, REMOVED
+  // #47 HermesSwiftMark   — NOT MINTED, REMOVED
+  {id:48,name:"HadesUnderworldGold"},
+  // #49 DionysusVineCrest  — NOT MINTED, REMOVED
   {id:50,name:"DacianWolfGold"},      {id:51,name:"ZalmoxisSacredSeal"},
   {id:52,name:"DecebalusIronCrown"},  {id:53,name:"DracoDacorum"},
   {id:54,name:"CarpatiSunRelic"},     {id:55,name:"TransylvanianMoonMark"},
@@ -426,73 +432,37 @@ let nearAcc=null, oracleUSD=null, basePriceWei=null;
 let cdata={}, filt="all", srch="", modalId=null, wcUri=null;
 
 // ═══════════════════════════════════════════════════════
-// IMAGE LOADING
-// Fixes applied:
-//  1. Gateway probe cache — skip dead gateways instantly
-//  2. Clear onload/onerror BEFORE setting src (no stale-handler double-resolve)
-//  3. opacity="1" set unconditionally on success (works for grid + modal)
-//  4. Modal placeholder hides img instead of replacing DOM node
-//  5. renderGrid skips imgs already loaded (opacity=1 guard)
-//  6. closeModal aborts in-flight modal load
+// FIX 4: IMAGE LOADING — simplificat, fără probe cache
+// Folosește direct BASE_CID din contract, fallback la coinImageURI
 // ═══════════════════════════════════════════════════════
-const _gwCache = {}; // gateway prefix → true=alive | false=dead
-
 function buildIpfsUrls(id) {
-  const d = cdata[id] || {};
   const urls = [];
-  if (d.imgURI) {
-    if (d.imgURI.startsWith("ipfs://")) {
-      const hash = d.imgURI.slice(7);
-      GATEWAYS.forEach(gw => urls.push(gw + hash));
-    } else if (d.imgURI.startsWith("http")) {
-      urls.push(d.imgURI);
-    }
+  const d = cdata[id] || {};
+
+  // Prima prioritate: coin imageURI din contract (dacă e IPFS)
+  if (d.imgURI && d.imgURI.startsWith("ipfs://")) {
+    const hash = d.imgURI.slice(7);
+    GATEWAYS.forEach(gw => urls.push(gw + hash));
+  } else if (d.imgURI && d.imgURI.startsWith("http")) {
+    urls.push(d.imgURI);
   }
-  GATEWAYS.forEach(gw => urls.push(`${gw}${BASE_CID}/${id}.png`));
+
+  // A doua prioritate: baseURI/id.png (structura standard ERC-721)
+  GATEWAYS.forEach(gw => {
+    urls.push(`${gw}${BASE_CID}/${id}.png`);
+    urls.push(`${gw}${BASE_CID}/${id}`);        // fără extensie
+    urls.push(`${gw}${BASE_CID}/${id}.jpg`);
+  });
+
   return [...new Set(urls)];
-}
-
-function extractGateway(url) {
-  try {
-    const u = new URL(url);
-    return u.origin + u.pathname.split("/").slice(0,3).join("/") + "/";
-  } catch { return null; }
-}
-
-async function probeGateway(url, ms) {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), ms);
-  try { await fetch(url, {signal:ctrl.signal, mode:"no-cors"}); return true; }
-  catch { return false; }
-  finally { clearTimeout(timer); }
 }
 
 async function loadImgWithFallback(imgEl, id) {
   const urls = buildIpfsUrls(id);
   const isModal = (imgEl.id === "modal-img");
 
-  function showPlaceholder() {
-    if (isModal) { imgEl.style.display = "none"; return; }
-    try {
-      const ph = document.createElement("div");
-      ph.className = "nft-ph";
-      ph.textContent = "◈🪙";
-      if (imgEl.parentNode) imgEl.parentNode.replaceChild(ph, imgEl);
-    } catch(e) {}
-  }
-
   for (const url of urls) {
-    const gw = extractGateway(url);
-    if (!gw) continue;
-    if (_gwCache[gw] === false) continue;          // known dead — skip
-    if (_gwCache[gw] === undefined) {              // unknown — probe (5 s fast-fail)
-      const ok = await probeGateway(url, 5000);
-      _gwCache[gw] = ok;
-      if (!ok) continue;
-    }
-
-    // FIX: null handlers before assigning src — prevents stale gateway
-    // from firing onload after we've already moved to the next URL
+    // Curăță handler-ele vechi înainte de fiecare încercare
     imgEl.onload  = null;
     imgEl.onerror = null;
 
@@ -507,13 +477,29 @@ async function loadImgWithFallback(imgEl, id) {
     });
 
     if (loaded) {
+      // Elimină spinner-ul
       const spinner = document.getElementById("il-" + id);
       if (spinner) spinner.remove();
-      imgEl.style.opacity = "1"; // FIX: works for both grid and modal
+      imgEl.style.opacity = "1";
+      if (isModal) imgEl.style.display = "block";
       return;
     }
   }
-  showPlaceholder();
+
+  // Toate gateway-urile au eșuat — afișează placeholder
+  const spinner = document.getElementById("il-" + id);
+  if (spinner) spinner.remove();
+
+  if (isModal) {
+    imgEl.style.display = "none";
+  } else {
+    try {
+      const ph = document.createElement("div");
+      ph.className = "nft-ph";
+      ph.textContent = "◈🪙";
+      if (imgEl.parentNode) imgEl.parentNode.replaceChild(ph, imgEl);
+    } catch(e) {}
+  }
 }
 
 // ─── TOAST ───────────────────────────────────────────
@@ -528,12 +514,22 @@ function toast(msg, t="inf") {
 // ─── FORMAT ──────────────────────────────────────────
 function monFmt(w) {
   if (!w) return "—";
-  const m = parseFloat(ethers.utils.formatEther(w));
-  return m < 0.0001 ? w.toString() + " wei" : m.toFixed(4) + " MON";
+  try {
+    const m = parseFloat(ethers.utils.formatEther(w));
+    return m < 0.0001 ? w.toString() + " wei" : m.toFixed(4) + " MON";
+  } catch(e) { return "—"; }
 }
 function usdFmt(w) {
   if (!w || !oracleUSD) return "";
-  return "≈ $" + (parseFloat(ethers.utils.formatEther(w)) * oracleUSD).toFixed(2);
+  try {
+    return "≈ $" + (parseFloat(ethers.utils.formatEther(w)) * oracleUSD).toFixed(2);
+  } catch(e) { return ""; }
+}
+
+// FIX 5: Helper sigur pentru BigNumber zero-check
+function isZeroBN(val) {
+  if (!val) return true;
+  try { return val.isZero(); } catch(e) { return true; }
 }
 
 // ─── ORACLE & BASE PRICE ─────────────────────────────
@@ -565,7 +561,7 @@ async function loadBase() {
 // ─── LOAD NFTs ───────────────────────────────────────
 async function loadAll() {
   document.getElementById("nft-grid").innerHTML =
-    '<div class="loader"><div class="spinner"></div>Scanning 82 NFTs from Monad…</div>';
+    '<div class="loader"><div class="spinner"></div>Scanning ' + NFTS.length + ' NFTs from Monad…</div>';
   const rp = new ethers.providers.JsonRpcProvider(RPC);
   const rc = new ethers.Contract(CONTRACT, ABI, rp);
   let loaded = 0;
@@ -574,32 +570,43 @@ async function loadAll() {
   for (let s = 0; s < NFTS.length; s += 5) {
     await Promise.allSettled(NFTS.slice(s, s+5).map(async n => {
       try {
-        const [own,st,lr,stk,lp,rar,pow,co] = await Promise.all([
-          rc.ownerOf(n.id).catch(()=>null),
-          rc.stats(n.id).catch(()=>null),
-          rc.lore(n.id).catch(()=>""),
-          rc.staked(n.id).catch(()=>false),
-          rc.livePrice(n.id).catch(()=>null),
-          rc.rarity(n.id).catch(()=>0),
-          rc.power(n.id).catch(()=>0),
-          rc.coins(n.id).catch(()=>null),
+        const [own, st, lr, stk, lp, rar, pow, co] = await Promise.all([
+          rc.ownerOf(n.id).catch(() => null),
+          rc.stats(n.id).catch(() => null),
+          rc.lore(n.id).catch(() => ""),
+          rc.staked(n.id).catch(() => false),
+          rc.livePrice(n.id).catch(() => null),
+          rc.rarity(n.id).catch(() => 0),
+          rc.power(n.id).catch(() => 0),
+          rc.coins(n.id).catch(() => null),
         ]);
         cdata[n.id] = {
-          id:n.id, owner:own,
-          atk:st?Number(st.attack):0, def:st?Number(st.defense):0, spd:st?Number(st.speed):0,
-          lore:lr||"", staked:!!stk, livePrice:lp,
-          rarity:Number(rar), power:Number(pow),
-          coinName:co?co.name:"", imgURI:co?co.imageURI:"",
-          isMinted:!!own, isOwnerNFT:own&&own.toLowerCase()===OWNER_ADDR.toLowerCase(),
+          id: n.id,
+          owner: own,
+          atk:   st ? Number(st.attack)  : 0,
+          def:   st ? Number(st.defense) : 0,
+          spd:   st ? Number(st.speed)   : 0,
+          lore:  lr || "",
+          staked: !!stk,
+          livePrice: lp,
+          rarity: Number(rar),
+          power:  Number(pow),
+          coinName: co ? co.name : "",
+          imgURI:   co ? co.imageURI : "",
+          isMinted:    !!own,
+          isOwnerNFT:  own && own.toLowerCase() === OWNER_ADDR.toLowerCase(),
         };
         loaded++;
         document.getElementById("hv-loaded").textContent = loaded;
         if (loaded % 10 === 0) renderGrid();
-      } catch(e) {}
+      } catch(e) {
+        // Token inexistent — skip silentios
+      }
     }));
     await sleep(600);
   }
   renderGrid();
+  toast("Loaded " + loaded + " NFTs ✓", "ok");
 }
 
 // ─── RENDER GRID ─────────────────────────────────────
@@ -608,25 +615,29 @@ function renderGrid() {
   const list = NFTS.filter(n => {
     const d = cdata[n.id] || {};
     if (filt === "staked") return d.staked;
-    if (filt !== "all" && Number(filt) !== (d.rarity||0)) return false;
+    if (filt !== "all" && Number(filt) !== (d.rarity || 0)) return false;
     if (srch) {
       const q = srch.toLowerCase();
       return n.name.toLowerCase().includes(q) || String(n.id).includes(q);
     }
     return true;
   });
-  if (!list.length) { grid.innerHTML = '<div class="loader">No NFTs match filter.</div>'; return; }
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="loader">No NFTs match filter.</div>';
+    return;
+  }
 
   grid.innerHTML = list.map(n => {
     const d = cdata[n.id] || {};
-    const r = Math.min(d.rarity||0, 5);
+    const r = Math.min(d.rarity || 0, 5);
     const name = d.coinName || n.name;
     const canBuy = !d.staked && (!d.isMinted || d.isOwnerNFT);
-    // FIX: .isZero() is a method on BigNumber, not a property
-    const pw = (d.livePrice && !d.livePrice.isZero()) ? d.livePrice : basePriceWei;
+    // FIX 5 aplicat: folosim helper isZeroBN
+    const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : basePriceWei;
     const statusTag = d.staked
       ? '<div class="stag">⚡ Staked</div>'
-      : (!d.isMinted||d.isOwnerNFT) ? ""
+      : (!d.isMinted || d.isOwnerNFT) ? ""
       : '<div class="stag" style="background:rgba(0,195,255,.07);color:var(--blue);border-color:rgba(0,195,255,.2)">✓ Sold</div>';
 
     return `<div class="nft-card" data-id="${n.id}">
@@ -639,29 +650,29 @@ function renderGrid() {
       </div>
       <div class="nft-body">
         <div class="nft-name">${name}</div>
-        <div class="nft-lore">${d.lore||"Ancient lore not yet revealed…"}</div>
+        <div class="nft-lore">${d.lore || "Ancient lore not yet revealed…"}</div>
         <div class="nft-stats">
-          <div class="ns"><div class="nsv">${d.atk||0}</div><div class="nsk">ATK</div></div>
-          <div class="ns"><div class="nsv">${d.def||0}</div><div class="nsk">DEF</div></div>
-          <div class="ns"><div class="nsv">${d.spd||0}</div><div class="nsk">SPD</div></div>
-          <div class="ns"><div class="nsv">${d.power||0}</div><div class="nsk">PWR</div></div>
+          <div class="ns"><div class="nsv">${d.atk || 0}</div><div class="nsk">ATK</div></div>
+          <div class="ns"><div class="nsv">${d.def || 0}</div><div class="nsk">DEF</div></div>
+          <div class="ns"><div class="nsv">${d.spd || 0}</div><div class="nsk">SPD</div></div>
+          <div class="ns"><div class="nsv">${d.power || 0}</div><div class="nsk">PWR</div></div>
         </div>
         ${statusTag}
         <div class="price-row">
           <div>
             <div class="price-label">Price</div>
-            <div class="price-mon">${canBuy?monFmt(pw):(d.staked?"Staked":"Sold")}</div>
+            <div class="price-mon">${canBuy ? monFmt(pw) : (d.staked ? "Staked" : "Sold")}</div>
           </div>
-          <div class="price-usd">${canBuy?usdFmt(pw):""}</div>
+          <div class="price-usd">${canBuy ? usdFmt(pw) : ""}</div>
         </div>
         ${canBuy
           ? `<button class="btn-buy btn-avail" data-id="${n.id}">⚡ Buy Now</button>`
-          : `<button class="btn-buy btn-staked" disabled>${d.staked?"⚡ Staked":"✓ Sold"}</button>`}
+          : `<button class="btn-buy btn-staked" disabled>${d.staked ? "⚡ Staked" : "✓ Sold"}</button>`}
       </div>
     </div>`;
   }).join("");
 
-  // FIX: skip images already loaded — opacity=1 means done
+  // Încarcă imaginile doar pentru cele noi (opacity !== "1")
   list.forEach(n => {
     const img = document.getElementById("img-" + n.id);
     if (img && img.style.opacity !== "1") loadImgWithFallback(img, n.id);
@@ -677,18 +688,19 @@ function renderGrid() {
 
 // ─── NFT MODAL ───────────────────────────────────────
 function openModal(id) {
-  const n = NFTS.find(x => x.id === id); if (!n) return;
+  const n = NFTS.find(x => x.id === id);
+  if (!n) return;
   const d = cdata[id] || {};
   modalId = id;
-  const r = Math.min(d.rarity||0, 5);
+  const r = Math.min(d.rarity || 0, 5);
   const name = d.coinName || n.name;
   const canBuy = !d.staked && (!d.isMinted || d.isOwnerNFT);
-  const pw = (d.livePrice && !d.livePrice.isZero()) ? d.livePrice : basePriceWei;
+  const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : basePriceWei;
 
   document.getElementById("modal-title").textContent = name;
   document.getElementById("modal-sub").textContent = "Token #" + id + " · " + RARITY[r];
 
-  // FIX: clear stale state fully before starting new load
+  // Reset modal imagine
   const mi = document.getElementById("modal-img");
   mi.onload = null; mi.onerror = null;
   mi.src = "";
@@ -698,48 +710,51 @@ function openModal(id) {
   loadImgWithFallback(mi, id);
 
   document.getElementById("modal-rows").innerHTML = `
-    <div class="mrow"><span class="mk">Owner</span><span class="mv">${d.owner?d.owner.slice(0,10)+"…"+d.owner.slice(-6):"—"}</span></div>
+    <div class="mrow"><span class="mk">Token ID</span><span class="mv">#${id}</span></div>
+    <div class="mrow"><span class="mk">Owner</span><span class="mv">${d.owner ? d.owner.slice(0,10)+"…"+d.owner.slice(-6) : "—"}</span></div>
     <div class="mrow"><span class="mk">Stats</span><span class="mv">ATK ${d.atk||0} / DEF ${d.def||0} / SPD ${d.spd||0} / PWR ${d.power||0}</span></div>
     <div class="mrow"><span class="mk">Rarity</span><span class="mv">${RARITY[r]}</span></div>
-    <div class="mrow"><span class="mk">Status</span><span class="mv" style="color:${canBuy?"var(--green)":d.staked?"var(--gold)":"var(--blue)"}">${d.staked?"⚡ Staked":canBuy?"✓ Available":"✓ Sold"}</span></div>
-    <div class="mrow"><span class="mk">Price</span><span class="mv">${canBuy?monFmt(pw)+" "+usdFmt(pw):"—"}</span></div>
-    ${d.lore?`<div class="mrow"><span class="mk">Lore</span><span class="mv">${d.lore}</span></div>`:""}
+    <div class="mrow"><span class="mk">Coin</span><span class="mv">${d.coinName || "—"}</span></div>
+    <div class="mrow"><span class="mk">Status</span><span class="mv" style="color:${canBuy?"var(--green)":d.staked?"var(--gold)":"var(--blue)"}">${d.staked ? "⚡ Staked" : canBuy ? "✓ Available" : "✓ Sold"}</span></div>
+    <div class="mrow"><span class="mk">Price</span><span class="mv">${canBuy ? monFmt(pw) + " " + usdFmt(pw) : "—"}</span></div>
+    ${d.lore ? `<div class="mrow"><span class="mk">Lore</span><span class="mv">${d.lore}</span></div>` : ""}
   `;
 
   const buyBtn = document.getElementById("modal-buy");
   if (!canBuy) {
     buyBtn.textContent = d.staked ? "⚡ Staked — Unavailable" : "✓ Already Sold";
-    buyBtn.disabled = true; buyBtn.style.opacity = ".35";
+    buyBtn.disabled = true;
+    buyBtn.style.opacity = ".35";
   } else {
     buyBtn.textContent = "⚡ Buy · " + monFmt(pw);
-    buyBtn.disabled = false; buyBtn.style.opacity = "1";
+    buyBtn.disabled = false;
+    buyBtn.style.opacity = "1";
   }
   document.getElementById("modal-bg").classList.add("open");
 }
 
 function closeModal() {
   document.getElementById("modal-bg").classList.remove("open");
-  // FIX: abort any in-flight modal image load
   const mi = document.getElementById("modal-img");
   mi.onload = null; mi.onerror = null;
   modalId = null;
 }
-document.getElementById("modal-x").onclick      = closeModal;
-document.getElementById("modal-cancel").onclick  = closeModal;
-document.getElementById("modal-bg").onclick = e => { if (e.target===e.currentTarget) closeModal(); };
+document.getElementById("modal-x").onclick     = closeModal;
+document.getElementById("modal-cancel").onclick = closeModal;
+document.getElementById("modal-bg").onclick = e => { if (e.target === e.currentTarget) closeModal(); };
 
-// ─── BUY ────────────────────────────────────────────
+// ─── BUY ─────────────────────────────────────────────
 document.getElementById("modal-buy").onclick = async () => {
   if (modalId === null) return;
   if (!signer) { toast("Connect an EVM wallet first","err"); openReownModal(); return; }
   if (chainId !== MONAD_ID) { toast("Switch to Monad first","err"); await switchToMonad(); return; }
   const d = cdata[modalId] || {};
-  const pw = (d.livePrice && !d.livePrice.isZero()) ? d.livePrice : ethers.utils.parseEther(NFT_PRICE_ETH);
+  const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : ethers.utils.parseEther(NFT_PRICE_ETH);
   const btn = document.getElementById("modal-buy");
   btn.textContent = "Confirming…"; btn.disabled = true;
   try {
     toast("Sending " + monFmt(pw) + " for NFT #" + modalId + "…","inf");
-    const tx = await signer.sendTransaction({to:OWNER_ADDR, value:pw});
+    const tx = await signer.sendTransaction({to: OWNER_ADDR, value: pw});
     toast("TX: " + tx.hash.slice(0,18) + "…","ok");
     btn.textContent = "Waiting…";
     await tx.wait();
@@ -747,12 +762,12 @@ document.getElementById("modal-buy").onclick = async () => {
     toast("Transfer to " + userAddr.slice(0,10) + "… within 24h","near");
     closeModal();
   } catch(e) {
-    toast("Error: " + (e.reason||e.message||"").slice(0,90),"err");
+    toast("Error: " + (e.reason || e.message || "").slice(0,90),"err");
     btn.textContent = "⚡ Buy · " + monFmt(pw); btn.disabled = false;
   }
 };
 
-// ─── REOWN / WALLETCONNECT MODAL ─────────────────────
+// ─── REOWN / WALLETCONNECT ────────────────────────────
 function openReownModal()  { document.getElementById("reown-modal-bg").classList.add("open"); }
 function closeReownModal() { document.getElementById("reown-modal-bg").classList.remove("open"); }
 document.getElementById("reown-close").onclick = closeReownModal;
@@ -818,7 +833,7 @@ document.getElementById("rw-rabby").onclick = () => {
 };
 document.getElementById("rw-wc").onclick = connectWalletConnect;
 
-// ─── NEAR WALLET MODAL ───────────────────────────────
+// ─── NEAR WALLET ─────────────────────────────────────
 function openNearModal()  { document.getElementById("near-modal-bg").classList.add("open"); }
 function closeNearModal() { document.getElementById("near-modal-bg").classList.remove("open"); }
 document.getElementById("near-modal-close").onclick = closeNearModal;
@@ -919,7 +934,9 @@ document.getElementById("btn-near").onclick    = openNearModal;
 document.getElementById("btn-reown").onclick   = openReownModal;
 document.getElementById("btn-switch").onclick  = switchToMonad;
 document.getElementById("btn-refresh").onclick = async () => {
-  await loadOracle(); await loadBase(); await loadAll(); toast("Data refreshed ✓","ok");
+  cdata = {}; // resetează cache-ul
+  await loadOracle(); await loadBase(); await loadAll();
+  toast("Data refreshed ✓","ok");
 };
 document.getElementById("btn-rpc").onclick = async () => {
   try {
@@ -956,8 +973,9 @@ if (window.ethereum) {
   if (accId) { showNEAR(accId); history.replaceState({},"",location.href.split("?")[0]); }
 })();
 
-// ─── INIT ────────────────────────────────────────────
+// ─── INIT ─────────────────────────────────────────────
 (async () => {
+  // Restaurează sesiunea NEAR
   const savedNear = localStorage.getItem("near_account_id");
   if (savedNear) {
     nearAcc = savedNear;
@@ -965,6 +983,7 @@ if (window.ethereum) {
     p.textContent   = "NEAR: "+(savedNear.length>14?savedNear.slice(0,12)+"…":savedNear);
     p.style.display = "inline-block";
   }
+  // Restaurează sesiunea EVM
   if (window.ethereum) {
     try {
       const a = await window.ethereum.request({method:"eth_accounts"});
@@ -973,11 +992,14 @@ if (window.ethereum) {
         signer   = provider.getSigner();
         userAddr = a[0];
         chainId  = (await provider.getNetwork()).chainId;
-        updateUI(); toast("Auto-connected: "+userAddr.slice(0,8)+"…","ok");
+        updateUI();
+        toast("Auto-connected: "+userAddr.slice(0,8)+"…","ok");
       }
     } catch(e) {}
   }
-  await loadOracle(); await loadBase(); await loadAll();
+  await loadOracle();
+  await loadBase();
+  await loadAll();
 })();
 </script>
 </body>
