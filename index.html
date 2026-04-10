@@ -336,9 +336,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <script>
-// ═══════════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+// CONFIG ON-CHAIN
+// ─────────────────────────────────────────────
 const CONTRACT      = "0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948";
 const ORACLE        = "0x723d62bef5eeb3f0d2255e5cab6ae763c59ca0e6";
 const OWNER_ADDR    = "0x592B35c8917eD36c39Ef73D0F5e92B0173560b2e";
@@ -348,12 +348,12 @@ const DRPC          = "https://monad-mainnet.drpc.org";
 const REOWN_PID     = "83764e5a442fd38d9827e3302a37517a";
 const NFT_PRICE_ETH = "1.0";
 
-// FIX 1: CID-ul corect din baseURI setat pe contract
+// baseURI on-chain:
+// ipfs://bafybeiatrcby77hcmcex3v25t33o2j5cgstu5ojdkkovk7wgpzkhoatlue/
 const BASE_CID = "bafybeiatrcby77hcmcex3v25t33o2j5cgstu5ojdkkovk7wgpzkhoatlue";
 
-// FIX 2: Gateway-uri IPFS ordonate după fiabilitate
+// IPFS gateways (fără Cloudflare, care e instabil)
 const GATEWAYS = [
-  "https://cloudflare-ipfs.com/ipfs/",
   "https://ipfs.io/ipfs/",
   "https://dweb.link/ipfs/",
   "https://w3s.link/ipfs/",
@@ -364,66 +364,69 @@ const GATEWAYS = [
 
 const RARITY = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
 
-// ─── ABI ────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// ABI — extras din contractul real
+// ─────────────────────────────────────────────
 const ABI = [
   "function mint(address to,uint256 tokenId) external",
   "function ownerOf(uint256 tokenId) view returns (address)",
-  "function stats(uint256) view returns (uint256 attack,uint256 defense,uint256 speed)",
-  "function lore(uint256) view returns (string)",
+  "function stats(uint256 tokenId) view returns (uint256 attack,uint256 defense,uint256 speed)",
+  "function lore(uint256 tokenId) view returns (string)",
   "function livePrice(uint256 tokenId) view returns (uint256)",
-  "function staked(uint256) view returns (bool)",
+  "function staked(uint256 tokenId) view returns (bool)",
   "function basePrice() view returns (uint256)",
   "function rarity(uint256) view returns (uint256)",
   "function power(uint256) view returns (uint256)",
-  "function coins(uint256) view returns (string name,string imageURI,uint256 multiplier)",
-  "function tokenURI(uint256) view returns (string)",
+  "function coins(uint256 tokenId) view returns (string name,string imageURI,uint256 multiplier)",
+  "function tokenURI(uint256 tokenId) view returns (string)",
 ];
 
-// FIX 3: Lista corectă de NFTs — fără #46, #47, #49 (nu sunt mintate)
+// ─────────────────────────────────────────────
+// NFTS — mapare ID → nume, aliniat cu on-chain
+// (fără #46, #47, #49 care dau revert în check_nfts)
+// ─────────────────────────────────────────────
 const NFTS = [
-  {id:0, name:"AureusPrime"},         {id:1, name:"SolarisCrown"},
-  {id:2, name:"ImperialDragonGold"},  {id:3, name:"CelestialPhoenix"},
-  {id:4, name:"TitaniumSunDisc"},     {id:5, name:"EternalMonarchSeal"},
-  {id:6, name:"NebulaGoldCore"},      {id:7, name:"RoyalGriffinMedallion"},
-  {id:8, name:"ObsidianGoldRelic"},   {id:9, name:"AstralEmperor"},
-  {id:10,name:"LionheartSovereign"},  {id:11,name:"GoldenSerpentCrest"},
-  {id:12,name:"StormforgeHalo"},      {id:13,name:"OracleSunstone"},
-  {id:14,name:"EclipseCrown"},        {id:15,name:"LeviathanScale"},
-  {id:16,name:"ArchonSigil"},         {id:17,name:"PrimevalSunRelic"},
-  {id:18,name:"AuroraKingsCrest"},    {id:19,name:"InfinityGoldNexus"},
-  {id:20,name:"AnubisSolarMark"},     {id:21,name:"HorusGoldenEye"},
-  {id:22,name:"IsisMoonCrest"},       {id:23,name:"RaSunForge"},
-  {id:24,name:"SekhmetLionEmblem"},   {id:25,name:"ThothWisdomSeal"},
-  {id:26,name:"OsirisEternalCrown"},  {id:27,name:"BastetNightGold"},
-  {id:28,name:"SobekRiverCoin"},      {id:29,name:"AmunPrimeDisc"},
-  {id:30,name:"JupiterImperium"},     {id:31,name:"MarsWarCrest"},
-  {id:32,name:"VenusGoldenBloom"},    {id:33,name:"NeptuneDeepSeal"},
-  {id:34,name:"PlutoShadowMark"},     {id:35,name:"MercuryWingedCoin"},
-  {id:36,name:"MinervaWisdomHalo"},   {id:37,name:"ApolloSunStrike"},
-  {id:38,name:"DianaMoonSigil"},      {id:39,name:"JunoRoyalEmblem"},
-  {id:40,name:"ZeusThunderCrown"},    {id:41,name:"HeraGoldenThrone"},
-  {id:42,name:"PoseidonSeaCore"},     {id:43,name:"AthenaWarSigil"},
-  {id:44,name:"AresIronSun"},         {id:45,name:"HephaestusForgeCoin"},
-  // #46 ArtemisNightHalo  — NOT MINTED, REMOVED
-  // #47 HermesSwiftMark   — NOT MINTED, REMOVED
-  {id:48,name:"HadesUnderworldGold"},
-  // #49 DionysusVineCrest  — NOT MINTED, REMOVED
-  {id:50,name:"DacianWolfGold"},      {id:51,name:"ZalmoxisSacredSeal"},
-  {id:52,name:"DecebalusIronCrown"},  {id:53,name:"DracoDacorum"},
-  {id:54,name:"CarpatiSunRelic"},     {id:55,name:"TransylvanianMoonMark"},
-  {id:56,name:"GetaeGoldenSpirit"},   {id:57,name:"DanubianSunCore"},
-  {id:58,name:"RomanianEagleCrest"},  {id:59,name:"ValhallaStormCoin"},
-  {id:60,name:"OdinAllfatherMark"},   {id:61,name:"ThorThunderSigil"},
-  {id:62,name:"FreyaGoldenBloom"},    {id:63,name:"LokiShadowCrest"},
-  {id:64,name:"TyrWarEmblem"},        {id:65,name:"HeimdallLightHalo"},
-  {id:66,name:"FenrirIronFang"},      {id:67,name:"JormungandrSeaRing"},
-  {id:68,name:"KrakenDeepGold"},      {id:69,name:"LeviathanAbyssCore"},
-  {id:70,name:"PirateKingsGold"},     {id:71,name:"BlackSailCrown"},
-  {id:72,name:"SeaReaverMedallion"},  {id:73,name:"StormCorsairCoin"},
-  {id:74,name:"GhostCaptainMark"},    {id:75,name:"RogueMarinerSeal"},
-  {id:76,name:"SkullHarborGold"},     {id:77,name:"AncientCorsairRelic"},
-  {id:78,name:"ForbiddenTreasureCore"},{id:79,name:"ShadowNavigatorCoin"},
-  {id:80,name:"EternalVoyagerMark"},  {id:81,name:"ObscuraSunNexus"},
+  {id:0,  name:"AureusPrime"},            {id:1,  name:"SolarisCrown"},
+  {id:2,  name:"ImperialDragonGold"},     {id:3,  name:"CelestialPhoenix"},
+  {id:4,  name:"TitaniumSunDisc"},        {id:5,  name:"EternalMonarchSeal"},
+  {id:6,  name:"NebulaGoldCore"},         {id:7,  name:"RoyalGriffinMedallion"},
+  {id:8,  name:"ObsidianGoldRelic"},      {id:9,  name:"AstralEmperor"},
+  {id:10, name:"LionheartSovereign"},     {id:11, name:"GoldenSerpentCrest"},
+  {id:12, name:"StormforgeHalo"},         {id:13, name:"OracleSunstone"},
+  {id:14, name:"EclipseCrown"},           {id:15, name:"LeviathanScale"},
+  {id:16, name:"ArchonSigil"},            {id:17, name:"PrimevalSunRelic"},
+  {id:18, name:"AuroraKingsCrest"},       {id:19, name:"InfinityGoldNexus"},
+  {id:20, name:"AnubisSolarMark"},        {id:21, name:"HorusGoldenEye"},
+  {id:22, name:"IsisMoonCrest"},          {id:23, name:"RaSunForge"},
+  {id:24, name:"SekhmetLionEmblem"},      {id:25, name:"ThothWisdomSeal"},
+  {id:26, name:"OsirisEternalCrown"},     {id:27, name:"BastetNightGold"},
+  {id:28, name:"SobekRiverCoin"},         {id:29, name:"AmunPrimeDisc"},
+  {id:30, name:"JupiterImperium"},        {id:31, name:"MarsWarCrest"},
+  {id:32, name:"VenusGoldenBloom"},       {id:33, name:"NeptuneDeepSeal"},
+  {id:34, name:"PlutoShadowMark"},        {id:35, name:"MercuryWingedCoin"},
+  {id:36, name:"MinervaWisdomHalo"},      {id:37, name:"ApolloSunStrike"},
+  {id:38, name:"DianaMoonSigil"},         {id:39, name:"JunoRoyalEmblem"},
+  {id:40, name:"ZeusThunderCrown"},       {id:41, name:"HeraGoldenThrone"},
+  {id:42, name:"PoseidonSeaCore"},        {id:43, name:"AthenaWarSigil"},
+  {id:44, name:"AresIronSun"},            {id:45, name:"HephaestusForgeCoin"},
+  // 46,47,49 nu sunt mintate
+  {id:48, name:"HadesUnderworldGold"},
+  {id:50, name:"DacianWolfGold"},         {id:51, name:"ZalmoxisSacredSeal"},
+  {id:52, name:"DecebalusIronCrown"},     {id:53, name:"DracoDacorum"},
+  {id:54, name:"CarpatiSunRelic"},        {id:55, name:"TransylvanianMoonMark"},
+  {id:56, name:"GetaeGoldenSpirit"},      {id:57, name:"DanubianSunCore"},
+  {id:58, name:"RomanianEagleCrest"},     {id:59, name:"ValhallaStormCoin"},
+  {id:60, name:"OdinAllfatherMark"},      {id:61, name:"ThorThunderSigil"},
+  {id:62, name:"FreyaGoldenBloom"},       {id:63, name:"LokiShadowCrest"},
+  {id:64, name:"TyrWarEmblem"},           {id:65, name:"HeimdallLightHalo"},
+  {id:66, name:"FenrirIronFang"},         {id:67, name:"JormungandrSeaRing"},
+  {id:68, name:"KrakenDeepGold"},         {id:69, name:"LeviathanAbyssCore"},
+  {id:70, name:"PirateKingsGold"},        {id:71, name:"BlackSailCrown"},
+  {id:72, name:"SeaReaverMedallion"},     {id:73, name:"StormCorsairCoin"},
+  {id:74, name:"GhostCaptainMark"},       {id:75, name:"RogueMarinerSeal"},
+  {id:76, name:"SkullHarborGold"},        {id:77, name:"AncientCorsairRelic"},
+  {id:78, name:"ForbiddenTreasureCore"},  {id:79, name:"ShadowNavigatorCoin"},
+  {id:80, name:"EternalVoyagerMark"},     {id:81, name:"ObscuraSunNexus"},
 ];
 
 // ─── STATE ───────────────────────────────────────────
