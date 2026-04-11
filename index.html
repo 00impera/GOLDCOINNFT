@@ -217,10 +217,38 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--monad);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:640px){header{flex-direction:column;align-items:flex-start}.wbar{top:90px}}
+
+/* ASTEROID RAIN */
+#asteroid-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+body>*:not(#asteroid-canvas){position:relative;z-index:1}
+
+/* NEON FIRE on cards */
+@keyframes fire0{0%,100%{box-shadow:0 0 8px 2px #FF4500,0 0 20px 6px #FF6A00,0 0 40px 10px rgba(255,100,0,.3)}50%{box-shadow:0 0 12px 4px #FF2200,0 0 28px 10px #FF8000,0 0 55px 16px rgba(255,60,0,.4)}}
+@keyframes fire1{0%,100%{box-shadow:0 0 8px 2px #00FFFF,0 0 20px 6px #0088FF,0 0 40px 10px rgba(0,150,255,.3)}50%{box-shadow:0 0 12px 4px #00DDFF,0 0 28px 10px #0044FF,0 0 55px 16px rgba(0,100,255,.4)}}
+@keyframes fire2{0%,100%{box-shadow:0 0 8px 2px #FF00FF,0 0 20px 6px #AA00FF,0 0 40px 10px rgba(180,0,255,.3)}50%{box-shadow:0 0 12px 4px #FF00DD,0 0 28px 10px #8800FF,0 0 55px 16px rgba(150,0,255,.4)}}
+@keyframes fire3{0%,100%{box-shadow:0 0 8px 2px #00FF88,0 0 20px 6px #00FFAA,0 0 40px 10px rgba(0,255,100,.3)}50%{box-shadow:0 0 12px 4px #00FF44,0 0 28px 10px #00DDAA,0 0 55px 16px rgba(0,220,100,.4)}}
+@keyframes fire4{0%,100%{box-shadow:0 0 8px 2px #FFD700,0 0 20px 6px #FFAA00,0 0 40px 10px rgba(255,180,0,.3)}50%{box-shadow:0 0 12px 4px #FFE000,0 0 28px 10px #FF9900,0 0 55px 16px rgba(255,160,0,.4)}}
+@keyframes fire5{0%,100%{box-shadow:0 0 8px 2px #FF1493,0 0 20px 6px #FF69B4,0 0 40px 10px rgba(255,20,120,.3)}50%{box-shadow:0 0 12px 4px #FF0080,0 0 28px 10px #FF44AA,0 0 55px 16px rgba(255,0,100,.4)}}
+
+.nft-card.fire-0{animation:fire0 2.1s ease-in-out infinite}
+.nft-card.fire-1{animation:fire1 1.9s ease-in-out infinite}
+.nft-card.fire-2{animation:fire2 2.3s ease-in-out infinite}
+.nft-card.fire-3{animation:fire3 1.8s ease-in-out infinite}
+.nft-card.fire-4{animation:fire4 2.5s ease-in-out infinite}
+.nft-card.fire-5{animation:fire5 2.0s ease-in-out infinite}
+
+/* Flame particles on card hover */
+.nft-card::after{content:'';position:absolute;inset:-2px;border-radius:18px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:-1}
+.nft-card:hover::after{opacity:1}
+
+/* DISCONNECT BUTTON */
+#btn-disconnect{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,71,87,.5);cursor:pointer;background:rgba(255,71,87,.12);color:var(--red);white-space:nowrap;transition:transform .15s,filter .15s,background .15s;display:none}
+#btn-disconnect:hover{background:rgba(255,71,87,.25);transform:scale(1.04);filter:brightness(1.2)}
   </style>
 </head>
 <body>
 
+<canvas id="asteroid-canvas"></canvas>
 <header>
   <a class="logo" href="#">
     <span class="logo-icon">◈</span>
@@ -235,6 +263,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
     <span class="pill p-gray"   id="pill-addr">No wallet</span>
     <span class="pill p-blue"   id="pill-near" style="display:none">NEAR —</span>
     <button id="btn-connect">⚡ Connect Wallet</button>
+    <button id="btn-disconnect">✕ Disconnect</button>
   </div>
 </header>
 
@@ -350,6 +379,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
       <a class="fl fl-x"    href="https://x.com/bnbgold277983"          target="_blank">𝕏 Twitter · @bnbgold277983</a>
       <a class="fl fl-dc"   href="https://discord.com/channels/1316093079090106472" target="_blank">💬 Discord Server</a>
       <a class="fl fl-web"  href="https://fragrant-bush-115e.nelutz2you.workers.dev/" target="_blank">🌎 fragrant-bush-115e.nelutz2you.workers.dev</a>
+      <a class="fl" href="https://opensea.io/SUPERRARECOINS" target="_blank" style="background:rgba(32,129,226,.12);color:#2081E2;border:1px solid rgba(32,129,226,.3)"><svg width="14" height="14" viewBox="0 0 90 90" fill="currentColor" style="flex-shrink:0"><path d="M45 0C20.151 0 0 20.151 0 45C0 69.849 20.151 90 45 90C69.849 90 90 69.849 90 45C90 20.151 69.849 0 45 0ZM22.203 46.512L22.392 46.206L34.101 27.891C34.272 27.63 34.677 27.657 34.804 27.945C36.786 32.328 38.457 37.782 37.662 41.175C37.323 42.57 36.399 44.46 35.349 46.206C35.214 46.458 35.061 46.71 34.899 46.953C34.818 47.079 34.677 47.151 34.527 47.151H22.545C22.221 47.151 22.032 46.8 22.203 46.512ZM74.376 52.812C74.376 52.983 74.277 53.127 74.133 53.19C73.224 53.577 70.119 55.008 68.832 56.799C65.538 61.38 63.027 67.932 57.402 67.932H33.948C25.632 67.932 18.9 61.173 18.9 52.83V52.56C18.9 52.344 19.08 52.164 19.305 52.164H32.373C32.634 52.164 32.823 52.407 32.805 52.659C32.706 53.505 32.868 54.378 33.273 55.17C34.047 56.745 35.667 57.726 37.431 57.726H43.866V52.677H37.503C37.17 52.677 36.972 52.29 37.17 52.02C37.251 51.894 37.341 51.768 37.44 51.624C38.124 50.634 39.105 49.11 40.068 47.385C40.725 46.2 41.37 44.928 41.868 43.647C41.976 43.377 42.066 43.098 42.156 42.828C42.309 42.3 42.462 41.808 42.57 41.316C42.678 40.896 42.759 40.458 42.831 40.038C43.056 38.553 42.966 36.963 42.696 35.469C42.615 35.04 42.516 34.62 42.399 34.2C42.273 33.726 42.12 33.261 41.958 32.805C41.481 31.374 40.905 29.943 40.284 28.647C40.059 28.17 39.816 27.711 39.564 27.261C39.294 26.775 39.015 26.313 38.763 25.869C38.628 25.629 38.52 25.398 38.412 25.167C38.286 24.9 38.16 24.633 38.034 24.384C37.944 24.213 37.872 24.06 37.8 23.907L36.999 22.374C36.864 22.113 37.107 21.816 37.386 21.888L42.219 23.139H42.228C42.237 23.139 42.246 23.139 42.246 23.139L42.885 23.31L43.587 23.499L43.866 23.58V20.709C43.866 19.251 45.045 18.045 46.503 18.045C47.232 18.045 47.898 18.333 48.384 18.819C48.87 19.305 49.158 19.98 49.158 20.709V25.11L49.653 25.245C49.698 25.263 49.743 25.29 49.779 25.317C49.914 25.425 50.121 25.578 50.373 25.767C50.571 25.92 50.787 26.1 51.039 26.298C51.534 26.694 52.119 27.198 52.776 27.756C52.938 27.9 53.091 28.044 53.253 28.206C54.108 29.007 55.08 29.943 56.007 30.996C56.268 31.293 56.52 31.599 56.772 31.914C57.033 32.238 57.303 32.571 57.537 32.904C57.843 33.336 58.167 33.786 58.455 34.263C58.6 34.497 58.753 34.74 58.896 34.974C59.283 35.631 59.625 36.315 59.913 36.999C60.015 37.242 60.108 37.494 60.201 37.737C60.501 38.574 60.693 39.438 60.756 40.302C60.774 40.464 60.783 40.635 60.783 40.797V41.01C60.792 41.568 60.756 42.12 60.684 42.66C60.648 42.939 60.603 43.218 60.549 43.497C60.477 43.794 60.405 44.1 60.315 44.397C60.03 45.351 59.61 46.287 59.088 47.151C58.923 47.43 58.74 47.718 58.548 47.988C58.338 48.267 58.137 48.528 57.927 48.78C57.645 49.11 57.372 49.431 57.063 49.725C56.772 50.01 56.481 50.295 56.19 50.562C55.728 50.97 55.275 51.36 54.804 51.714C54.54 51.921 54.261 52.119 53.991 52.29C53.721 52.47 53.469 52.605 53.217 52.731L52.713 53.001C52.632 53.046 52.54 53.073 52.443 53.073H49.158V57.726H53.244C54.195 57.726 55.107 57.393 55.845 56.763C56.106 56.529 57.159 55.629 58.392 54.528C58.437 54.492 58.491 54.465 58.545 54.456L71.82 50.634C72.117 50.544 72.396 50.778 72.396 51.084V52.812H74.376Z"/></svg> OpenSea · SUPERRARECOINS</a>
     </div>
     <div class="fct">
       Contract: <a href="https://explorer.monad.xyz/address/0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948" target="_blank">0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948</a>
@@ -960,6 +990,104 @@ if(window.ethereum){
   await loadOracle();
   await loadBase();
   await loadAll();
+// ─── ASTEROID RAIN ────────────────────────────────────
+(function(){
+  const canvas=document.getElementById("asteroid-canvas");
+  const ctx=canvas.getContext("2d");
+  let W,H;
+  const asteroids=[];
+  const COLORS=["#836EF9","#00FFD1","#FFB800","#FF4757","#00C3FF","#FF69B4","#00FF88","#A896FF"];
+
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize(); window.addEventListener("resize",resize);
+  function rand(a,b){return Math.random()*(b-a)+a;}
+
+  function mkAst(startY){
+    return{
+      x:rand(0,W),y:startY!==undefined?startY:rand(-200,-10),
+      vx:rand(-1.2,1.2),vy:rand(1.5,5),
+      r:rand(2,8),trail:[],maxTrail:Math.floor(rand(8,22)),
+      color:COLORS[Math.floor(Math.random()*COLORS.length)],
+      alpha:rand(0.5,1),spin:rand(-0.06,0.06),angle:rand(0,Math.PI*2),
+      sides:Math.floor(rand(3,8))
+    };
+  }
+  for(let i=0;i<70;i++) asteroids.push(mkAst(rand(0,window.innerHeight)));
+
+  function draw(a){
+    for(let i=0;i<a.trail.length;i++){
+      const t=a.trail[i],p=i/a.trail.length;
+      ctx.beginPath(); ctx.arc(t.x,t.y,a.r*p*0.5,0,Math.PI*2);
+      ctx.fillStyle=a.color+(Math.floor(p*80).toString(16).padStart(2,"0")); ctx.fill();
+    }
+    ctx.save(); ctx.translate(a.x,a.y); ctx.rotate(a.angle);
+    ctx.beginPath();
+    for(let i=0;i<a.sides;i++){
+      const ang=(i/a.sides)*Math.PI*2;
+      const rr=a.r*(0.75+Math.random()*0.5);
+      i===0?ctx.moveTo(Math.cos(ang)*rr,Math.sin(ang)*rr):ctx.lineTo(Math.cos(ang)*rr,Math.sin(ang)*rr);
+    }
+    ctx.closePath();
+    ctx.fillStyle=a.color+Math.floor(a.alpha*180).toString(16).padStart(2,"0");
+    ctx.shadowColor=a.color; ctx.shadowBlur=a.r*4; ctx.fill(); ctx.restore();
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    asteroids.forEach(a=>{
+      a.trail.push({x:a.x,y:a.y});
+      if(a.trail.length>a.maxTrail) a.trail.shift();
+      a.x+=a.vx; a.y+=a.vy; a.angle+=a.spin;
+      if(a.y>H+20||a.x<-30||a.x>W+30){ Object.assign(a,mkAst()); a.x=rand(0,W); a.trail=[]; }
+      draw(a);
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ─── NEON FIRE on cards ──────────────────────────────
+function applyFireClasses(){
+  document.querySelectorAll(".nft-card").forEach(c=>{
+    const id=+c.dataset.id;
+    for(let i=0;i<6;i++) c.classList.remove("fire-"+i);
+    c.classList.add("fire-"+(id%6));
+  });
+}
+
+// ─── DISCONNECT ──────────────────────────────────────
+function showDisconnectBtn(show){
+  document.getElementById("btn-disconnect").style.display=show?"inline-block":"none";
+  document.getElementById("btn-connect").style.display=show?"none":"inline-block";
+}
+
+document.getElementById("btn-disconnect").onclick=()=>{
+  userAddr=null; signer=null; provider=null; chainId=null;
+  document.getElementById("pill-addr").textContent="No wallet";
+  document.getElementById("pill-addr").className="pill p-gray";
+  document.getElementById("pill-chain").textContent="Chain —";
+  document.getElementById("pill-chain").className="pill p-gray";
+  document.getElementById("btn-connect").textContent="⚡ Connect Wallet";
+  showDisconnectBtn(false);
+  toast("Disconnected","inf");
+};
+
+// Patch renderGrid to apply fire after render
+const _origRenderGrid=renderGrid;
+window._firePatched=true;
+const _rg=renderGrid;
+renderGrid=function(){
+  _rg.call(this,...arguments);
+  setTimeout(applyFireClasses,50);
+};
+
+// Patch updateUI to show disconnect when connected
+const _origUI=updateUI;
+updateUI=function(){
+  _origUI.call(this,...arguments);
+  showDisconnectBtn(!!userAddr);
+};
+
 })();
 </script>
 </body>
