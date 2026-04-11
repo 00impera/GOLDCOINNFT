@@ -565,6 +565,7 @@ var GATEWAYS = [
   "https://gateway.pinata.cloud/ipfs/",
   "https://4everland.io/ipfs/"
 ];
+var GITHUB_RAW = "https://raw.githubusercontent.com/00impera/GOLDCOINNFT/main/";
 
 var RARITY = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
 
@@ -957,17 +958,34 @@ document.getElementById("btn-rpc").onclick = async function(){
 function buildIpfsUrls(id) {
   var urls = [];
   var d = cdata[id] || {};
+
+  // 1. GitHub repo first (most reliable, no CORS issues)
+  var nftObj = NFTS.filter(function(x){ return x.id===id; })[0];
+  if (nftObj) {
+    var name = nftObj.name;
+    urls.push(GITHUB_RAW + id + "_" + name + ".png");
+    urls.push(GITHUB_RAW + id + "_" + name + ".jpg");
+  }
+  urls.push(GITHUB_RAW + id + ".png");
+  urls.push(GITHUB_RAW + id + ".jpg");
+
+  // 2. On-chain imageURI if available
   if (d.imgURI && d.imgURI.startsWith("ipfs://")) {
     var hash = d.imgURI.slice(7);
-    GATEWAYS.forEach(function(gw){ urls.push(gw+hash); });
+    // Only use gateways with known CORS support
+    ["https://ipfs.io/ipfs/","https://dweb.link/ipfs/","https://w3s.link/ipfs/"].forEach(function(gw){
+      urls.push(gw + hash);
+    });
   } else if (d.imgURI && d.imgURI.startsWith("http")) {
     urls.push(d.imgURI);
   }
-  GATEWAYS.forEach(function(gw){
+
+  // 3. BASE_CID fallbacks (CORS-friendly gateways only)
+  ["https://ipfs.io/ipfs/","https://dweb.link/ipfs/","https://w3s.link/ipfs/"].forEach(function(gw){
     urls.push(gw + BASE_CID + "/" + id + ".png");
-    urls.push(gw + BASE_CID + "/" + id);
     urls.push(gw + BASE_CID + "/" + id + ".jpg");
   });
+
   return urls.filter(function(v,i,a){ return a.indexOf(v)===i; });
 }
 
@@ -1178,10 +1196,13 @@ function renderGrid() {
     }, {passive:true});
   });
 
-  // ── FIX: Use event delegation on grid, check if btn-buy was clicked ──
-  // This replaces individual button listeners and fixes the propagation race
+  // ── Event delegation — replace grid node to clear any stale listeners ──
+  var newGrid = grid.cloneNode(false);
+  newGrid.innerHTML = grid.innerHTML;
+  grid.parentNode.replaceChild(newGrid, grid);
+  grid = newGrid;
+
   grid.addEventListener("click", function(e) {
-    // Check if a buy button (or something inside it) was clicked
     var buyBtn = e.target.closest(".btn-buy.btn-avail");
     if (buyBtn) {
       e.stopPropagation();
@@ -1198,7 +1219,6 @@ function renderGrid() {
       openModal(+buyBtn.dataset.id);
       return;
     }
-    // Card click — open modal (but not if disabled button)
     var card = e.target.closest(".nft-card");
     var disabledBtn = e.target.closest(".btn-staked");
     if (card && !disabledBtn) {
