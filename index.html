@@ -958,21 +958,28 @@ document.getElementById("btn-rpc").onclick = async function(){
 function buildIpfsUrls(id) {
   var urls = [];
   var d = cdata[id] || {};
-
-  // 1. GitHub repo first (most reliable, no CORS issues)
   var nftObj = NFTS.filter(function(x){ return x.id===id; })[0];
-  if (nftObj) {
-    var name = nftObj.name;
+  var name = nftObj ? nftObj.name : "";
+
+  // 1. jsDelivr CDN mirror of GitHub — best CORS support, global CDN
+  if (name) {
+    urls.push("https://cdn.jsdelivr.net/gh/00impera/GOLDCOINNFT@main/" + id + "_" + name + ".png");
+    urls.push("https://cdn.jsdelivr.net/gh/00impera/GOLDCOINNFT@main/" + id + "_" + name + ".jpg");
+  }
+  urls.push("https://cdn.jsdelivr.net/gh/00impera/GOLDCOINNFT@main/" + id + ".png");
+  urls.push("https://cdn.jsdelivr.net/gh/00impera/GOLDCOINNFT@main/" + id + ".jpg");
+
+  // 2. GitHub raw direct
+  if (name) {
     urls.push(GITHUB_RAW + id + "_" + name + ".png");
     urls.push(GITHUB_RAW + id + "_" + name + ".jpg");
   }
   urls.push(GITHUB_RAW + id + ".png");
   urls.push(GITHUB_RAW + id + ".jpg");
 
-  // 2. On-chain imageURI if available
+  // 3. On-chain imageURI
   if (d.imgURI && d.imgURI.startsWith("ipfs://")) {
     var hash = d.imgURI.slice(7);
-    // Only use gateways with known CORS support
     ["https://ipfs.io/ipfs/","https://dweb.link/ipfs/","https://w3s.link/ipfs/"].forEach(function(gw){
       urls.push(gw + hash);
     });
@@ -980,7 +987,7 @@ function buildIpfsUrls(id) {
     urls.push(d.imgURI);
   }
 
-  // 3. BASE_CID fallbacks (CORS-friendly gateways only)
+  // 4. BASE_CID fallbacks
   ["https://ipfs.io/ipfs/","https://dweb.link/ipfs/","https://w3s.link/ipfs/"].forEach(function(gw){
     urls.push(gw + BASE_CID + "/" + id + ".png");
     urls.push(gw + BASE_CID + "/" + id + ".jpg");
@@ -1125,10 +1132,10 @@ async function loadAll() {
 }
 
 // ═══════════════════════════════════════════
-// RENDER GRID — FIXED buy button event handling
+// RENDER GRID — createElement approach (no stale listeners)
 // ═══════════════════════════════════════════
 function renderGrid() {
-  var grid = document.getElementById("nft-grid");
+  var oldGrid = document.getElementById("nft-grid");
   var list = NFTS.filter(function(n){
     var d = cdata[n.id] || {};
     if (filt==="staked") return d.staked;
@@ -1137,7 +1144,16 @@ function renderGrid() {
     return true;
   });
 
-  if (!list.length) { grid.innerHTML='<div class="loader">No NFTs match filter.</div>'; return; }
+  // Build a brand-new grid element — zero stale listeners
+  var grid = document.createElement("div");
+  grid.id = "nft-grid";
+  grid.className = "nft-grid";
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="loader">No NFTs match filter.</div>';
+    oldGrid.parentNode.replaceChild(grid, oldGrid);
+    return;
+  }
 
   var fallbackPrice = basePriceWei || ethers.utils.parseEther(NFT_PRICE_ETH);
 
@@ -1182,11 +1198,10 @@ function renderGrid() {
     +'</div>';
   }).join("");
 
-  list.forEach(function(n){
-    var img = document.getElementById("img-"+n.id);
-    if (img && img.style.opacity !== "1") loadImgWithFallback(img, n.id);
-  });
+  // Swap into DOM FIRST so getElementById works for images
+  oldGrid.parentNode.replaceChild(grid, oldGrid);
 
+  // Touch vibrate on cards
   grid.querySelectorAll(".nft-card").forEach(function(c){
     c.addEventListener("touchstart", function(){
       c.classList.remove("vibrating");
@@ -1196,17 +1211,11 @@ function renderGrid() {
     }, {passive:true});
   });
 
-  // ── Event delegation — replace grid node to clear any stale listeners ──
-  var newGrid = grid.cloneNode(false);
-  newGrid.innerHTML = grid.innerHTML;
-  grid.parentNode.replaceChild(newGrid, grid);
-  grid = newGrid;
-
+  // ONE delegated click handler on the fresh grid
   grid.addEventListener("click", function(e) {
     var buyBtn = e.target.closest(".btn-buy.btn-avail");
     if (buyBtn) {
       e.stopPropagation();
-      // Ripple effect
       var rect = buyBtn.getBoundingClientRect();
       var ripple = document.createElement("span");
       var size = Math.max(buyBtn.offsetWidth, buyBtn.offsetHeight);
@@ -1225,6 +1234,12 @@ function renderGrid() {
       openModal(+card.dataset.id);
     }
   }, false);
+
+  // Load images after grid is live in DOM
+  list.forEach(function(n){
+    var img = document.getElementById("img-"+n.id);
+    if (img) loadImgWithFallback(img, n.id);
+  });
 
   setTimeout(applyFireClasses, 50);
 }
