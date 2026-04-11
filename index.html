@@ -1003,7 +1003,7 @@ async function loadImgWithFallback(imgEl, id) {
     var url = urls[i];
     imgEl.onload = null; imgEl.onerror = null;
     var loaded = await new Promise(function(resolve){
-      var timer = setTimeout(function(){ imgEl.onload=null; imgEl.onerror=null; resolve(false); }, 8000);
+      var timer = setTimeout(function(){ imgEl.onload=null; imgEl.onerror=null; resolve(false); }, 4000);
       imgEl.onload  = function(){ clearTimeout(timer); imgEl.onload=null; imgEl.onerror=null; resolve(true); };
       imgEl.onerror = function(){ clearTimeout(timer); imgEl.onload=null; imgEl.onerror=null; resolve(false); };
       imgEl.src = url;
@@ -1216,16 +1216,21 @@ function renderGrid() {
     var buyBtn = e.target.closest(".btn-buy.btn-avail");
     if (buyBtn) {
       e.stopPropagation();
-      var rect = buyBtn.getBoundingClientRect();
-      var ripple = document.createElement("span");
-      var size = Math.max(buyBtn.offsetWidth, buyBtn.offsetHeight);
-      ripple.className = "ripple";
-      ripple.style.width = ripple.style.height = size + "px";
-      ripple.style.left = (e.clientX - rect.left - size/2) + "px";
-      ripple.style.top  = (e.clientY - rect.top  - size/2) + "px";
-      buyBtn.appendChild(ripple);
-      setTimeout(function(){ if(ripple.parentNode) ripple.parentNode.removeChild(ripple); }, 600);
-      openModal(+buyBtn.dataset.id);
+      // Open modal immediately — no layout reads blocking the click
+      var nftId = +buyBtn.dataset.id;
+      openModal(nftId);
+      // Ripple is purely cosmetic — defer so it never blocks
+      requestAnimationFrame(function(){
+        var rect = buyBtn.getBoundingClientRect();
+        var ripple = document.createElement("span");
+        var size = Math.max(buyBtn.offsetWidth, buyBtn.offsetHeight);
+        ripple.className = "ripple";
+        ripple.style.width = ripple.style.height = size + "px";
+        ripple.style.left = (e.clientX - rect.left - size/2) + "px";
+        ripple.style.top  = (e.clientY - rect.top  - size/2) + "px";
+        buyBtn.appendChild(ripple);
+        setTimeout(function(){ if(ripple.parentNode) ripple.parentNode.removeChild(ripple); }, 600);
+      });
       return;
     }
     var card = e.target.closest(".nft-card");
@@ -1260,8 +1265,9 @@ function openModal(id) {
 
   var mi = document.getElementById("modal-img");
   mi.onload=null; mi.onerror=null;
-  mi.src=""; mi.style.display="block"; mi.style.opacity="0";
-  loadImgWithFallback(mi, id);
+  mi.src=""; mi.style.display="none"; mi.style.opacity="0";
+  // Fire-and-forget — never block the click handler
+  setTimeout(function(){ loadImgWithFallback(mi, id); }, 0);
 
   document.getElementById("modal-rows").innerHTML =
     '<div class="mrow"><span class="mk">Token ID</span><span class="mv">#'+id+'</span></div>'
@@ -1281,6 +1287,7 @@ function openModal(id) {
     buyBtn.textContent = "\u26A1 Buy \u00B7 " + monFmt(pw);
     buyBtn.disabled=false;
   }
+  // Show modal synchronously — nothing async before this point
   document.getElementById("modal-bg").classList.add("open");
 }
 
@@ -1351,10 +1358,16 @@ if (window.ethereum) {
 })();
 
 function applyFireClasses() {
-  document.querySelectorAll(".nft-card").forEach(function(c){
-    var id = +c.dataset.id;
-    for (var i=0;i<6;i++) c.classList.remove("fire-"+i);
-    c.classList.add("fire-"+(id%6));
+  // Use requestAnimationFrame to avoid forced reflow on main thread
+  requestAnimationFrame(function(){
+    document.querySelectorAll(".nft-card").forEach(function(c){
+      var id = +c.dataset.id;
+      var cls = "fire-"+(id%6);
+      if (!c.classList.contains(cls)) {
+        for (var i=0;i<6;i++) c.classList.remove("fire-"+i);
+        c.classList.add(cls);
+      }
+    });
   });
 }
 
