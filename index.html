@@ -201,7 +201,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .mcl{position:absolute;top:13px;right:14px;background:transparent;border:none;color:var(--text3);font-size:17px;cursor:pointer;transition:color .15s,transform .15s}
 .mcl:hover{color:var(--text);transform:rotate(90deg)}
 /* FIX: modal image uses display:block always; opacity handles visibility */
-.modal-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px;margin-bottom:14px;border:1px solid var(--border);display:block;opacity:0;transition:opacity .3s}
+.modal-img{width:100%;min-height:260px;max-height:380px;object-fit:cover;border-radius:11px;margin-bottom:14px;border:1px solid var(--border);display:block;opacity:0;transition:opacity .3s;background:var(--bg3)}
 .mrow{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);font-size:11px}
 .mrow:last-of-type{border:none}
 .mk{color:var(--text2);flex-shrink:0;margin-right:10px}
@@ -806,6 +806,8 @@ async function loadImgWithFallback(imgEl,id){
       /* Always show — opacity handles visibility */
       imgEl.style.display="block";
       imgEl.style.opacity="1";
+      /* Remove forced min-height once real image is loaded */
+      imgEl.style.minHeight="";
       return;
     }
   }
@@ -1060,12 +1062,12 @@ function openModal(id){
   }
   /* Show modal — this is the first and only synchronous DOM mutation */
   document.getElementById("modal-bg").classList.add("open");
-  document.body.style.overflow="hidden";
+  /* Do NOT hide body overflow — kills the scrollbar permanently on some browsers */
 }
 
 function closeModal(){
   document.getElementById("modal-bg").classList.remove("open");
-  document.body.style.overflow="";
+  document.body.style.overflow="";  /* restore just in case */
   var mi=document.getElementById("modal-img");
   mi.onload=null;mi.onerror=null;
   modalId=null;
