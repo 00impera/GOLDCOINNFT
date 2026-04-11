@@ -29,13 +29,20 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .p-blue{border-color:rgba(0,195,255,.5);color:var(--blue);background:rgba(0,195,255,.12)}
 .p-green{border-color:rgba(0,255,136,.5);color:var(--green);background:rgba(0,255,136,.12)}
 .p-orange{border-color:rgba(255,184,0,.4);color:var(--gold);background:rgba(255,184,0,.08)}
-#btn-connect{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;padding:8px 14px;border-radius:999px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--monad),#B060FF);color:#fff;box-shadow:0 0 18px rgba(131,110,249,.4);white-space:nowrap}
+#btn-connect{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;padding:8px 14px;border-radius:999px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--monad),#B060FF);color:#fff;box-shadow:0 0 18px rgba(131,110,249,.4);white-space:nowrap;transition:transform .15s,filter .15s}
+#btn-connect:hover{filter:brightness(1.15);transform:scale(1.04)}
 .wbar{display:flex;flex-wrap:wrap;gap:8px;padding:10px 18px;border-bottom:1px solid var(--border);background:rgba(5,5,12,.96);position:sticky;top:53px;z-index:9;backdrop-filter:blur(14px)}
-.wb{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:6px 11px;border-radius:999px;border:1px solid var(--border2);background:rgba(10,10,20,.9);color:var(--text2);cursor:pointer;letter-spacing:.3px;white-space:nowrap}
+.wb{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:6px 11px;border-radius:999px;border:1px solid var(--border2);background:rgba(10,10,20,.9);color:var(--text2);cursor:pointer;letter-spacing:.3px;white-space:nowrap;transition:transform .15s,filter .15s,background .15s,border-color .15s}
+.wb:hover{transform:scale(1.07);filter:brightness(1.2)}
+.wb:active{transform:scale(0.95)}
 .wb-near{border-color:rgba(0,195,255,.4);color:var(--blue)}
+.wb-near:hover{background:rgba(0,195,255,.12);border-color:var(--blue)}
 .wb-reown{border-color:rgba(131,110,249,.4);color:var(--monad-l)}
+.wb-reown:hover{background:rgba(131,110,249,.15);border-color:var(--monad)}
 .wb-mon{border-color:rgba(0,255,136,.4);color:var(--green)}
+.wb-mon:hover{background:rgba(0,255,136,.1);border-color:var(--green)}
 .wb-out{border-color:var(--border2);color:var(--text3)}
+.wb-out:hover{background:rgba(255,255,255,.05);border-color:var(--text3);color:var(--text)}
 .wsep{width:1px;height:22px;background:var(--border2);flex-shrink:0;align-self:center}
 /* MODALS */
 #reown-modal-bg,#near-modal-bg{display:none;position:fixed;inset:0;backdrop-filter:blur(10px);z-index:500;align-items:center;justify-content:center;padding:16px}
@@ -49,22 +56,22 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .rw-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;padding:3px 9px;border-radius:20px;background:rgba(131,110,249,.12);color:var(--monad-l);border:1px solid rgba(131,110,249,.25);margin-bottom:16px;letter-spacing:.5px}
 .wallet-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
 .wallet-opt{display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .18s;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--text2);text-align:center}
-.wallet-opt:hover{border-color:var(--monad);color:var(--text);transform:translateY(-2px);box-shadow:0 4px 16px rgba(131,110,249,.2)}
+.wallet-opt:hover{border-color:var(--monad);color:var(--text);transform:translateY(-2px) scale(1.04);box-shadow:0 4px 16px rgba(131,110,249,.2)}
+.wallet-opt:active{transform:scale(0.97)}
 .wallet-opt .wico{font-size:26px;line-height:1}
 .wallet-opt .wnm{font-size:9px;letter-spacing:.3px}
-.modal-close{position:absolute;top:13px;right:14px;background:transparent;border:none;color:var(--text3);font-size:17px;cursor:pointer}
-.modal-close:hover{color:var(--text)}
+.modal-close{position:absolute;top:13px;right:14px;background:transparent;border:none;color:var(--text3);font-size:17px;cursor:pointer;transition:color .15s,transform .15s}
+.modal-close:hover{color:var(--text);transform:rotate(90deg)}
 .rw-divider,.near-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--text3);font-size:10px}
 .rw-divider::before,.rw-divider::after,.near-divider::before,.near-divider::after{content:'';flex:1;height:1px;background:var(--border)}
 .rw-manual,.near-manual{width:100%;display:flex;gap:8px;margin-top:4px}
-.rw-manual input,.near-manual input{flex:1;min-width:0;padding:9px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Space Mono',monospace;font-size:11px;outline:none}
-.rw-manual input:focus{border-color:var(--monad-l)}
-.near-manual input:focus{border-color:var(--blue)}
+.rw-manual input,.near-manual input{flex:1;min-width:0;padding:9px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Space Mono',monospace;font-size:11px;outline:none;transition:border-color .15s}
+.rw-manual input:focus,.near-manual input:focus{border-color:var(--monad-l)}
 .rw-manual input::placeholder,.near-manual input::placeholder{color:var(--text3)}
-.rw-manual button{padding:9px 14px;background:rgba(131,110,249,.15);color:var(--monad-l);border:1px solid rgba(131,110,249,.3);border-radius:8px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;white-space:nowrap}
-.rw-manual button:hover{background:rgba(131,110,249,.28)}
-.near-manual button{padding:9px 14px;background:rgba(0,195,255,.15);color:var(--blue);border:1px solid rgba(0,195,255,.3);border-radius:8px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;white-space:nowrap}
-.near-manual button:hover{background:rgba(0,195,255,.25)}
+.rw-manual button{padding:9px 14px;background:rgba(131,110,249,.15);color:var(--monad-l);border:1px solid rgba(131,110,249,.3);border-radius:8px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;white-space:nowrap;transition:background .15s,transform .15s}
+.rw-manual button:hover{background:rgba(131,110,249,.28);transform:scale(1.04)}
+.near-manual button{padding:9px 14px;background:rgba(0,195,255,.15);color:var(--blue);border:1px solid rgba(0,195,255,.3);border-radius:8px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;white-space:nowrap;transition:background .15s,transform .15s}
+.near-manual button:hover{background:rgba(0,195,255,.25);transform:scale(1.04)}
 .wc-qr-area{text-align:center;padding:16px;background:var(--bg3);border-radius:12px;border:1px solid var(--border);margin-top:10px}
 .wc-qr-area p{font-size:10px;color:var(--text3);margin-bottom:10px}
 .wc-uri-box{font-size:8px;word-break:break-all;color:var(--monad-l);background:var(--bg);padding:8px;border-radius:6px;border:1px solid var(--border2);cursor:pointer}
@@ -74,7 +81,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .near-modal h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px}
 .near-modal p{font-size:10px;color:var(--text3);margin-bottom:20px}
 .near-wallet-btn{width:100%;display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:11px;cursor:pointer;transition:all .18s;margin-bottom:10px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--text)}
-.near-wallet-btn:hover{border-color:var(--blue);background:rgba(0,195,255,.06);transform:translateX(3px)}
+.near-wallet-btn:hover{border-color:var(--blue);background:rgba(0,195,255,.06);transform:translateX(4px) scale(1.01)}
+.near-wallet-btn:active{transform:scale(0.97)}
 .near-wallet-btn .wico2{font-size:22px;width:32px;text-align:center}
 .near-wallet-btn .wname{flex:1;text-align:left}
 .near-wallet-btn .warr{color:var(--text3);font-size:14px}
@@ -84,7 +92,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .hero h1{font-family:'Syne',sans-serif;font-size:clamp(26px,6vw,56px);font-weight:900;line-height:1.1;margin-bottom:12px}
 .g1{background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .g2{background:linear-gradient(135deg,var(--monad-l),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:12px;color:var(--text2);max-width:500px;margin:0 auto 32px;line-height:1.9}
 .hchips{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
 .hchip .hv{font-family:'Syne',sans-serif;font-size:28px;font-weight:900;color:var(--monad-l);filter:drop-shadow(0 0 8px rgba(131,110,249,.45))}
 .hchip .hl{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
@@ -93,9 +100,11 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .sec-title .h{color:var(--monad-l)}
 .filter-bar{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:22px;padding:0 16px;position:relative;z-index:1}
 .fbtn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:6px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;letter-spacing:.4px}
-.fbtn:hover,.fbtn.active{background:var(--monad);color:#fff;border-color:var(--monad)}
-#search-box{font-family:'Space Mono',monospace;font-size:11px;padding:7px 13px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:20px;outline:none;width:190px}
-#search-box:focus{border-color:var(--monad)}
+.fbtn:hover{background:rgba(131,110,249,.15);color:var(--monad-l);border-color:var(--monad);transform:scale(1.06)}
+.fbtn:active{transform:scale(0.96)}
+.fbtn.active{background:var(--monad);color:#fff;border-color:var(--monad)}
+#search-box{font-family:'Space Mono',monospace;font-size:11px;padding:7px 13px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:20px;outline:none;width:190px;transition:border-color .15s,box-shadow .15s}
+#search-box:focus{border-color:var(--monad);box-shadow:0 0 0 3px rgba(131,110,249,.15)}
 #search-box::placeholder{color:var(--text3)}
 /* GRID */
 .nft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;padding:0 16px 20px;position:relative;z-index:1;max-width:1400px;margin:0 auto}
@@ -104,6 +113,18 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .nft-card:hover{transform:translateY(-7px) scale(1.022);border-color:var(--monad);box-shadow:0 0 28px rgba(131,110,249,.28),0 18px 36px rgba(0,0,0,.45)}
 .nft-card:hover .nft-glow{opacity:1}
 .nft-card:hover .nft-img{transform:scale(1.07)}
+/* VIBRATE ON TOUCH */
+@keyframes vibrate{
+  0%{transform:translate(0,0) rotate(0deg)}
+  15%{transform:translate(-2px,1px) rotate(-1deg)}
+  30%{transform:translate(2px,-1px) rotate(1deg)}
+  45%{transform:translate(-1px,2px) rotate(-.5deg)}
+  60%{transform:translate(1px,-2px) rotate(.5deg)}
+  75%{transform:translate(-2px,1px) rotate(-1deg)}
+  90%{transform:translate(2px,1px) rotate(1deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+.nft-card.vibrating{animation:vibrate .4s ease-in-out}
 .nft-card:hover .btn-buy{animation:vibe .16s linear infinite}
 @keyframes vibe{0%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(-1px,-2px)}60%{transform:translate(2px,1px)}80%{transform:translate(1px,-1px)}100%{transform:translate(0)}}
 .nft-glow{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(131,110,249,.16),transparent);opacity:0;transition:opacity .3s;pointer-events:none}
@@ -132,9 +153,13 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .price-label{font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
 .price-mon{font-family:'Syne',sans-serif;font-size:14px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 5px rgba(255,184,0,.35))}
 .price-usd{font-size:9px;color:var(--text3);text-align:right}
-.btn-buy{width:100%;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;padding:11px;border-radius:9px;border:none;cursor:pointer;transition:filter .2s;letter-spacing:.4px}
+/* BUY BUTTON — enhanced */
+.btn-buy{width:100%;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;padding:11px;border-radius:9px;border:none;cursor:pointer;transition:transform .18s,filter .18s,box-shadow .18s;letter-spacing:.4px;position:relative;overflow:hidden}
 .btn-avail{background:linear-gradient(135deg,var(--monad),#B060FF);color:#fff;box-shadow:0 0 14px rgba(131,110,249,.3)}
-.btn-avail:hover{filter:brightness(1.12)}
+.btn-avail::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);opacity:0;transition:opacity .2s}
+.btn-avail:hover{filter:brightness(1.18);transform:scale(1.03);box-shadow:0 0 24px rgba(131,110,249,.55)}
+.btn-avail:hover::before{opacity:1}
+.btn-avail:active{transform:scale(0.97)}
 .btn-staked{background:rgba(255,255,255,.04);color:var(--text3);border:1px solid var(--border);cursor:not-allowed}
 /* TOAST */
 #toast{position:fixed;bottom:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:6px;max-width:320px;pointer-events:none}
@@ -151,18 +176,19 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--monad),var(--teal),transparent);border-radius:18px 18px 0 0}
 .modal h2{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:3px}
 .modal-sub{font-size:10px;color:var(--text2);margin-bottom:14px}
-.mcl{position:absolute;top:13px;right:14px;background:transparent;border:none;color:var(--text3);font-size:17px;cursor:pointer}
-.mcl:hover{color:var(--text)}
+.mcl{position:absolute;top:13px;right:14px;background:transparent;border:none;color:var(--text3);font-size:17px;cursor:pointer;transition:color .15s,transform .15s}
+.mcl:hover{color:var(--text);transform:rotate(90deg)}
 .modal-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px;margin-bottom:14px;border:1px solid var(--border)}
 .mrow{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);font-size:11px}
 .mrow:last-of-type{border:none}
 .mk{color:var(--text2);flex-shrink:0;margin-right:10px}
 .mv{color:var(--text);text-align:right;word-break:break-all;max-width:230px}
 .mbtns{display:flex;gap:8px;margin-top:16px}
-#modal-buy{flex:1;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;padding:12px;background:linear-gradient(135deg,var(--monad),#B060FF);color:#fff;border:none;border-radius:10px;cursor:pointer;transition:filter .2s;box-shadow:0 0 14px rgba(131,110,249,.28)}
-#modal-buy:hover{filter:brightness(1.12)}
-#modal-cancel{font-family:'Space Mono',monospace;font-size:10px;padding:12px 14px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;cursor:pointer}
-#modal-cancel:hover{border-color:var(--monad);color:var(--monad-l)}
+#modal-buy{flex:1;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;padding:12px;background:linear-gradient(135deg,var(--monad),#B060FF);color:#fff;border:none;border-radius:10px;cursor:pointer;transition:filter .2s,transform .15s;box-shadow:0 0 14px rgba(131,110,249,.28)}
+#modal-buy:hover{filter:brightness(1.12);transform:scale(1.03)}
+#modal-buy:active{transform:scale(0.97)}
+#modal-cancel{font-family:'Space Mono',monospace;font-size:10px;padding:12px 14px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:border-color .15s,color .15s,transform .15s}
+#modal-cancel:hover{border-color:var(--monad);color:var(--monad-l);transform:scale(1.03)}
 /* FOOTER */
 footer{margin-top:56px;background:var(--bg2);border-top:1px solid var(--border);padding:38px 20px;position:relative;z-index:1}
 footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--monad),var(--teal),transparent)}
@@ -171,7 +197,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .ftag{font-size:10px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px}
 .flinks{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}
 .fl{display:inline-flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;padding:9px 16px;border-radius:9px;text-decoration:none;transition:all .2s;letter-spacing:.3px;white-space:nowrap}
-.fl:hover{transform:translateY(-2px)}
+.fl:hover{transform:translateY(-3px) scale(1.04)}
+.fl:active{transform:scale(0.97)}
 .fl-tg{background:rgba(38,165,228,.12);color:#29B6F6;border:1px solid rgba(38,165,228,.28)}
 .fl-tg:hover{background:rgba(38,165,228,.22)}
 .fl-mini{background:rgba(38,165,228,.1);color:#4FC3F7;border:1px solid rgba(38,165,228,.22)}
@@ -268,12 +295,11 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
   </div>
 </div>
 
-<!-- HERO -->
+<!-- HERO — no subtitle, no stats description -->
 <section class="hero">
   <h1><span class="g1">GoldCoins</span><br><span class="g2">NFT Collection</span></h1>
-  <p class="hero-sub">79 unique on-chain NFTs on Monad Mainnet. Live oracle pricing, staking rewards, and upgradeable stats powered by MOTO token.</p>
   <div class="hchips">
-    <div class="hchip"><div class="hv">79</div><div class="hl">Total NFTs</div></div>
+    <div class="hchip"><div class="hv" id="hv-count">82</div><div class="hl">Total NFTs</div></div>
     <div class="hchip"><div class="hv" id="hv-price">…</div><div class="hl">Base Price</div></div>
     <div class="hchip"><div class="hv" id="hv-oracle">…</div><div class="hl">MON / USD</div></div>
     <div class="hchip"><div class="hv" id="hv-loaded">0</div><div class="hl">Loaded</div></div>
@@ -336,9 +362,6 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <script>
-// ─────────────────────────────────────────────
-// CONFIG ON-CHAIN
-// ─────────────────────────────────────────────
 const CONTRACT      = "0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948";
 const ORACLE        = "0x723d62bef5eeb3f0d2255e5cab6ae763c59ca0e6";
 const OWNER_ADDR    = "0x592B35c8917eD36c39Ef73D0F5e92B0173560b2e";
@@ -347,12 +370,8 @@ const RPC           = "https://rpc.monad.xyz";
 const DRPC          = "https://monad-mainnet.drpc.org";
 const REOWN_PID     = "83764e5a442fd38d9827e3302a37517a";
 const NFT_PRICE_ETH = "1.0";
+const BASE_CID      = "Qma9ayc43qUbrfAaZFYhD47Dgi5ZwVjFw94gG7RvWQUJhT";
 
-// baseURI on-chain:
-// ipfs://Qma9ayc43qUbrfAaZFYhD47Dgi5ZwVjFw94gG7RvWQUJhT/
-const BASE_CID = "Qma9ayc43qUbrfAaZFYhD47Dgi5ZwVjFw94gG7RvWQUJhT";
-
-// IPFS gateways (fără Cloudflare, care e instabil)
 const GATEWAYS = [
   "https://ipfs.io/ipfs/",
   "https://dweb.link/ipfs/",
@@ -364,9 +383,6 @@ const GATEWAYS = [
 
 const RARITY = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
 
-// ─────────────────────────────────────────────
-// ABI — extras din contractul real
-// ─────────────────────────────────────────────
 const ABI = [
   "function mint(address to,uint256 tokenId) external",
   "function ownerOf(uint256 tokenId) view returns (address)",
@@ -381,269 +397,217 @@ const ABI = [
   "function tokenURI(uint256 tokenId) view returns (string)",
 ];
 
-// ─────────────────────────────────────────────
-// NFTS — mapare ID → nume, aliniat cu on-chain
-// (fără #46, #47, #49 care dau revert în check_nfts)
-// ─────────────────────────────────────────────
 const NFTS = [
-  {id:0,  name:"AureusPrime"},            {id:1,  name:"SolarisCrown"},
-  {id:2,  name:"ImperialDragonGold"},     {id:3,  name:"CelestialPhoenix"},
-  {id:4,  name:"TitaniumSunDisc"},        {id:5,  name:"EternalMonarchSeal"},
-  {id:6,  name:"NebulaGoldCore"},         {id:7,  name:"RoyalGriffinMedallion"},
-  {id:8,  name:"ObsidianGoldRelic"},      {id:9,  name:"AstralEmperor"},
-  {id:10, name:"LionheartSovereign"},     {id:11, name:"GoldenSerpentCrest"},
-  {id:12, name:"StormforgeHalo"},         {id:13, name:"OracleSunstone"},
-  {id:14, name:"EclipseCrown"},           {id:15, name:"LeviathanScale"},
-  {id:16, name:"ArchonSigil"},            {id:17, name:"PrimevalSunRelic"},
-  {id:18, name:"AuroraKingsCrest"},       {id:19, name:"InfinityGoldNexus"},
-  {id:20, name:"AnubisSolarMark"},        {id:21, name:"HorusGoldenEye"},
-  {id:22, name:"IsisMoonCrest"},          {id:23, name:"RaSunForge"},
-  {id:24, name:"SekhmetLionEmblem"},      {id:25, name:"ThothWisdomSeal"},
-  {id:26, name:"OsirisEternalCrown"},     {id:27, name:"BastetNightGold"},
-  {id:28, name:"SobekRiverCoin"},         {id:29, name:"AmunPrimeDisc"},
-  {id:30, name:"JupiterImperium"},        {id:31, name:"MarsWarCrest"},
-  {id:32, name:"VenusGoldenBloom"},       {id:33, name:"NeptuneDeepSeal"},
-  {id:34, name:"PlutoShadowMark"},        {id:35, name:"MercuryWingedCoin"},
-  {id:36, name:"MinervaWisdomHalo"},      {id:37, name:"ApolloSunStrike"},
-  {id:38, name:"DianaMoonSigil"},         {id:39, name:"JunoRoyalEmblem"},
-  {id:40, name:"ZeusThunderCrown"},       {id:41, name:"HeraGoldenThrone"},
-  {id:42, name:"PoseidonSeaCore"},        {id:43, name:"AthenaWarSigil"},
-  {id:44, name:"AresIronSun"},            {id:45, name:"HephaestusForgeCoin"},
-  // 46,47,49 nu sunt mintate
-  {id:48, name:"HadesUnderworldGold"},
-  {id:50, name:"DacianWolfGold"},         {id:51, name:"ZalmoxisSacredSeal"},
-  {id:52, name:"DecebalusIronCrown"},     {id:53, name:"DracoDacorum"},
-  {id:54, name:"CarpatiSunRelic"},        {id:55, name:"TransylvanianMoonMark"},
-  {id:56, name:"GetaeGoldenSpirit"},      {id:57, name:"DanubianSunCore"},
-  {id:58, name:"RomanianEagleCrest"},     {id:59, name:"ValhallaStormCoin"},
-  {id:60, name:"OdinAllfatherMark"},      {id:61, name:"ThorThunderSigil"},
-  {id:62, name:"FreyaGoldenBloom"},       {id:63, name:"LokiShadowCrest"},
-  {id:64, name:"TyrWarEmblem"},           {id:65, name:"HeimdallLightHalo"},
-  {id:66, name:"FenrirIronFang"},         {id:67, name:"JormungandrSeaRing"},
-  {id:68, name:"KrakenDeepGold"},         {id:69, name:"LeviathanAbyssCore"},
-  {id:70, name:"PirateKingsGold"},        {id:71, name:"BlackSailCrown"},
-  {id:72, name:"SeaReaverMedallion"},     {id:73, name:"StormCorsairCoin"},
-  {id:74, name:"GhostCaptainMark"},       {id:75, name:"RogueMarinerSeal"},
-  {id:76, name:"SkullHarborGold"},        {id:77, name:"AncientCorsairRelic"},
-  {id:78, name:"ForbiddenTreasureCore"},  {id:79, name:"ShadowNavigatorCoin"},
-  {id:80, name:"EternalVoyagerMark"},     {id:81, name:"ObscuraSunNexus"},
+  {id:0,name:"AureusPrime"},{id:1,name:"SolarisCrown"},
+  {id:2,name:"ImperialDragonGold"},{id:3,name:"CelestialPhoenix"},
+  {id:4,name:"TitaniumSunDisc"},{id:5,name:"EternalMonarchSeal"},
+  {id:6,name:"NebulaGoldCore"},{id:7,name:"RoyalGriffinMedallion"},
+  {id:8,name:"ObsidianGoldRelic"},{id:9,name:"AstralEmperor"},
+  {id:10,name:"LionheartSovereign"},{id:11,name:"GoldenSerpentCrest"},
+  {id:12,name:"StormforgeHalo"},{id:13,name:"OracleSunstone"},
+  {id:14,name:"EclipseCrown"},{id:15,name:"LeviathanScale"},
+  {id:16,name:"ArchonSigil"},{id:17,name:"PrimevalSunRelic"},
+  {id:18,name:"AuroraKingsCrest"},{id:19,name:"InfinityGoldNexus"},
+  {id:20,name:"AnubisSolarMark"},{id:21,name:"HorusGoldenEye"},
+  {id:22,name:"IsisMoonCrest"},{id:23,name:"RaSunForge"},
+  {id:24,name:"SekhmetLionEmblem"},{id:25,name:"ThothWisdomSeal"},
+  {id:26,name:"OsirisEternalCrown"},{id:27,name:"BastetNightGold"},
+  {id:28,name:"SobekRiverCoin"},{id:29,name:"AmunPrimeDisc"},
+  {id:30,name:"JupiterImperium"},{id:31,name:"MarsWarCrest"},
+  {id:32,name:"VenusGoldenBloom"},{id:33,name:"NeptuneDeepSeal"},
+  {id:34,name:"PlutoShadowMark"},{id:35,name:"MercuryWingedCoin"},
+  {id:36,name:"MinervaWisdomHalo"},{id:37,name:"ApolloSunStrike"},
+  {id:38,name:"DianaMoonSigil"},{id:39,name:"JunoRoyalEmblem"},
+  {id:40,name:"ZeusThunderCrown"},{id:41,name:"HeraGoldenThrone"},
+  {id:42,name:"PoseidonSeaCore"},{id:43,name:"AthenaWarSigil"},
+  {id:44,name:"AresIronSun"},{id:45,name:"HephaestusForgeCoin"},
+  {id:48,name:"HadesUnderworldGold"},
+  {id:50,name:"DacianWolfGold"},{id:51,name:"ZalmoxisSacredSeal"},
+  {id:52,name:"DecebalusIronCrown"},{id:53,name:"DracoDacorum"},
+  {id:54,name:"CarpatiSunRelic"},{id:55,name:"TransylvanianMoonMark"},
+  {id:56,name:"GetaeGoldenSpirit"},{id:57,name:"DanubianSunCore"},
+  {id:58,name:"RomanianEagleCrest"},{id:59,name:"ValhallaStormCoin"},
+  {id:60,name:"OdinAllfatherMark"},{id:61,name:"ThorThunderSigil"},
+  {id:62,name:"FreyaGoldenBloom"},{id:63,name:"LokiShadowCrest"},
+  {id:64,name:"TyrWarEmblem"},{id:65,name:"HeimdallLightHalo"},
+  {id:66,name:"FenrirIronFang"},{id:67,name:"JormungandrSeaRing"},
+  {id:68,name:"KrakenDeepGold"},{id:69,name:"LeviathanAbyssCore"},
+  {id:70,name:"PirateKingsGold"},{id:71,name:"BlackSailCrown"},
+  {id:72,name:"SeaReaverMedallion"},{id:73,name:"StormCorsairCoin"},
+  {id:74,name:"GhostCaptainMark"},{id:75,name:"RogueMarinerSeal"},
+  {id:76,name:"SkullHarborGold"},{id:77,name:"AncientCorsairRelic"},
+  {id:78,name:"ForbiddenTreasureCore"},{id:79,name:"ShadowNavigatorCoin"},
+  {id:80,name:"EternalVoyagerMark"},{id:81,name:"ObscuraSunNexus"},
 ];
 
-// ─── STATE ───────────────────────────────────────────
-let provider=null, signer=null, userAddr=null, chainId=null;
-let nearAcc=null, oracleUSD=null, basePriceWei=null;
-let cdata={}, filt="all", srch="", modalId=null, wcUri=null;
+let provider=null,signer=null,userAddr=null,chainId=null;
+let nearAcc=null,oracleUSD=null,basePriceWei=null;
+let cdata={},filt="all",srch="",modalId=null,wcUri=null;
 
-// ═══════════════════════════════════════════════════════
-// FIX 4: IMAGE LOADING — simplificat, fără probe cache
-// Folosește direct BASE_CID din contract, fallback la coinImageURI
-// ═══════════════════════════════════════════════════════
 function buildIpfsUrls(id) {
-  const urls = [];
-  const d = cdata[id] || {};
-
-  // Prima prioritate: coin imageURI din contract (dacă e IPFS)
-  if (d.imgURI && d.imgURI.startsWith("ipfs://")) {
-    const hash = d.imgURI.slice(7);
-    GATEWAYS.forEach(gw => urls.push(gw + hash));
-  } else if (d.imgURI && d.imgURI.startsWith("http")) {
+  const urls=[];
+  const d=cdata[id]||{};
+  if(d.imgURI&&d.imgURI.startsWith("ipfs://")){
+    const hash=d.imgURI.slice(7);
+    GATEWAYS.forEach(gw=>urls.push(gw+hash));
+  } else if(d.imgURI&&d.imgURI.startsWith("http")){
     urls.push(d.imgURI);
   }
-
-  // A doua prioritate: baseURI/id.png (structura standard ERC-721)
-  GATEWAYS.forEach(gw => {
+  GATEWAYS.forEach(gw=>{
     urls.push(`${gw}${BASE_CID}/${id}.png`);
-    urls.push(`${gw}${BASE_CID}/${id}`);        // fără extensie
+    urls.push(`${gw}${BASE_CID}/${id}`);
     urls.push(`${gw}${BASE_CID}/${id}.jpg`);
   });
-
   return [...new Set(urls)];
 }
 
-async function loadImgWithFallback(imgEl, id) {
-  const urls = buildIpfsUrls(id);
-  const isModal = (imgEl.id === "modal-img");
-
-  for (const url of urls) {
-    // Curăță handler-ele vechi înainte de fiecare încercare
-    imgEl.onload  = null;
-    imgEl.onerror = null;
-
-    const loaded = await new Promise(resolve => {
-      const timer = setTimeout(() => {
-        imgEl.onload = null; imgEl.onerror = null;
-        resolve(false);
-      }, 8000);
-      imgEl.onload  = () => { clearTimeout(timer); imgEl.onload = null; imgEl.onerror = null; resolve(true); };
-      imgEl.onerror = () => { clearTimeout(timer); imgEl.onload = null; imgEl.onerror = null; resolve(false); };
-      imgEl.src = url;
+async function loadImgWithFallback(imgEl,id) {
+  const urls=buildIpfsUrls(id);
+  const isModal=(imgEl.id==="modal-img");
+  for(const url of urls){
+    imgEl.onload=null; imgEl.onerror=null;
+    const loaded=await new Promise(resolve=>{
+      const timer=setTimeout(()=>{imgEl.onload=null;imgEl.onerror=null;resolve(false);},8000);
+      imgEl.onload=()=>{clearTimeout(timer);imgEl.onload=null;imgEl.onerror=null;resolve(true);};
+      imgEl.onerror=()=>{clearTimeout(timer);imgEl.onload=null;imgEl.onerror=null;resolve(false);};
+      imgEl.src=url;
     });
-
-    if (loaded) {
-      // Elimină spinner-ul
-      const spinner = document.getElementById("il-" + id);
-      if (spinner) spinner.remove();
-      imgEl.style.opacity = "1";
-      if (isModal) imgEl.style.display = "block";
+    if(loaded){
+      const spinner=document.getElementById("il-"+id);
+      if(spinner)spinner.remove();
+      imgEl.style.opacity="1";
+      if(isModal)imgEl.style.display="block";
       return;
     }
   }
-
-  // Toate gateway-urile au eșuat — afișează placeholder
-  const spinner = document.getElementById("il-" + id);
-  if (spinner) spinner.remove();
-
-  if (isModal) {
-    imgEl.style.display = "none";
+  const spinner=document.getElementById("il-"+id);
+  if(spinner)spinner.remove();
+  if(isModal){
+    imgEl.style.display="none";
   } else {
-    try {
-      const ph = document.createElement("div");
-      ph.className = "nft-ph";
-      ph.textContent = "◈🪙";
-      if (imgEl.parentNode) imgEl.parentNode.replaceChild(ph, imgEl);
-    } catch(e) {}
+    try{
+      const ph=document.createElement("div");
+      ph.className="nft-ph"; ph.textContent="◈🪙";
+      if(imgEl.parentNode)imgEl.parentNode.replaceChild(ph,imgEl);
+    }catch(e){}
   }
 }
 
-// ─── TOAST ───────────────────────────────────────────
-function toast(msg, t="inf") {
-  const el = document.createElement("div");
-  el.className = "ti t" + t;
-  el.textContent = msg;
+function toast(msg,t="inf"){
+  const el=document.createElement("div");
+  el.className="ti t"+t; el.textContent=msg;
   document.getElementById("toast").appendChild(el);
-  setTimeout(() => el.remove(), 5000);
+  setTimeout(()=>el.remove(),5000);
 }
 
-// ─── FORMAT ──────────────────────────────────────────
-function monFmt(w) {
-  if (!w) return "—";
-  try {
-    const m = parseFloat(ethers.utils.formatEther(w));
-    return m < 0.0001 ? w.toString() + " wei" : m.toFixed(4) + " MON";
-  } catch(e) { return "—"; }
+function monFmt(w){
+  if(!w)return"—";
+  try{
+    const m=parseFloat(ethers.utils.formatEther(w));
+    return m<0.0001?w.toString()+" wei":m.toFixed(4)+" MON";
+  }catch(e){return"—";}
 }
-function usdFmt(w) {
-  if (!w || !oracleUSD) return "";
-  try {
-    return "≈ $" + (parseFloat(ethers.utils.formatEther(w)) * oracleUSD).toFixed(2);
-  } catch(e) { return ""; }
+function usdFmt(w){
+  if(!w||!oracleUSD)return"";
+  try{return"≈ $"+(parseFloat(ethers.utils.formatEther(w))*oracleUSD).toFixed(2);}
+  catch(e){return"";}
 }
-
-// FIX 5: Helper sigur pentru BigNumber zero-check
-function isZeroBN(val) {
-  if (!val) return true;
-  try { return val.isZero(); } catch(e) { return true; }
+function isZeroBN(val){
+  if(!val)return true;
+  try{return val.isZero();}catch(e){return true;}
 }
 
-// ─── ORACLE & BASE PRICE ─────────────────────────────
-async function loadOracle() {
-  try {
-    const r = await fetch(DRPC, {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_call",params:[{to:ORACLE,data:"0x50d25bcd"},"latest"]})
-    }).then(x => x.json());
-    if (!r.result || r.result === "0x" || r.result === "0x0") return;
-    const p = parseInt(r.result, 16);
-    if (!isNaN(p) && p > 0) {
-      oracleUSD = p / 1e8;
-      const s = "$" + oracleUSD.toFixed(2);
-      document.getElementById("pill-oracle").textContent = "MON " + s;
-      document.getElementById("hv-oracle").textContent = s;
+async function loadOracle(){
+  try{
+    const r=await fetch(DRPC,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_call",params:[{to:ORACLE,data:"0x50d25bcd"},"latest"]})
+    }).then(x=>x.json());
+    if(!r.result||r.result==="0x"||r.result==="0x0")return;
+    const p=parseInt(r.result,16);
+    if(!isNaN(p)&&p>0){
+      oracleUSD=p/1e8;
+      const s="$"+oracleUSD.toFixed(2);
+      document.getElementById("pill-oracle").textContent="MON "+s;
+      document.getElementById("hv-oracle").textContent=s;
     }
-  } catch(e) {}
+  }catch(e){}
 }
 
-async function loadBase() {
-  try {
-    const rp = new ethers.providers.JsonRpcProvider(RPC);
-    basePriceWei = await new ethers.Contract(CONTRACT, ABI, rp).basePrice();
-    document.getElementById("hv-price").textContent = monFmt(basePriceWei);
-  } catch(e) {}
+async function loadBase(){
+  try{
+    const rp=new ethers.providers.JsonRpcProvider(RPC);
+    basePriceWei=await new ethers.Contract(CONTRACT,ABI,rp).basePrice();
+    document.getElementById("hv-price").textContent=monFmt(basePriceWei);
+  }catch(e){}
 }
 
-// ─── LOAD NFTs ───────────────────────────────────────
-async function loadAll() {
-  document.getElementById("nft-grid").innerHTML =
-    '<div class="loader"><div class="spinner"></div>Scanning ' + NFTS.length + ' NFTs from Monad…</div>';
-  const rp = new ethers.providers.JsonRpcProvider(RPC);
-  const rc = new ethers.Contract(CONTRACT, ABI, rp);
-  let loaded = 0;
-  const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function loadAll(){
+  document.getElementById("nft-grid").innerHTML=
+    '<div class="loader"><div class="spinner"></div>Scanning '+NFTS.length+' NFTs from Monad…</div>';
+  const rp=new ethers.providers.JsonRpcProvider(RPC);
+  const rc=new ethers.Contract(CONTRACT,ABI,rp);
+  let loaded=0;
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-  for (let s = 0; s < NFTS.length; s += 5) {
-    await Promise.allSettled(NFTS.slice(s, s+5).map(async n => {
-      try {
-        const [own, st, lr, stk, lp, rar, pow, co] = await Promise.all([
-          rc.ownerOf(n.id).catch(() => null),
-          rc.stats(n.id).catch(() => null),
-          rc.lore(n.id).catch(() => ""),
-          rc.staked(n.id).catch(() => false),
-          rc.livePrice(n.id).catch(() => null),
-          rc.rarity(n.id).catch(() => 0),
-          rc.power(n.id).catch(() => 0),
-          rc.coins(n.id).catch(() => null),
+  for(let s=0;s<NFTS.length;s+=5){
+    await Promise.allSettled(NFTS.slice(s,s+5).map(async n=>{
+      try{
+        const [own,st,lr,stk,lp,rar,pow,co]=await Promise.all([
+          rc.ownerOf(n.id).catch(()=>null),
+          rc.stats(n.id).catch(()=>null),
+          rc.lore(n.id).catch(()=>""),
+          rc.staked(n.id).catch(()=>false),
+          rc.livePrice(n.id).catch(()=>null),
+          rc.rarity(n.id).catch(()=>0),
+          rc.power(n.id).catch(()=>0),
+          rc.coins(n.id).catch(()=>null),
         ]);
-        cdata[n.id] = {
-          id: n.id,
-          owner: own,
-          atk:   st ? Number(st.attack)  : 0,
-          def:   st ? Number(st.defense) : 0,
-          spd:   st ? Number(st.speed)   : 0,
-          lore:  lr || "",
-          staked: !!stk,
-          livePrice: lp,
-          rarity: Number(rar),
-          power:  Number(pow),
-          coinName: co ? co.name : "",
-          imgURI:   co ? co.imageURI : "",
-          isMinted:    !!own,
-          isOwnerNFT:  own && own.toLowerCase() === OWNER_ADDR.toLowerCase(),
+        cdata[n.id]={
+          id:n.id,owner:own,
+          atk:st?Number(st.attack):0,
+          def:st?Number(st.defense):0,
+          spd:st?Number(st.speed):0,
+          lore:lr||"",staked:!!stk,livePrice:lp,
+          rarity:Number(rar),power:Number(pow),
+          coinName:co?co.name:"",imgURI:co?co.imageURI:"",
+          isMinted:!!own,
+          isOwnerNFT:own&&own.toLowerCase()===OWNER_ADDR.toLowerCase(),
         };
         loaded++;
-        document.getElementById("hv-loaded").textContent = loaded;
-        if (loaded % 10 === 0) renderGrid();
-      } catch(e) {
-        // Token inexistent — skip silentios
-      }
+        document.getElementById("hv-loaded").textContent=loaded;
+        if(loaded%10===0)renderGrid();
+      }catch(e){}
     }));
     await sleep(600);
   }
   renderGrid();
-  toast("Loaded " + loaded + " NFTs ✓", "ok");
+  toast("Loaded "+loaded+" NFTs ✓","ok");
 }
 
-// ─── RENDER GRID ─────────────────────────────────────
-function renderGrid() {
-  const grid = document.getElementById("nft-grid");
-  const list = NFTS.filter(n => {
-    const d = cdata[n.id] || {};
-    if (filt === "staked") return d.staked;
-    if (filt !== "all" && Number(filt) !== (d.rarity || 0)) return false;
-    if (srch) {
-      const q = srch.toLowerCase();
-      return n.name.toLowerCase().includes(q) || String(n.id).includes(q);
-    }
+function renderGrid(){
+  const grid=document.getElementById("nft-grid");
+  const list=NFTS.filter(n=>{
+    const d=cdata[n.id]||{};
+    if(filt==="staked")return d.staked;
+    if(filt!=="all"&&Number(filt)!==(d.rarity||0))return false;
+    if(srch){const q=srch.toLowerCase();return n.name.toLowerCase().includes(q)||String(n.id).includes(q);}
     return true;
   });
 
-  if (!list.length) {
-    grid.innerHTML = '<div class="loader">No NFTs match filter.</div>';
-    return;
-  }
+  if(!list.length){grid.innerHTML='<div class="loader">No NFTs match filter.</div>';return;}
 
-  grid.innerHTML = list.map(n => {
-    const d = cdata[n.id] || {};
-    const r = Math.min(d.rarity || 0, 5);
-    const name = NFTS.find(x => x.id === n.id)?.name || d.coinName || n.name;
-    const canBuy = !d.staked && (!d.isMinted || d.isOwnerNFT);
-    // FIX 5 aplicat: folosim helper isZeroBN
-    const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : basePriceWei;
-    const statusTag = d.staked
-      ? '<div class="stag">⚡ Staked</div>'
-      : (!d.isMinted || d.isOwnerNFT) ? ""
-      : '<div class="stag" style="background:rgba(0,195,255,.07);color:var(--blue);border-color:rgba(0,195,255,.2)">✓ Sold</div>';
+  grid.innerHTML=list.map(n=>{
+    const d=cdata[n.id]||{};
+    const r=Math.min(d.rarity||0,5);
+    const name=NFTS.find(x=>x.id===n.id)?.name||d.coinName||n.name;
+    const canBuy=!d.staked&&(!d.isMinted||d.isOwnerNFT);
+    const pw=(!isZeroBN(d.livePrice))?d.livePrice:basePriceWei;
+    const statusTag=d.staked
+      ?'<div class="stag">⚡ Staked</div>'
+      :(!d.isMinted||d.isOwnerNFT)?""
+      :'<div class="stag" style="background:rgba(0,195,255,.07);color:var(--blue);border-color:rgba(0,195,255,.2)">✓ Sold</div>';
 
-    return `<div class="nft-card" data-id="${n.id}">
+    return`<div class="nft-card" data-id="${n.id}">
       <div class="nft-glow"></div>
       <div class="nft-img-wrap">
         <div class="img-loading" id="il-${n.id}"><div class="img-loading-spin"></div></div>
@@ -653,352 +617,345 @@ function renderGrid() {
       </div>
       <div class="nft-body">
         <div class="nft-name">${name}</div>
-        <div class="nft-lore">${d.lore || "Ancient lore not yet revealed…"}</div>
+        <div class="nft-lore">${d.lore||"Ancient lore not yet revealed…"}</div>
         <div class="nft-stats">
-          <div class="ns"><div class="nsv">${d.atk || 0}</div><div class="nsk">ATK</div></div>
-          <div class="ns"><div class="nsv">${d.def || 0}</div><div class="nsk">DEF</div></div>
-          <div class="ns"><div class="nsv">${d.spd || 0}</div><div class="nsk">SPD</div></div>
-          <div class="ns"><div class="nsv">${d.power || 0}</div><div class="nsk">PWR</div></div>
+          <div class="ns"><div class="nsv">${d.atk||0}</div><div class="nsk">ATK</div></div>
+          <div class="ns"><div class="nsv">${d.def||0}</div><div class="nsk">DEF</div></div>
+          <div class="ns"><div class="nsv">${d.spd||0}</div><div class="nsk">SPD</div></div>
+          <div class="ns"><div class="nsv">${d.power||0}</div><div class="nsk">PWR</div></div>
         </div>
         ${statusTag}
         <div class="price-row">
           <div>
             <div class="price-label">Price</div>
-            <div class="price-mon">${canBuy ? monFmt(pw) : (d.staked ? "Staked" : "Sold")}</div>
+            <div class="price-mon">${canBuy?monFmt(pw):(d.staked?"Staked":"Sold")}</div>
           </div>
-          <div class="price-usd">${canBuy ? usdFmt(pw) : ""}</div>
+          <div class="price-usd">${canBuy?usdFmt(pw):""}</div>
         </div>
         ${canBuy
-          ? `<button class="btn-buy btn-avail" data-id="${n.id}">⚡ Buy Now</button>`
-          : `<button class="btn-buy btn-staked" disabled>${d.staked ? "⚡ Staked" : "✓ Sold"}</button>`}
+          ?`<button class="btn-buy btn-avail" data-id="${n.id}">⚡ Buy Now</button>`
+          :`<button class="btn-buy btn-staked" disabled>${d.staked?"⚡ Staked":"✓ Sold"}</button>`}
       </div>
     </div>`;
   }).join("");
 
-  // Încarcă imaginile doar pentru cele noi (opacity !== "1")
-  list.forEach(n => {
-    const img = document.getElementById("img-" + n.id);
-    if (img && img.style.opacity !== "1") loadImgWithFallback(img, n.id);
+  list.forEach(n=>{
+    const img=document.getElementById("img-"+n.id);
+    if(img&&img.style.opacity!=="1")loadImgWithFallback(img,n.id);
   });
 
-  grid.querySelectorAll(".btn-buy:not([disabled])").forEach(b =>
-    b.addEventListener("click", e => { e.stopPropagation(); openModal(+b.dataset.id); })
+  // Vibrate on touch
+  grid.querySelectorAll(".nft-card").forEach(c=>{
+    c.addEventListener("touchstart",()=>{
+      c.classList.remove("vibrating");
+      void c.offsetWidth;
+      c.classList.add("vibrating");
+      c.addEventListener("animationend",()=>c.classList.remove("vibrating"),{once:true});
+    },{passive:true});
+  });
+
+  grid.querySelectorAll(".btn-buy:not([disabled])").forEach(b=>
+    b.addEventListener("click",e=>{e.stopPropagation();openModal(+b.dataset.id);})
   );
-  grid.querySelectorAll(".nft-card").forEach(c =>
-    c.addEventListener("click", () => openModal(+c.dataset.id))
+  grid.querySelectorAll(".nft-card").forEach(c=>
+    c.addEventListener("click",()=>openModal(+c.dataset.id))
   );
 }
 
-// ─── NFT MODAL ───────────────────────────────────────
-function openModal(id) {
-  const n = NFTS.find(x => x.id === id);
-  if (!n) return;
-  const d = cdata[id] || {};
-  modalId = id;
-  const r = Math.min(d.rarity || 0, 5);
- const name = NFTS.find(x => x.id === id)?.name || d.coinName || n.name;
-  const canBuy = !d.staked && (!d.isMinted || d.isOwnerNFT);
-  const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : basePriceWei;
+function openModal(id){
+  const n=NFTS.find(x=>x.id===id);
+  if(!n)return;
+  const d=cdata[id]||{};
+  modalId=id;
+  const r=Math.min(d.rarity||0,5);
+  const name=NFTS.find(x=>x.id===id)?.name||d.coinName||n.name;
+  const canBuy=!d.staked&&(!d.isMinted||d.isOwnerNFT);
+  const pw=(!isZeroBN(d.livePrice))?d.livePrice:basePriceWei;
 
-  document.getElementById("modal-title").textContent = name;
-  document.getElementById("modal-sub").textContent = "Token #" + id + " · " + RARITY[r];
+  document.getElementById("modal-title").textContent=name;
+  document.getElementById("modal-sub").textContent="Token #"+id+" · "+RARITY[r];
 
-  // Reset modal imagine
-  const mi = document.getElementById("modal-img");
-  mi.onload = null; mi.onerror = null;
-  mi.src = "";
-  mi.style.display    = "block";
-  mi.style.opacity    = "0";
-  mi.style.transition = "opacity .3s";
-  loadImgWithFallback(mi, id);
+  const mi=document.getElementById("modal-img");
+  mi.onload=null; mi.onerror=null;
+  mi.src=""; mi.style.display="block"; mi.style.opacity="0"; mi.style.transition="opacity .3s";
+  loadImgWithFallback(mi,id);
 
-  document.getElementById("modal-rows").innerHTML = `
+  document.getElementById("modal-rows").innerHTML=`
     <div class="mrow"><span class="mk">Token ID</span><span class="mv">#${id}</span></div>
-    <div class="mrow"><span class="mk">Owner</span><span class="mv">${d.owner ? d.owner.slice(0,10)+"…"+d.owner.slice(-6) : "—"}</span></div>
+    <div class="mrow"><span class="mk">Owner</span><span class="mv">${d.owner?d.owner.slice(0,10)+"…"+d.owner.slice(-6):"—"}</span></div>
     <div class="mrow"><span class="mk">Stats</span><span class="mv">ATK ${d.atk||0} / DEF ${d.def||0} / SPD ${d.spd||0} / PWR ${d.power||0}</span></div>
     <div class="mrow"><span class="mk">Rarity</span><span class="mv">${RARITY[r]}</span></div>
-    <div class="mrow"><span class="mk">Coin</span><span class="mv">${d.coinName || "—"}</span></div>
-    <div class="mrow"><span class="mk">Status</span><span class="mv" style="color:${canBuy?"var(--green)":d.staked?"var(--gold)":"var(--blue)"}">${d.staked ? "⚡ Staked" : canBuy ? "✓ Available" : "✓ Sold"}</span></div>
-    <div class="mrow"><span class="mk">Price</span><span class="mv">${canBuy ? monFmt(pw) + " " + usdFmt(pw) : "—"}</span></div>
-    ${d.lore ? `<div class="mrow"><span class="mk">Lore</span><span class="mv">${d.lore}</span></div>` : ""}
+    <div class="mrow"><span class="mk">Coin</span><span class="mv">${d.coinName||"—"}</span></div>
+    <div class="mrow"><span class="mk">Status</span><span class="mv" style="color:${canBuy?"var(--green)":d.staked?"var(--gold)":"var(--blue)"}">${d.staked?"⚡ Staked":canBuy?"✓ Available":"✓ Sold"}</span></div>
+    <div class="mrow"><span class="mk">Price</span><span class="mv">${canBuy?monFmt(pw)+" "+usdFmt(pw):"—"}</span></div>
+    ${d.lore?`<div class="mrow"><span class="mk">Lore</span><span class="mv">${d.lore}</span></div>`:""}
   `;
 
-  const buyBtn = document.getElementById("modal-buy");
-  if (!canBuy) {
-    buyBtn.textContent = d.staked ? "⚡ Staked — Unavailable" : "✓ Already Sold";
-    buyBtn.disabled = true;
-    buyBtn.style.opacity = ".35";
+  const buyBtn=document.getElementById("modal-buy");
+  if(!canBuy){
+    buyBtn.textContent=d.staked?"⚡ Staked — Unavailable":"✓ Already Sold";
+    buyBtn.disabled=true; buyBtn.style.opacity=".35";
   } else {
-    buyBtn.textContent = "⚡ Buy · " + monFmt(pw);
-    buyBtn.disabled = false;
-    buyBtn.style.opacity = "1";
+    buyBtn.textContent="⚡ Buy · "+monFmt(pw);
+    buyBtn.disabled=false; buyBtn.style.opacity="1";
   }
   document.getElementById("modal-bg").classList.add("open");
 }
 
-function closeModal() {
+function closeModal(){
   document.getElementById("modal-bg").classList.remove("open");
-  const mi = document.getElementById("modal-img");
-  mi.onload = null; mi.onerror = null;
-  modalId = null;
+  const mi=document.getElementById("modal-img");
+  mi.onload=null; mi.onerror=null;
+  modalId=null;
 }
-document.getElementById("modal-x").onclick     = closeModal;
-document.getElementById("modal-cancel").onclick = closeModal;
-document.getElementById("modal-bg").onclick = e => { if (e.target === e.currentTarget) closeModal(); };
+document.getElementById("modal-x").onclick=closeModal;
+document.getElementById("modal-cancel").onclick=closeModal;
+document.getElementById("modal-bg").onclick=e=>{if(e.target===e.currentTarget)closeModal();};
 
-// ─── BUY ─────────────────────────────────────────────
-document.getElementById("modal-buy").onclick = async () => {
-  if (modalId === null) return;
-  if (!signer) { toast("Connect an EVM wallet first","err"); openReownModal(); return; }
-  if (chainId !== MONAD_ID) { toast("Switch to Monad first","err"); await switchToMonad(); return; }
-  const d = cdata[modalId] || {};
-  const pw = (!isZeroBN(d.livePrice)) ? d.livePrice : ethers.utils.parseEther(NFT_PRICE_ETH);
-  const btn = document.getElementById("modal-buy");
-  btn.textContent = "Confirming…"; btn.disabled = true;
-  try {
-    toast("Sending " + monFmt(pw) + " for NFT #" + modalId + "…","inf");
-    const tx = await signer.sendTransaction({to: OWNER_ADDR, value: pw});
-    toast("TX: " + tx.hash.slice(0,18) + "…","ok");
-    btn.textContent = "Waiting…";
+document.getElementById("modal-buy").onclick=async()=>{
+  if(modalId===null)return;
+  if(!signer){toast("Connect an EVM wallet first","err");openReownModal();return;}
+  if(chainId!==MONAD_ID){toast("Switch to Monad first","err");await switchToMonad();return;}
+  const d=cdata[modalId]||{};
+  const pw=(!isZeroBN(d.livePrice))?d.livePrice:ethers.utils.parseEther(NFT_PRICE_ETH);
+  const btn=document.getElementById("modal-buy");
+  btn.textContent="Confirming…"; btn.disabled=true;
+  try{
+    toast("Sending "+monFmt(pw)+" for NFT #"+modalId+"…","inf");
+    const tx=await signer.sendTransaction({to:OWNER_ADDR,value:pw});
+    toast("TX: "+tx.hash.slice(0,18)+"…","ok");
+    btn.textContent="Waiting…";
     await tx.wait();
-    toast("Payment confirmed! NFT #" + modalId + " reserved for you 🎉","ok");
-    toast("Transfer to " + userAddr.slice(0,10) + "… within 24h","near");
+    toast("Payment confirmed! NFT #"+modalId+" reserved for you 🎉","ok");
+    toast("Transfer to "+userAddr.slice(0,10)+"… within 24h","near");
     closeModal();
-  } catch(e) {
-    toast("Error: " + (e.reason || e.message || "").slice(0,90),"err");
-    btn.textContent = "⚡ Buy · " + monFmt(pw); btn.disabled = false;
+  }catch(e){
+    toast("Error: "+(e.reason||e.message||"").slice(0,90),"err");
+    btn.textContent="⚡ Buy · "+monFmt(pw); btn.disabled=false;
   }
 };
 
-// ─── REOWN / WALLETCONNECT ────────────────────────────
-function openReownModal()  { document.getElementById("reown-modal-bg").classList.add("open"); }
-function closeReownModal() { document.getElementById("reown-modal-bg").classList.remove("open"); }
-document.getElementById("reown-close").onclick = closeReownModal;
-document.getElementById("reown-modal-bg").onclick = e => { if (e.target===e.currentTarget) closeReownModal(); };
+function openReownModal(){document.getElementById("reown-modal-bg").classList.add("open");}
+function closeReownModal(){document.getElementById("reown-modal-bg").classList.remove("open");}
+document.getElementById("reown-close").onclick=closeReownModal;
+document.getElementById("reown-modal-bg").onclick=e=>{if(e.target===e.currentTarget)closeReownModal();};
 
-async function connectInjectedWallet(walletName) {
-  if (!window.ethereum) { toast(walletName + " not detected. Install it first.","err"); return; }
-  try {
+async function connectInjectedWallet(walletName){
+  if(!window.ethereum){toast(walletName+" not detected. Install it first.","err");return;}
+  try{
     await window.ethereum.request({method:"eth_requestAccounts"});
-    provider = new ethers.providers.Web3Provider(window.ethereum,"any");
-    signer   = provider.getSigner();
-    userAddr = await signer.getAddress();
-    chainId  = (await provider.getNetwork()).chainId;
+    provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+    signer=provider.getSigner();
+    userAddr=await signer.getAddress();
+    chainId=(await provider.getNetwork()).chainId;
     updateUI();
-    toast("Connected via " + walletName + ": " + userAddr.slice(0,8) + "…","ok");
+    toast("Connected via "+walletName+": "+userAddr.slice(0,8)+"…","ok");
     closeReownModal();
-    if (chainId !== MONAD_ID) await switchToMonad();
-  } catch(e) { toast("Connect error: " + (e.message||"").slice(0,80),"err"); }
+    if(chainId!==MONAD_ID)await switchToMonad();
+  }catch(e){toast("Connect error: "+(e.message||"").slice(0,80),"err");}
 }
 
-async function connectWalletConnect() {
-  document.getElementById("wc-qr-section").style.display = "block";
-  document.getElementById("wc-uri-display").textContent = "Generating WalletConnect URI…";
-  try {
-    const symKey = Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,"0")).join("");
-    const topic  = Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,"0")).join("");
-    const expiry = Math.floor(Date.now()/1000) + 300;
-    wcUri = `wc:${topic}@2?relay-protocol=irn&symKey=${symKey}&expiryTimestamp=${expiry}&projectId=${REOWN_PID}`;
-    document.getElementById("wc-uri-display").textContent = wcUri;
+async function connectWalletConnect(){
+  document.getElementById("wc-qr-section").style.display="block";
+  document.getElementById("wc-uri-display").textContent="Generating WalletConnect URI…";
+  try{
+    const symKey=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,"0")).join("");
+    const topic=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,"0")).join("");
+    const expiry=Math.floor(Date.now()/1000)+300;
+    wcUri=`wc:${topic}@2?relay-protocol=irn&symKey=${symKey}&expiryTimestamp=${expiry}&projectId=${REOWN_PID}`;
+    document.getElementById("wc-uri-display").textContent=wcUri;
     toast("WC URI generated — copy or scan with your wallet","near");
-  } catch(e) {
-    document.getElementById("wc-uri-display").textContent = "Error: " + e.message;
-    toast("WalletConnect URI error: " + e.message,"err");
+  }catch(e){
+    document.getElementById("wc-uri-display").textContent="Error: "+e.message;
+    toast("WalletConnect URI error: "+e.message,"err");
   }
 }
 
-function copyWCUri() {
-  if (!wcUri) { connectWalletConnect(); return; }
+function copyWCUri(){
+  if(!wcUri){connectWalletConnect();return;}
   navigator.clipboard.writeText(wcUri).then(()=>toast("WalletConnect URI copied!","ok")).catch(()=>prompt("Copy this URI:",wcUri));
 }
 
-document.getElementById("rw-addr-btn").onclick = () => {
-  const val = document.getElementById("rw-addr-input").value.trim();
-  if (!val || !val.startsWith("0x") || val.length !== 42) { toast("Enter a valid 0x… EVM address","err"); return; }
-  userAddr = val; signer = null;
-  provider = new ethers.providers.JsonRpcProvider(RPC); chainId = MONAD_ID;
-  updateUI(); toast("Address set (read-only): " + val.slice(0,10) + "…","ok"); closeReownModal();
+document.getElementById("rw-addr-btn").onclick=()=>{
+  const val=document.getElementById("rw-addr-input").value.trim();
+  if(!val||!val.startsWith("0x")||val.length!==42){toast("Enter a valid 0x… EVM address","err");return;}
+  userAddr=val; signer=null;
+  provider=new ethers.providers.JsonRpcProvider(RPC); chainId=MONAD_ID;
+  updateUI(); toast("Address set (read-only): "+val.slice(0,10)+"…","ok"); closeReownModal();
 };
 
-document.getElementById("rw-metamask").onclick  = () => connectInjectedWallet("MetaMask");
-document.getElementById("rw-injected").onclick  = () => connectInjectedWallet("Browser Wallet");
-document.getElementById("rw-trust").onclick = () => {
-  if (window.ethereum?.isTrust||window.ethereum?.isTrustWallet) connectInjectedWallet("Trust Wallet");
-  else { toast("Open in Trust Wallet's dApp browser.","inf"); window.open("https://link.trustwallet.com/open_url?coin_id=20000714&url="+encodeURIComponent(location.href),"_blank"); }
+document.getElementById("rw-metamask").onclick=()=>connectInjectedWallet("MetaMask");
+document.getElementById("rw-injected").onclick=()=>connectInjectedWallet("Browser Wallet");
+document.getElementById("rw-trust").onclick=()=>{
+  if(window.ethereum?.isTrust||window.ethereum?.isTrustWallet)connectInjectedWallet("Trust Wallet");
+  else{toast("Open in Trust Wallet's dApp browser.","inf");window.open("https://link.trustwallet.com/open_url?coin_id=20000714&url="+encodeURIComponent(location.href),"_blank");}
 };
-document.getElementById("rw-coinbase").onclick = () => {
-  if (window.ethereum?.isCoinbaseWallet) connectInjectedWallet("Coinbase Wallet");
-  else { toast("Open in Coinbase Wallet dApp browser, or install the extension","inf"); window.open("https://go.cb-w.com/dapp?cb_url="+encodeURIComponent(location.href),"_blank"); }
+document.getElementById("rw-coinbase").onclick=()=>{
+  if(window.ethereum?.isCoinbaseWallet)connectInjectedWallet("Coinbase Wallet");
+  else{toast("Open in Coinbase Wallet dApp browser, or install the extension","inf");window.open("https://go.cb-w.com/dapp?cb_url="+encodeURIComponent(location.href),"_blank");}
 };
-document.getElementById("rw-rabby").onclick = () => {
-  if (window.ethereum?.isRabby) connectInjectedWallet("Rabby");
-  else { toast("Rabby Wallet not detected. Install from rabby.io","inf"); window.open("https://rabby.io","_blank"); }
+document.getElementById("rw-rabby").onclick=()=>{
+  if(window.ethereum?.isRabby)connectInjectedWallet("Rabby");
+  else{toast("Rabby Wallet not detected. Install from rabby.io","inf");window.open("https://rabby.io","_blank");}
 };
-document.getElementById("rw-wc").onclick = connectWalletConnect;
+document.getElementById("rw-wc").onclick=connectWalletConnect;
 
-// ─── NEAR WALLET ─────────────────────────────────────
-function openNearModal()  { document.getElementById("near-modal-bg").classList.add("open"); }
-function closeNearModal() { document.getElementById("near-modal-bg").classList.remove("open"); }
-document.getElementById("near-modal-close").onclick = closeNearModal;
-document.getElementById("near-modal-bg").onclick = e => { if (e.target===e.currentTarget) closeNearModal(); };
+function openNearModal(){document.getElementById("near-modal-bg").classList.add("open");}
+function closeNearModal(){document.getElementById("near-modal-bg").classList.remove("open");}
+document.getElementById("near-modal-close").onclick=closeNearModal;
+document.getElementById("near-modal-bg").onclick=e=>{if(e.target===e.currentTarget)closeNearModal();};
 
-function showNEAR(acc) {
-  nearAcc = acc; localStorage.setItem("near_account_id", acc);
-  const p = document.getElementById("pill-near");
-  p.textContent = "NEAR: " + (acc.length>14 ? acc.slice(0,12)+"…" : acc);
-  p.style.display = "inline-block";
-  toast("✅ NEAR connected: " + acc,"near"); closeNearModal();
+function showNEAR(acc){
+  nearAcc=acc; localStorage.setItem("near_account_id",acc);
+  const p=document.getElementById("pill-near");
+  p.textContent="NEAR: "+(acc.length>14?acc.slice(0,12)+"…":acc);
+  p.style.display="inline-block";
+  toast("✅ NEAR connected: "+acc,"near"); closeNearModal();
 }
 
-document.getElementById("btn-mynearwallet").onclick = () => {
-  const returnUrl = encodeURIComponent(location.href);
+document.getElementById("btn-mynearwallet").onclick=()=>{
+  const returnUrl=encodeURIComponent(location.href);
   const w=560,h=680;
-  const popup = window.open(
+  const popup=window.open(
     `https://app.mynearwallet.com/login/?success_url=${returnUrl}&failure_url=${returnUrl}`,
     "mynearwallet",
     `width=${w},height=${h},left=${Math.round(screenX+(outerWidth-w)/2)},top=${Math.round(screenY+(outerHeight-h)/2)},resizable=yes`
   );
   toast("Opening MyNearWallet — approve and return here","near");
-  const check = setInterval(() => {
-    try {
-      if (popup && popup.closed) {
+  const check=setInterval(()=>{
+    try{
+      if(popup&&popup.closed){
         clearInterval(check);
-        const accId = new URLSearchParams(location.search).get("account_id");
-        if (accId) { showNEAR(accId); return; }
-        for (const k of ["near_app_wallet_auth_key","undefined_wallet_auth_key","wallet_auth_key"]) {
-          try { const v=localStorage.getItem(k); if(v){const p=JSON.parse(v);if(p?.accountId){showNEAR(p.accountId);return;}} } catch(e){}
+        const accId=new URLSearchParams(location.search).get("account_id");
+        if(accId){showNEAR(accId);return;}
+        for(const k of["near_app_wallet_auth_key","undefined_wallet_auth_key","wallet_auth_key"]){
+          try{const v=localStorage.getItem(k);if(v){const p=JSON.parse(v);if(p?.accountId){showNEAR(p.accountId);return;}}}catch(e){}
         }
         toast("Enter your NEAR account ID manually below","inf");
       }
-    } catch(e) { clearInterval(check); }
-  }, 600);
+    }catch(e){clearInterval(check);}
+  },600);
 };
-document.getElementById("btn-here-modal").onclick = () => {
+document.getElementById("btn-here-modal").onclick=()=>{
   toast("Opening HERE Wallet mobile app…","near");
-  location.href = "herewallet://dapp/" + encodeURIComponent(location.href);
-  setTimeout(() => { window.open("https://my.herewallet.app","_blank"); closeNearModal(); }, 2000);
+  location.href="herewallet://dapp/"+encodeURIComponent(location.href);
+  setTimeout(()=>{window.open("https://my.herewallet.app","_blank");closeNearModal();},2000);
 };
-document.getElementById("btn-sender-modal").onclick = async () => {
-  if (window.near?.isSender) {
-    try { await window.near.connect(); const acc=window.near.getAccountId?.(); if(acc)showNEAR(acc); else toast("Sender: no account returned","err"); }
-    catch(e) { toast("Sender: "+e.message,"err"); }
-  } else { window.open("https://senderwallet.io","_blank"); toast("Install Sender Wallet extension, then refresh","inf"); closeNearModal(); }
+document.getElementById("btn-sender-modal").onclick=async()=>{
+  if(window.near?.isSender){
+    try{await window.near.connect();const acc=window.near.getAccountId?.();if(acc)showNEAR(acc);else toast("Sender: no account returned","err");}
+    catch(e){toast("Sender: "+e.message,"err");}
+  }else{window.open("https://senderwallet.io","_blank");toast("Install Sender Wallet extension, then refresh","inf");closeNearModal();}
 };
-document.getElementById("btn-meteor-modal").onclick = async () => {
-  if (window.meteorWallet) {
-    try { await window.meteorWallet.connect(); const acc=await window.meteorWallet.getAccountId?.(); if(acc)showNEAR(acc); }
-    catch(e) { toast("Meteor: "+e.message,"err"); }
-  } else { window.open("https://wallet.meteorwallet.app","_blank"); toast("Install Meteor Wallet extension and refresh","inf"); closeNearModal(); }
+document.getElementById("btn-meteor-modal").onclick=async()=>{
+  if(window.meteorWallet){
+    try{await window.meteorWallet.connect();const acc=await window.meteorWallet.getAccountId?.();if(acc)showNEAR(acc);}
+    catch(e){toast("Meteor: "+e.message,"err");}
+  }else{window.open("https://wallet.meteorwallet.app","_blank");toast("Install Meteor Wallet extension and refresh","inf");closeNearModal();}
 };
-document.getElementById("near-manual-btn").onclick = () => {
-  const v = document.getElementById("near-manual-input").value.trim();
-  if (!v) { toast("Enter a NEAR account ID","err"); return; }
-  if (!v.includes(".")&&v.length<64) { toast("Format: yourname.near or 64-char implicit","err"); return; }
+document.getElementById("near-manual-btn").onclick=()=>{
+  const v=document.getElementById("near-manual-input").value.trim();
+  if(!v){toast("Enter a NEAR account ID","err");return;}
+  if(!v.includes(".")&&v.length<64){toast("Format: yourname.near or 64-char implicit","err");return;}
   showNEAR(v);
 };
-document.getElementById("near-manual-input").onkeydown = e => { if(e.key==="Enter") document.getElementById("near-manual-btn").click(); };
+document.getElementById("near-manual-input").onkeydown=e=>{if(e.key==="Enter")document.getElementById("near-manual-btn").click();};
 
-// ─── EVM WALLET UI ───────────────────────────────────
-function updateUI() {
-  const ap = document.getElementById("pill-addr");
-  const cp = document.getElementById("pill-chain");
-  if (userAddr) {
-    ap.textContent = userAddr.slice(0,6)+"…"+userAddr.slice(-4);
-    ap.className   = "pill "+(signer?"p-green":"p-orange");
-    document.getElementById("btn-connect").textContent = userAddr.slice(0,6)+"…";
+function updateUI(){
+  const ap=document.getElementById("pill-addr");
+  const cp=document.getElementById("pill-chain");
+  if(userAddr){
+    ap.textContent=userAddr.slice(0,6)+"…"+userAddr.slice(-4);
+    ap.className="pill "+(signer?"p-green":"p-orange");
+    document.getElementById("btn-connect").textContent=userAddr.slice(0,6)+"…";
   }
-  if (chainId===MONAD_ID)  { cp.textContent="✓ Monad 143"; cp.className="pill p-purple"; }
-  else if (chainId)        { cp.textContent="Chain "+chainId; cp.className="pill p-orange"; }
+  if(chainId===MONAD_ID){cp.textContent="✓ Monad 143";cp.className="pill p-purple";}
+  else if(chainId){cp.textContent="Chain "+chainId;cp.className="pill p-orange";}
 }
 
-async function switchToMonad() {
-  if (!window.ethereum) { toast("MetaMask required to switch chain","err"); return; }
-  try {
+async function switchToMonad(){
+  if(!window.ethereum){toast("MetaMask required to switch chain","err");return;}
+  try{
     await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:"0x8F"}]});
     toast("Switched to Monad Mainnet","ok");
-  } catch(e) {
-    if (e.code===4902) {
-      try {
+  }catch(e){
+    if(e.code===4902){
+      try{
         await window.ethereum.request({method:"wallet_addEthereumChain",params:[{
           chainId:"0x8F",chainName:"Monad Mainnet",
           nativeCurrency:{name:"MON",symbol:"MON",decimals:18},
           rpcUrls:["https://rpc.monad.xyz"],blockExplorerUrls:["https://explorer.monad.xyz"]
         }]});
         toast("Monad chain added ✓","ok");
-      } catch(e2) { toast("Add chain error: "+e2.message,"err"); }
-    } else { toast("Switch error: "+e.message,"err"); }
+      }catch(e2){toast("Add chain error: "+e2.message,"err");}
+    }else{toast("Switch error: "+e.message,"err");}
   }
-  if (provider) { chainId=(await provider.getNetwork()).chainId; updateUI(); }
+  if(provider){chainId=(await provider.getNetwork()).chainId;updateUI();}
 }
 
-// ─── EVENTS ──────────────────────────────────────────
-document.getElementById("btn-connect").onclick = openReownModal;
-document.getElementById("btn-near").onclick    = openNearModal;
-document.getElementById("btn-reown").onclick   = openReownModal;
-document.getElementById("btn-switch").onclick  = switchToMonad;
-document.getElementById("btn-refresh").onclick = async () => {
-  cdata = {}; // resetează cache-ul
-  await loadOracle(); await loadBase(); await loadAll();
+document.getElementById("btn-connect").onclick=openReownModal;
+document.getElementById("btn-near").onclick=openNearModal;
+document.getElementById("btn-reown").onclick=openReownModal;
+document.getElementById("btn-switch").onclick=switchToMonad;
+document.getElementById("btn-refresh").onclick=async()=>{
+  cdata={};
+  await loadOracle();await loadBase();await loadAll();
   toast("Data refreshed ✓","ok");
 };
-document.getElementById("btn-rpc").onclick = async () => {
-  try {
-    const r = await fetch(RPC,{method:"POST",headers:{"Content-Type":"application/json"},
+document.getElementById("btn-rpc").onclick=async()=>{
+  try{
+    const r=await fetch(RPC,{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_blockNumber",params:[]})}).then(x=>x.json());
     toast("Monad block: "+parseInt(r.result,16),"ok");
-  } catch(e) { toast("RPC error: "+e.message,"err"); }
+  }catch(e){toast("RPC error: "+e.message,"err");}
 };
 
-document.querySelectorAll(".fbtn").forEach(b => {
-  b.onclick = () => {
+document.querySelectorAll(".fbtn").forEach(b=>{
+  b.onclick=()=>{
     document.querySelectorAll(".fbtn").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active"); filt = b.dataset.f; renderGrid();
+    b.classList.add("active"); filt=b.dataset.f; renderGrid();
   };
 });
-document.getElementById("search-box").oninput = e => { srch = e.target.value.trim(); renderGrid(); };
+document.getElementById("search-box").oninput=e=>{srch=e.target.value.trim();renderGrid();};
 
-if (window.ethereum) {
-  window.ethereum.on("accountsChanged", a => {
-    if (a.length) { userAddr=a[0]; updateUI(); }
-    else {
-      userAddr=null; signer=null;
+if(window.ethereum){
+  window.ethereum.on("accountsChanged",a=>{
+    if(a.length){userAddr=a[0];updateUI();}
+    else{
+      userAddr=null;signer=null;
       document.getElementById("pill-addr").textContent="No wallet";
       document.getElementById("pill-addr").className="pill p-gray";
       document.getElementById("btn-connect").textContent="⚡ Connect Wallet";
     }
   });
-  window.ethereum.on("chainChanged", id => { chainId=parseInt(id,16); updateUI(); });
+  window.ethereum.on("chainChanged",id=>{chainId=parseInt(id,16);updateUI();});
 }
 
-// NEAR OAuth redirect
-(function() {
-  const accId = new URLSearchParams(location.search).get("account_id");
-  if (accId) { showNEAR(accId); history.replaceState({},"",location.href.split("?")[0]); }
+(function(){
+  const accId=new URLSearchParams(location.search).get("account_id");
+  if(accId){showNEAR(accId);history.replaceState({},"",location.href.split("?")[0]);}
 })();
 
-// ─── INIT ─────────────────────────────────────────────
-(async () => {
-  // Restaurează sesiunea NEAR
-  const savedNear = localStorage.getItem("near_account_id");
-  if (savedNear) {
-    nearAcc = savedNear;
-    const p = document.getElementById("pill-near");
-    p.textContent   = "NEAR: "+(savedNear.length>14?savedNear.slice(0,12)+"…":savedNear);
-    p.style.display = "inline-block";
+(async()=>{
+  const savedNear=localStorage.getItem("near_account_id");
+  if(savedNear){
+    nearAcc=savedNear;
+    const p=document.getElementById("pill-near");
+    p.textContent="NEAR: "+(savedNear.length>14?savedNear.slice(0,12)+"…":savedNear);
+    p.style.display="inline-block";
   }
-  // Restaurează sesiunea EVM
-  if (window.ethereum) {
-    try {
-      const a = await window.ethereum.request({method:"eth_accounts"});
-      if (a.length) {
-        provider = new ethers.providers.Web3Provider(window.ethereum,"any");
-        signer   = provider.getSigner();
-        userAddr = a[0];
-        chainId  = (await provider.getNetwork()).chainId;
+  if(window.ethereum){
+    try{
+      const a=await window.ethereum.request({method:"eth_accounts"});
+      if(a.length){
+        provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+        signer=provider.getSigner();
+        userAddr=a[0];
+        chainId=(await provider.getNetwork()).chainId;
         updateUI();
         toast("Auto-connected: "+userAddr.slice(0,8)+"…","ok");
       }
-    } catch(e) {}
+    }catch(e){}
   }
   await loadOracle();
   await loadBase();
