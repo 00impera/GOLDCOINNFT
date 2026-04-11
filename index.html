@@ -260,8 +260,9 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 /* ═══════════════════════════════════════════
    NFT DETAIL MODAL
 ═══════════════════════════════════════════ */
-#modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:16px}
+#modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 #modal-bg.open{display:flex}
+.modal{margin:auto}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:24px;width:100%;max-width:410px;position:relative;box-shadow:0 0 36px rgba(131,110,249,.18);max-height:90vh;overflow-y:auto}
 .modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--monad),var(--teal),transparent);border-radius:18px 18px 0 0}
 .modal h2{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:3px}
@@ -662,7 +663,13 @@ function usdFmt(w) {
 function isZeroBN(val) {
   if (!val) return true;
   try {
-    if (ethers.BigNumber.isBigNumber(val)) return val.isZero();
+    if (ethers.BigNumber.isBigNumber(val)) {
+      if (val.isZero()) return true;
+      // Treat prices below 0.0001 MON as invalid/unset
+      var asEth = parseFloat(ethers.utils.formatEther(val));
+      if (asEth < 0.0001) return true;
+      return false;
+    }
     return ethers.BigNumber.from(val.toString()).isZero();
   } catch(e) { return true; }
 }
@@ -1289,10 +1296,12 @@ function openModal(id) {
   }
   // Show modal synchronously — nothing async before this point
   document.getElementById("modal-bg").classList.add("open");
+  document.body.style.overflow = "hidden";
 }
 
 function closeModal() {
   document.getElementById("modal-bg").classList.remove("open");
+  document.body.style.overflow = "";
   var mi = document.getElementById("modal-img");
   mi.onload=null; mi.onerror=null;
   modalId=null;
@@ -1300,6 +1309,7 @@ function closeModal() {
 document.getElementById("modal-x").onclick     = closeModal;
 document.getElementById("modal-cancel").onclick = closeModal;
 document.getElementById("modal-bg").onclick     = function(e){ if(e.target===e.currentTarget) closeModal(); };
+document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeModal(); });
 
 document.getElementById("modal-buy").onclick = async function(){
   if (modalId===null) return;
