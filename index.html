@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <title>GoldCoins NFT · Monad Mainnet</title>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪙</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
 :root{
@@ -530,7 +531,19 @@ var CONTRACT      = "0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948";
 var ORACLE        = "0x723d62bef5eeb3f0d2255e5cab6ae763c59ca0e6";
 var OWNER_ADDR    = "0x592B35c8917eD36c39Ef73D0F5e92B0173560b2e";
 var MONAD_ID      = 143;
-var RPC           = "https://rpc.monad.xyz";
+var RPCS = [
+  "https://rpc.monad.xyz",
+  "https://monad-mainnet.drpc.org",
+  "https://monad.drpc.org"
+];
+var RPC = RPCS[0];
+var _rpcIdx = 0;
+function getNextRPC() {
+  _rpcIdx = (_rpcIdx + 1) % RPCS.length;
+  RPC = RPCS[_rpcIdx];
+  return RPC;
+}
+function getRPC() { return RPCS[_rpcIdx]; }
 var DRPC          = "https://monad-mainnet.drpc.org";
 var REOWN_PID     = "83764e5a442fd38d9827e3302a37517a";
 var NFT_PRICE_ETH = "1.0";
@@ -1010,7 +1023,7 @@ async function loadOracle() {
 
 async function loadBase() {
   try {
-    var rp = new ethers.providers.JsonRpcProvider(RPC);
+    var rp = new ethers.providers.JsonRpcProvider(getRPC());
     basePriceWei = await new ethers.Contract(CONTRACT, ABI, rp).basePrice();
     document.getElementById("hv-price").textContent = monFmt(basePriceWei);
   } catch(e) {
@@ -1022,42 +1035,72 @@ async function loadBase() {
 async function loadAll() {
   document.getElementById("nft-grid").innerHTML =
     '<div class="loader"><div class="spinner"></div>Scanning ' + NFTS.length + ' NFTs from Monad\u2026</div>';
-  var rp = new ethers.providers.JsonRpcProvider(RPC);
-  var rc = new ethers.Contract(CONTRACT, ABI, rp);
   var loaded = 0;
   var sleep = function(ms){ return new Promise(function(r){ setTimeout(r,ms); }); };
+  var consecutive429 = 0;
 
-  for (var s=0; s<NFTS.length; s+=5) {
-    await Promise.allSettled(NFTS.slice(s,s+5).map(async function(n){
-      try {
-        var results = await Promise.all([
-          rc.ownerOf(n.id).catch(function(){ return null; }),
-          rc.stats(n.id).catch(function(){ return null; }),
-          rc.lore(n.id).catch(function(){ return ""; }),
-          rc.staked(n.id).catch(function(){ return false; }),
-          rc.livePrice(n.id).catch(function(){ return null; }),
-          rc.rarity(n.id).catch(function(){ return 0; }),
-          rc.power(n.id).catch(function(){ return 0; }),
-          rc.coins(n.id).catch(function(){ return null; })
-        ]);
-        var own=results[0], st=results[1], lr=results[2], stk=results[3];
-        var lp=results[4], rar=results[5], pow=results[6], co=results[7];
-        cdata[n.id] = {
-          id:n.id, owner:own,
-          atk:st?Number(st.attack):0, def:st?Number(st.defense):0, spd:st?Number(st.speed):0,
-          lore:lr||"", staked:!!stk,
-          livePrice:lp,
-          rarity:Number(rar), power:Number(pow),
-          coinName:co?co.name:"", imgURI:co?co.imageURI:"",
-          isMinted:!!own,
-          isOwnerNFT: own && own.toLowerCase()===OWNER_ADDR.toLowerCase()
-        };
-        loaded++;
-        document.getElementById("hv-loaded").textContent = loaded;
-        if (loaded % 10 === 0) renderGrid();
-      } catch(e){}
+  function makeContract() {
+    return new ethers.Contract(CONTRACT, ABI, new ethers.providers.JsonRpcProvider(getRPC()));
+  }
+
+  async function fetchNFT(n, rc) {
+    var results = await Promise.all([
+      rc.ownerOf(n.id).catch(function(){ return null; }),
+      rc.stats(n.id).catch(function(){ return null; }),
+      rc.lore(n.id).catch(function(){ return ""; }),
+      rc.staked(n.id).catch(function(){ return false; }),
+      rc.livePrice(n.id).catch(function(){ return null; }),
+      rc.rarity(n.id).catch(function(){ return 0; }),
+      rc.power(n.id).catch(function(){ return 0; }),
+      rc.coins(n.id).catch(function(){ return null; })
+    ]);
+    return results;
+  }
+
+  for (var s=0; s<NFTS.length; s+=2) {
+    var batch = NFTS.slice(s, s+2);
+    var rc = makeContract();
+
+    await Promise.allSettled(batch.map(async function(n){
+      var retries = 0;
+      while (retries < 3) {
+        try {
+          var results = await fetchNFT(n, rc);
+          var own=results[0], st=results[1], lr=results[2], stk=results[3];
+          var lp=results[4], rar=results[5], pow=results[6], co=results[7];
+          cdata[n.id] = {
+            id:n.id, owner:own,
+            atk:st?Number(st.attack):0, def:st?Number(st.defense):0, spd:st?Number(st.speed):0,
+            lore:lr||"", staked:!!stk,
+            livePrice:lp,
+            rarity:Number(rar), power:Number(pow),
+            coinName:co?co.name:"", imgURI:co?co.imageURI:"",
+            isMinted:!!own,
+            isOwnerNFT: own && own.toLowerCase()===OWNER_ADDR.toLowerCase()
+          };
+          loaded++;
+          consecutive429 = 0;
+          document.getElementById("hv-loaded").textContent = loaded;
+          if (loaded % 10 === 0) renderGrid();
+          break;
+        } catch(e) {
+          retries++;
+          consecutive429++;
+          // If rate limited, rotate RPC and wait longer
+          if (consecutive429 >= 3) {
+            var next = getNextRPC();
+            toast("Rate limited \u2014 switching to " + next.replace("https://",""), "inf");
+            rc = makeContract();
+            consecutive429 = 0;
+          }
+          await sleep(1000 * retries);
+        }
+      }
     }));
-    await sleep(600);
+
+    // Dynamic delay: backs off if hitting rate limits
+    var delay = consecutive429 > 0 ? 3000 : 1500;
+    await sleep(delay);
   }
   renderGrid();
   toast("Loaded " + loaded + " NFTs \u2713","ok");
