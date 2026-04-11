@@ -12,6 +12,7 @@
   --text:#F5F5FF;--text2:#C5C5E0;--text3:#8A8AA5;
   --monad:#836EF9;--monad-l:#A896FF;--teal:#00FFD1;
   --blue:#00C3FF;--green:#00FF88;--gold:#FFB800;--gold-l:#FFE38A;--red:#FF4757;
+  --neon-red:#FF2244;--neon-red-dark:#CC0022;--neon-red-glow:rgba(255,34,68,0.55);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#151528 0,#050509 55%);color:var(--text);min-height:100vh;overflow-x:hidden}
@@ -33,7 +34,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 #btn-connect:hover{filter:brightness(1.15);transform:scale(1.04)}
 #btn-disconnect{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,71,87,.5);cursor:pointer;background:rgba(255,71,87,.12);color:var(--red);white-space:nowrap;transition:transform .15s,filter .15s,background .15s;display:none}
 #btn-disconnect:hover{background:rgba(255,71,87,.25);transform:scale(1.04);filter:brightness(1.2)}
-/* WBAR — FIXED: pointer-events explicitly set, z-index correct */
 .wbar{display:flex;flex-wrap:wrap;gap:8px;padding:10px 18px;border-bottom:1px solid var(--border);background:rgba(5,5,12,.96);position:sticky;top:57px;z-index:9;backdrop-filter:blur(14px);pointer-events:auto}
 .wb{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:6px 11px;border-radius:999px;border:1px solid var(--border2);background:rgba(10,10,20,.9);color:var(--text2);cursor:pointer;letter-spacing:.3px;white-space:nowrap;transition:transform .15s,filter .15s,background .15s,border-color .15s;pointer-events:auto;user-select:none;-webkit-tap-highlight-color:transparent}
 .wb:hover{transform:scale(1.07);filter:brightness(1.2)}
@@ -48,8 +48,19 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .wb-gold:hover{background:rgba(255,184,0,.1);border-color:var(--gold)}
 .wb-out{border-color:var(--border2);color:var(--text3)}
 .wb-out:hover{background:rgba(255,255,255,.05);border-color:var(--text3);color:var(--text)}
+/* Test RPC — teal */
+.wb-rpc{border-color:rgba(0,255,209,.45);color:var(--teal)}
+.wb-rpc:hover{background:rgba(0,255,209,.1);border-color:var(--teal);box-shadow:0 0 12px rgba(0,255,209,.3)}
+/* Refresh — gold */
+.wb-refresh{border-color:rgba(255,184,0,.45);color:var(--gold)}
+.wb-refresh:hover{background:rgba(255,184,0,.1);border-color:var(--gold);box-shadow:0 0 12px rgba(255,184,0,.3)}
+/* NEAR Bridge — pink */
+.wb-bridge{border-color:rgba(255,100,200,.45);color:#FF64C8}
+.wb-bridge:hover{background:rgba(255,100,200,.1);border-color:#FF64C8;box-shadow:0 0 12px rgba(255,100,200,.3)}
+/* Click flash */
+@keyframes wbFlash{0%{filter:brightness(2.2) saturate(2)}100%{filter:brightness(1) saturate(1)}}
+.wb.flashing{animation:wbFlash .4s ease-out}
 .wsep{width:1px;height:22px;background:var(--border2);flex-shrink:0;align-self:center}
-/* MODALS */
 #reown-modal-bg,#near-modal-bg{display:none;position:fixed;inset:0;backdrop-filter:blur(10px);z-index:500;align-items:center;justify-content:center;padding:16px}
 #reown-modal-bg{background:rgba(0,0,0,.85)}
 #near-modal-bg{background:rgba(0,0,0,.82)}
@@ -99,7 +110,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .near-wallet-btn .wico2{font-size:22px;width:32px;text-align:center}
 .near-wallet-btn .wname{flex:1;text-align:left}
 .near-wallet-btn .warr{color:var(--text3);font-size:14px}
-/* HERO */
 .hero{text-align:center;padding:54px 20px 40px;position:relative;z-index:1}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(131,110,249,.1),transparent);pointer-events:none}
 .hero h1{font-family:'Syne',sans-serif;font-size:clamp(26px,6vw,56px);font-weight:900;line-height:1.1;margin-bottom:12px}
@@ -108,7 +118,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .hchips{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
 .hchip .hv{font-family:'Syne',sans-serif;font-size:28px;font-weight:900;color:var(--monad-l);filter:drop-shadow(0 0 8px rgba(131,110,249,.45))}
 .hchip .hl{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
-/* FILTERS */
 .sec-title{text-align:center;font-family:'Syne',sans-serif;font-size:19px;font-weight:800;margin:38px 0 18px;position:relative;z-index:1}
 .sec-title .h{color:var(--monad-l)}
 .filter-bar{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:22px;padding:0 16px;position:relative;z-index:1}
@@ -119,9 +128,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 #search-box{font-family:'Space Mono',monospace;font-size:11px;padding:7px 13px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:20px;outline:none;width:190px;transition:border-color .15s,box-shadow .15s}
 #search-box:focus{border-color:var(--monad);box-shadow:0 0 0 3px rgba(131,110,249,.15)}
 #search-box::placeholder{color:var(--text3)}
-/* GRID */
 .nft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;padding:0 16px 20px;position:relative;z-index:1;max-width:1400px;margin:0 auto}
-/* NFT CARD */
 .nft-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;position:relative;transition:transform .22s cubic-bezier(.34,1.56,.64,1),border-color .2s}
 .nft-card:hover{transform:translateY(-7px) scale(1.022);border-color:var(--monad)}
 .nft-card:hover .nft-img{transform:scale(1.07)}
@@ -154,13 +161,93 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .price-label{font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
 .price-mon{font-family:'Syne',sans-serif;font-size:14px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 5px rgba(255,184,0,.35))}
 .price-usd{font-size:9px;color:var(--text3);text-align:right}
-/* BUY BUTTON */
-.btn-buy{width:100%;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;padding:11px;border-radius:9px;border:none;cursor:pointer;transition:transform .18s,filter .18s,box-shadow .18s;letter-spacing:.4px;position:relative;overflow:hidden}
-.btn-avail{background:linear-gradient(135deg,var(--monad),#B060FF);color:#fff;box-shadow:0 0 14px rgba(131,110,249,.3)}
-.btn-avail:hover{filter:brightness(1.18);transform:scale(1.03);box-shadow:0 0 24px rgba(131,110,249,.55)}
-.btn-avail:active{transform:scale(0.97)}
-.btn-staked{background:rgba(255,255,255,.04);color:var(--text3);border:1px solid var(--border);cursor:not-allowed}
-/* TOAST */
+
+/* ═══════════════════════════════════════════
+   BUY NOW BUTTON — GREEN NEON (FIXED)
+═══════════════════════════════════════════ */
+.btn-buy{
+  width:100%;
+  font-family:'Syne',sans-serif;
+  font-size:13px;
+  font-weight:800;
+  padding:11px;
+  border-radius:9px;
+  border:none;
+  cursor:pointer;
+  letter-spacing:.6px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .18s,box-shadow .18s,filter .18s;
+  /* Make sure clicks always register — no pointer-events interference */
+  pointer-events:auto;
+  z-index:2;
+}
+
+/* GREEN NEON AVAILABLE STATE */
+.btn-avail{
+  background:#000;
+  color:var(--neon-red);
+  border:1.5px solid var(--neon-red);
+  box-shadow:
+    0 0 8px var(--neon-red-glow),
+    0 0 20px rgba(255,34,68,.3),
+    inset 0 0 12px rgba(255,34,68,.08);
+  text-shadow:0 0 10px var(--neon-red),0 0 20px rgba(255,34,68,.6);
+}
+.btn-avail:hover{
+  background:#1a0005;
+  border-color:#ff4466;
+  box-shadow:
+    0 0 14px var(--neon-red-glow),
+    0 0 36px rgba(255,34,68,.5),
+    0 0 60px rgba(255,34,68,.2),
+    inset 0 0 20px rgba(255,34,68,.12);
+  text-shadow:0 0 14px var(--neon-red),0 0 30px rgba(255,34,68,.9);
+  transform:scale(1.04) translateY(-1px);
+  filter:brightness(1.1);
+}
+.btn-avail:active{
+  transform:scale(0.97);
+  box-shadow:0 0 6px var(--neon-red-glow),inset 0 0 8px rgba(255,34,68,.15);
+}
+
+/* Ripple effect on click */
+.btn-avail .ripple{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,34,68,.35);
+  transform:scale(0);
+  animation:ripple-anim .5s linear;
+  pointer-events:none;
+}
+@keyframes ripple-anim{
+  to{transform:scale(4);opacity:0}
+}
+
+/* Pulsing neon animation when idle */
+@keyframes neonBtnPulse{
+  0%,100%{
+    box-shadow:0 0 8px var(--neon-red-glow),0 0 20px rgba(255,34,68,.3),inset 0 0 12px rgba(255,34,68,.08);
+  }
+  50%{
+    box-shadow:0 0 14px var(--neon-red-glow),0 0 32px rgba(255,34,68,.45),inset 0 0 18px rgba(255,34,68,.12);
+  }
+}
+.btn-avail{animation:neonBtnPulse 2.5s ease-in-out infinite}
+.btn-avail:hover{animation:none}
+
+/* STAKED / SOLD DISABLED STATE */
+.btn-staked{
+  background:rgba(255,255,255,.03);
+  color:var(--text3);
+  border:1px solid var(--border);
+  cursor:not-allowed;
+  opacity:.6;
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
 #toast{position:fixed;bottom:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:6px;max-width:320px;pointer-events:none}
 .ti{font-size:11px;padding:9px 13px;border-radius:8px;border:1px solid;animation:tslide .2s ease;word-break:break-all;pointer-events:auto}
 @keyframes tslide{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
@@ -168,7 +255,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .terr{background:rgba(255,71,87,.1);color:var(--red);border-color:rgba(255,71,87,.3)}
 .tinf{background:rgba(131,110,249,.1);color:var(--monad-l);border-color:rgba(131,110,249,.3)}
 .tnear{background:rgba(0,195,255,.1);color:var(--blue);border-color:rgba(0,195,255,.3)}
-/* NFT MODAL */
+
+/* ═══════════════════════════════════════════
+   NFT DETAIL MODAL
+═══════════════════════════════════════════ */
 #modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:16px}
 #modal-bg.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:24px;width:100%;max-width:410px;position:relative;box-shadow:0 0 36px rgba(131,110,249,.18);max-height:90vh;overflow-y:auto}
@@ -183,12 +273,46 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .mk{color:var(--text2);flex-shrink:0;margin-right:10px}
 .mv{color:var(--text);text-align:right;word-break:break-all;max-width:230px}
 .mbtns{display:flex;gap:8px;margin-top:16px}
-#modal-buy{flex:1;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;padding:12px;background:linear-gradient(135deg,var(--monad),#B060FF);color:#fff;border:none;border-radius:10px;cursor:pointer;transition:filter .2s,transform .15s;box-shadow:0 0 14px rgba(131,110,249,.28)}
-#modal-buy:hover{filter:brightness(1.12);transform:scale(1.03)}
+
+/* Modal buy button — also green neon */
+#modal-buy{
+  flex:1;
+  font-family:'Syne',sans-serif;
+  font-size:13px;
+  font-weight:800;
+  padding:12px;
+  background:#000;
+  color:var(--neon-red);
+  border:1.5px solid var(--neon-red);
+  border-radius:10px;
+  cursor:pointer;
+  transition:all .2s;
+  box-shadow:0 0 12px rgba(255,34,68,.4),0 0 24px rgba(255,34,68,.2),inset 0 0 12px rgba(255,34,68,.06);
+  text-shadow:0 0 10px var(--neon-red);
+  animation:neonBtnPulse 2.5s ease-in-out infinite;
+}
+#modal-buy:hover{
+  background:#1a0005;
+  box-shadow:0 0 18px rgba(255,34,68,.6),0 0 40px rgba(255,34,68,.3),inset 0 0 16px rgba(255,34,68,.1);
+  text-shadow:0 0 16px var(--neon-red),0 0 32px rgba(255,34,68,.8);
+  transform:scale(1.03);
+  animation:none;
+}
 #modal-buy:active{transform:scale(0.97)}
+#modal-buy:disabled{
+  background:rgba(255,255,255,.04);
+  color:var(--text3);
+  border-color:var(--border);
+  box-shadow:none;
+  text-shadow:none;
+  cursor:not-allowed;
+  animation:none;
+  opacity:.5;
+}
+
 #modal-cancel{font-family:'Space Mono',monospace;font-size:10px;padding:12px 14px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:border-color .15s,color .15s,transform .15s}
 #modal-cancel:hover{border-color:var(--monad);color:var(--monad-l);transform:scale(1.03)}
-/* FOOTER */
+
 footer{margin-top:56px;background:var(--bg2);border-top:1px solid var(--border);padding:38px 20px;position:relative;z-index:1}
 footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--monad),var(--teal),transparent)}
 .fi{max-width:880px;margin:0 auto;text-align:center}
@@ -216,10 +340,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--monad);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:640px){header{flex-direction:column;align-items:flex-start}.wbar{top:90px}}
-/* ASTEROID RAIN */
 #asteroid-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 body>*:not(#asteroid-canvas){position:relative;z-index:1}
-/* NEON FIRE */
 @keyframes neonPulse0{0%,100%{box-shadow:0 0 8px 2px #FF4500,0 0 20px 6px #FF6A00}50%{box-shadow:0 0 14px 4px #FF2200,0 0 30px 10px #FF8000}}
 @keyframes neonPulse1{0%,100%{box-shadow:0 0 8px 2px #00FFFF,0 0 20px 6px #0088FF}50%{box-shadow:0 0 14px 4px #00DDFF,0 0 30px 10px #0044FF}}
 @keyframes neonPulse2{0%,100%{box-shadow:0 0 8px 2px #FF00FF,0 0 20px 6px #AA00FF}50%{box-shadow:0 0 14px 4px #FF00DD,0 0 30px 10px #8800FF}}
@@ -262,9 +384,9 @@ body>*:not(#asteroid-canvas){position:relative;z-index:1}
   <div class="wsep"></div>
   <button class="wb wb-gold"  id="btn-add-network">&#10133; Add Monad Network</button>
   <button class="wb wb-mon"   id="btn-switch">&#8644; Switch to Monad</button>
-  <button class="wb wb-out"   id="btn-rpc">&#128225; Test RPC</button>
-  <button class="wb wb-out"   id="btn-refresh">&#8635; Refresh</button>
-  <button class="wb wb-out"   id="btn-bridge">&#127757; NEAR Bridge &#8599;</button>
+  <button class="wb wb-rpc"     id="btn-rpc">&#128225; Test RPC</button>
+  <button class="wb wb-refresh" id="btn-refresh">&#8635; Refresh</button>
+  <button class="wb wb-bridge"  id="btn-bridge">&#127757; NEAR Bridge &#8599;</button>
 </div>
 
 <!-- REOWN / EVM WALLET MODAL -->
@@ -376,7 +498,7 @@ body>*:not(#asteroid-canvas){position:relative;z-index:1}
     <div id="modal-rows"></div>
     <div class="mbtns">
       <button id="modal-cancel">Cancel</button>
-      <button id="modal-buy">Buy Now</button>
+      <button id="modal-buy">&#9889; Buy Now</button>
     </div>
   </div>
 </div>
@@ -404,7 +526,6 @@ body>*:not(#asteroid-canvas){position:relative;z-index:1}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <script>
-// CONFIG
 var CONTRACT      = "0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948";
 var ORACLE        = "0x723d62bef5eeb3f0d2255e5cab6ae763c59ca0e6";
 var OWNER_ADDR    = "0x592B35c8917eD36c39Ef73D0F5e92B0173560b2e";
@@ -491,23 +612,17 @@ var NFTS = [
   {id:80,name:"EternalVoyagerMark"},{id:81,name:"ObscuraSunNexus"}
 ];
 
-// STATE
 var provider=null, signer=null, userAddr=null, chainId=null;
 var nearAcc=null, oracleUSD=null, basePriceWei=null;
 var cdata={}, filt="all", srch="", modalId=null, wcUri=null;
 
-// ─── PRICE FORMATTING (FIXED) ─────────────────────────
-// basePriceWei and livePrice from contract are BigNumbers in wei.
-// This function correctly handles BigNumber (wei) inputs.
 function monFmt(w) {
   if (w === null || w === undefined) return "\u2014";
   try {
     var val;
     if (ethers.BigNumber.isBigNumber(w)) {
-      // Proper BigNumber from ethers contract call = wei
       val = parseFloat(ethers.utils.formatEther(w));
     } else if (typeof w === 'string' && w.length > 15) {
-      // Very large string = likely wei
       val = parseFloat(ethers.utils.formatEther(ethers.BigNumber.from(w)));
     } else {
       val = parseFloat(w);
@@ -516,20 +631,15 @@ function monFmt(w) {
     if (val < 0.0001) return val.toExponential(2) + " MON";
     if (val < 1) return val.toFixed(4) + " MON";
     return val.toFixed(2) + " MON";
-  } catch(e) {
-    return "\u2014 MON";
-  }
+  } catch(e) { return "\u2014 MON"; }
 }
 
 function usdFmt(w) {
   if (!w || !oracleUSD) return "";
   try {
     var val;
-    if (ethers.BigNumber.isBigNumber(w)) {
-      val = parseFloat(ethers.utils.formatEther(w));
-    } else {
-      val = parseFloat(w);
-    }
+    if (ethers.BigNumber.isBigNumber(w)) val = parseFloat(ethers.utils.formatEther(w));
+    else val = parseFloat(w);
     if (isNaN(val) || val <= 0) return "";
     return "\u2248 $" + (val * oracleUSD).toFixed(2);
   } catch(e) { return ""; }
@@ -543,7 +653,6 @@ function isZeroBN(val) {
   } catch(e) { return true; }
 }
 
-// TOAST
 function toast(msg, t) {
   if (!t) t = "inf";
   var el = document.createElement("div");
@@ -553,7 +662,6 @@ function toast(msg, t) {
   setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 5000);
 }
 
-// WALLET DETECTION
 function detectWallets() {
   var eth = window.ethereum;
   function set(id, detected, label) {
@@ -571,7 +679,6 @@ function detectWallets() {
   set("ws-injected",  !!eth, eth ? "\u2713 Ready" : "Install ext.");
 }
 
-// ADD / SWITCH MONAD NETWORK
 async function addMonadNetwork() {
   if (!window.ethereum) {
     toast("No wallet detected. Install MetaMask first.", "err");
@@ -599,7 +706,6 @@ async function addMonadNetwork() {
   }
 }
 
-// CONNECT EVM WALLET
 async function connectInjectedWallet(walletName) {
   if (!window.ethereum) {
     toast(walletName + " not detected \u2014 install it first.", "err");
@@ -649,7 +755,6 @@ function copyWCUri() {
   navigator.clipboard.writeText(wcUri).then(function(){ toast("WalletConnect URI copied!", "ok"); }).catch(function(){ prompt("Copy this URI:", wcUri); });
 }
 
-// MODALS
 function openReownModal() { document.getElementById("reown-modal-bg").classList.add("open"); detectWallets(); }
 function closeReownModal() {
   document.getElementById("reown-modal-bg").classList.remove("open");
@@ -663,7 +768,6 @@ document.getElementById("reown-modal-bg").onclick   = function(e){ if(e.target==
 document.getElementById("near-modal-close").onclick = closeNearModal;
 document.getElementById("near-modal-bg").onclick    = function(e){ if(e.target===e.currentTarget) closeNearModal(); };
 
-// WALLET BUTTON HANDLERS (modal)
 document.getElementById("rw-metamask").onclick = function(){
   if (!window.ethereum) { window.open("https://metamask.io","_blank"); toast("Install MetaMask, then refresh.","inf"); }
   else connectInjectedWallet("MetaMask");
@@ -690,7 +794,6 @@ document.getElementById("modal-add-network-btn").onclick = async function(){
   if (provider) { chainId=(await provider.getNetwork()).chainId; updateUI(); }
 };
 
-// Manual address (read-only)
 document.getElementById("rw-addr-btn").onclick = function(){
   var val = document.getElementById("rw-addr-input").value.trim();
   if (!val || !val.startsWith("0x") || val.length !== 42) {
@@ -704,7 +807,6 @@ document.getElementById("rw-addr-btn").onclick = function(){
   closeReownModal();
 };
 
-// NEAR WALLET
 function showNEAR(acc) {
   nearAcc = acc;
   try { localStorage.setItem("near_account_id", acc); } catch(e){}
@@ -777,7 +879,6 @@ document.getElementById("near-manual-btn").onclick = function(){
 };
 document.getElementById("near-manual-input").onkeydown = function(e){ if(e.key==="Enter") document.getElementById("near-manual-btn").click(); };
 
-// UI UPDATE
 function updateUI() {
   var ap = document.getElementById("pill-addr");
   var cp = document.getElementById("pill-chain");
@@ -798,15 +899,22 @@ function updateUI() {
   document.getElementById("btn-disconnect").style.display = connected ? "inline-block" : "none";
 }
 
-// WBAR BUTTONS — all wired properly
+// Flash helper for toolbar buttons
+function flashBtn(el) {
+  el.classList.remove("flashing");
+  void el.offsetWidth;
+  el.classList.add("flashing");
+  el.addEventListener("animationend", function(){ el.classList.remove("flashing"); }, {once:true});
+}
+
 document.getElementById("btn-disconnect").onclick = function(){
   userAddr=null; signer=null; provider=null; chainId=null;
   updateUI(); toast("Disconnected","inf");
 };
 document.getElementById("btn-connect").onclick     = openReownModal;
-document.getElementById("btn-near").onclick        = openNearModal;
+document.getElementById("btn-near").onclick        = function(){ flashBtn(this); openNearModal(); };
 document.getElementById("btn-reown").onclick       = openReownModal;
-document.getElementById("btn-bridge").onclick      = function(){ window.open("https://rainbowbridge.app/transfer","_blank"); };
+document.getElementById("btn-bridge").onclick      = function(){ flashBtn(this); window.open("https://rainbowbridge.app/transfer","_blank"); };
 document.getElementById("btn-add-network").onclick = async function(){
   await addMonadNetwork();
   if (provider) { chainId=(await provider.getNetwork()).chainId; updateUI(); }
@@ -817,11 +925,13 @@ document.getElementById("btn-switch").onclick = async function(){
   if (provider) { chainId=(await provider.getNetwork()).chainId; updateUI(); }
 };
 document.getElementById("btn-refresh").onclick = async function(){
+  flashBtn(this);
   cdata={};
   await loadOracle(); await loadBase(); await loadAll();
   toast("Data refreshed \u2713","ok");
 };
 document.getElementById("btn-rpc").onclick = async function(){
+  flashBtn(this);
   try {
     var r = await fetch(RPC, {
       method:"POST", headers:{"Content-Type":"application/json"},
@@ -831,7 +941,6 @@ document.getElementById("btn-rpc").onclick = async function(){
   } catch(e){ toast("RPC error: " + e.message, "err"); }
 };
 
-// IPFS IMAGES
 function buildIpfsUrls(id) {
   var urls = [];
   var d = cdata[id] || {};
@@ -882,7 +991,6 @@ async function loadImgWithFallback(imgEl, id) {
   }
 }
 
-// ORACLE
 async function loadOracle() {
   try {
     var r = await fetch(DRPC, {
@@ -900,21 +1008,17 @@ async function loadOracle() {
   } catch(e){}
 }
 
-// BASE PRICE — FIX: result is BigNumber (wei); display correctly
 async function loadBase() {
   try {
     var rp = new ethers.providers.JsonRpcProvider(RPC);
     basePriceWei = await new ethers.Contract(CONTRACT, ABI, rp).basePrice();
-    // basePriceWei is a BigNumber (wei) — monFmt converts it correctly
     document.getElementById("hv-price").textContent = monFmt(basePriceWei);
   } catch(e) {
-    // Fallback to 1 MON default
     basePriceWei = ethers.utils.parseEther(NFT_PRICE_ETH);
     document.getElementById("hv-price").textContent = NFT_PRICE_ETH + " MON";
   }
 }
 
-// LOAD ALL NFTS
 async function loadAll() {
   document.getElementById("nft-grid").innerHTML =
     '<div class="loader"><div class="spinner"></div>Scanning ' + NFTS.length + ' NFTs from Monad\u2026</div>';
@@ -942,7 +1046,7 @@ async function loadAll() {
           id:n.id, owner:own,
           atk:st?Number(st.attack):0, def:st?Number(st.defense):0, spd:st?Number(st.speed):0,
           lore:lr||"", staked:!!stk,
-          livePrice:lp,  // BigNumber (wei) from contract, or null
+          livePrice:lp,
           rarity:Number(rar), power:Number(pow),
           coinName:co?co.name:"", imgURI:co?co.imageURI:"",
           isMinted:!!own,
@@ -959,7 +1063,9 @@ async function loadAll() {
   toast("Loaded " + loaded + " NFTs \u2713","ok");
 }
 
-// RENDER GRID
+// ═══════════════════════════════════════════
+// RENDER GRID — FIXED buy button event handling
+// ═══════════════════════════════════════════
 function renderGrid() {
   var grid = document.getElementById("nft-grid");
   var list = NFTS.filter(function(n){
@@ -972,7 +1078,6 @@ function renderGrid() {
 
   if (!list.length) { grid.innerHTML='<div class="loader">No NFTs match filter.</div>'; return; }
 
-  // FIX: basePriceWei is always a BigNumber (wei) here — used directly as fallback
   var fallbackPrice = basePriceWei || ethers.utils.parseEther(NFT_PRICE_ETH);
 
   grid.innerHTML = list.map(function(n){
@@ -981,7 +1086,6 @@ function renderGrid() {
     var nftObj = NFTS.filter(function(x){ return x.id===n.id; })[0];
     var name = (nftObj&&nftObj.name) || d.coinName || n.name;
     var canBuy = !d.staked && (!d.isMinted || d.isOwnerNFT);
-    // livePrice is BigNumber (wei) if truthy; fallbackPrice is BigNumber (wei)
     var pw = (d.livePrice && !isZeroBN(d.livePrice)) ? d.livePrice : fallbackPrice;
     var statusTag = d.staked
       ? '<div class="stag">&#9889; Staked</div>'
@@ -1022,7 +1126,6 @@ function renderGrid() {
     if (img && img.style.opacity !== "1") loadImgWithFallback(img, n.id);
   });
 
-  // Touch vibrate
   grid.querySelectorAll(".nft-card").forEach(function(c){
     c.addEventListener("touchstart", function(){
       c.classList.remove("vibrating");
@@ -1032,17 +1135,37 @@ function renderGrid() {
     }, {passive:true});
   });
 
-  grid.querySelectorAll(".btn-buy:not([disabled])").forEach(function(b){
-    b.addEventListener("click", function(e){ e.stopPropagation(); openModal(+b.dataset.id); });
-  });
-  grid.querySelectorAll(".nft-card").forEach(function(c){
-    c.addEventListener("click", function(){ openModal(+c.dataset.id); });
-  });
+  // ── FIX: Use event delegation on grid, check if btn-buy was clicked ──
+  // This replaces individual button listeners and fixes the propagation race
+  grid.addEventListener("click", function(e) {
+    // Check if a buy button (or something inside it) was clicked
+    var buyBtn = e.target.closest(".btn-buy.btn-avail");
+    if (buyBtn) {
+      e.stopPropagation();
+      // Ripple effect
+      var rect = buyBtn.getBoundingClientRect();
+      var ripple = document.createElement("span");
+      var size = Math.max(buyBtn.offsetWidth, buyBtn.offsetHeight);
+      ripple.className = "ripple";
+      ripple.style.width = ripple.style.height = size + "px";
+      ripple.style.left = (e.clientX - rect.left - size/2) + "px";
+      ripple.style.top  = (e.clientY - rect.top  - size/2) + "px";
+      buyBtn.appendChild(ripple);
+      setTimeout(function(){ if(ripple.parentNode) ripple.parentNode.removeChild(ripple); }, 600);
+      openModal(+buyBtn.dataset.id);
+      return;
+    }
+    // Card click — open modal (but not if disabled button)
+    var card = e.target.closest(".nft-card");
+    var disabledBtn = e.target.closest(".btn-staked");
+    if (card && !disabledBtn) {
+      openModal(+card.dataset.id);
+    }
+  }, false);
 
   setTimeout(applyFireClasses, 50);
 }
 
-// NFT DETAIL MODAL
 function openModal(id) {
   var nftObj = NFTS.filter(function(x){ return x.id===id; })[0];
   if (!nftObj) return;
@@ -1075,10 +1198,10 @@ function openModal(id) {
   var buyBtn = document.getElementById("modal-buy");
   if (!canBuy) {
     buyBtn.textContent = d.staked ? "\u26A1 Staked \u2014 Unavailable" : "\u2713 Already Sold";
-    buyBtn.disabled=true; buyBtn.style.opacity=".35";
+    buyBtn.disabled=true;
   } else {
     buyBtn.textContent = "\u26A1 Buy \u00B7 " + monFmt(pw);
-    buyBtn.disabled=false; buyBtn.style.opacity="1";
+    buyBtn.disabled=false;
   }
   document.getElementById("modal-bg").classList.add("open");
 }
@@ -1124,7 +1247,6 @@ document.getElementById("modal-buy").onclick = async function(){
   }
 };
 
-// FILTERS
 document.querySelectorAll(".fbtn").forEach(function(b){
   b.onclick = function(){
     document.querySelectorAll(".fbtn").forEach(function(x){ x.classList.remove("active"); });
@@ -1133,7 +1255,6 @@ document.querySelectorAll(".fbtn").forEach(function(b){
 });
 document.getElementById("search-box").oninput = function(e){ srch=e.target.value.trim(); renderGrid(); };
 
-// ETHEREUM EVENTS
 if (window.ethereum) {
   window.ethereum.on("accountsChanged", function(a){
     if (a.length) { userAddr=a[0]; updateUI(); }
@@ -1146,13 +1267,11 @@ if (window.ethereum) {
   });
 }
 
-// NEAR URL CALLBACK
 (function(){
   var accId = new URLSearchParams(location.search).get("account_id");
   if (accId) { showNEAR(accId); history.replaceState({},"",location.href.split("?")[0]); }
 })();
 
-// NEON FIRE
 function applyFireClasses() {
   document.querySelectorAll(".nft-card").forEach(function(c){
     var id = +c.dataset.id;
@@ -1161,7 +1280,6 @@ function applyFireClasses() {
   });
 }
 
-// INIT
 (async function(){
   try {
     var savedNear = localStorage.getItem("near_account_id");
@@ -1193,7 +1311,6 @@ function applyFireClasses() {
   await loadBase();
   await loadAll();
 
-  // ASTEROID RAIN
   (function(){
     var canvas = document.getElementById("asteroid-canvas");
     var ctx    = canvas.getContext("2d");
