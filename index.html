@@ -48,8 +48,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .wb-out{border-color:var(--border2);color:var(--text3)}
 .wb-out:hover{background:rgba(255,255,255,.05);border-color:var(--text3);color:var(--text)}
 .wsep{width:1px;height:22px;background:var(--border2);flex-shrink:0;align-self:center}
-
-/* MODALS */
 .modal-bg{display:none;position:fixed;inset:0;backdrop-filter:blur(10px);z-index:500;align-items:center;justify-content:center;padding:16px}
 #reown-modal-bg{background:rgba(0,0,0,.85)}
 #near-modal-bg{background:rgba(0,0,0,.82)}
@@ -57,8 +55,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .modal-bg.open{display:flex}
 .modal-close{position:absolute;top:13px;right:14px;background:transparent;border:none;color:var(--text3);font-size:17px;cursor:pointer;transition:color .15s,transform .15s}
 .modal-close:hover{color:var(--text);transform:rotate(90deg)}
-
-/* REOWN MODAL */
 .reown-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:28px;width:100%;max-width:400px;position:relative;box-shadow:0 0 60px rgba(131,110,249,.2);max-height:90vh;overflow-y:auto}
 .reown-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--monad),var(--teal),transparent);border-radius:20px 20px 0 0}
 .reown-modal h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:4px}
@@ -76,8 +72,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .wc-qr-area p{font-size:10px;color:var(--text3);margin-bottom:10px}
 .wc-uri-box{font-size:8px;word-break:break-all;color:var(--monad-l);background:var(--bg);padding:8px;border-radius:6px;border:1px solid var(--border2);cursor:pointer}
 .wc-uri-box:hover{background:rgba(131,110,249,.08)}
-
-/* NEAR MODAL */
 .near-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:28px;width:100%;max-width:380px;position:relative;box-shadow:0 0 40px rgba(0,195,255,.15);max-height:90vh;overflow-y:auto}
 .near-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--teal),transparent);border-radius:18px 18px 0 0}
 .near-modal h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px}
@@ -96,8 +90,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .near-manual input::placeholder{color:var(--text3)}
 .near-manual button{padding:9px 14px;background:rgba(0,195,255,.15);color:var(--blue);border:1px solid rgba(0,195,255,.3);border-radius:8px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;white-space:nowrap;transition:background .15s,transform .15s}
 .near-manual button:hover{background:rgba(0,195,255,.25);transform:scale(1.04)}
-
-/* ENV MODAL */
 .env-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:28px;width:100%;max-width:420px;position:relative;box-shadow:0 0 60px rgba(0,255,136,.12);max-height:90vh;overflow-y:auto}
 .env-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),var(--teal),transparent);border-radius:20px 20px 0 0}
 .env-modal h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:4px}
@@ -122,8 +114,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .env-status{font-size:10px;padding:7px 11px;border-radius:7px;margin-top:12px;text-align:center;display:none}
 .env-status.ok{background:rgba(0,255,136,.08);color:var(--green);border:1px solid rgba(0,255,136,.2);display:block}
 .env-status.err{background:rgba(255,71,87,.08);color:var(--red);border:1px solid rgba(255,71,87,.2);display:block}
-
-/* HERO */
 .hero{text-align:center;padding:54px 20px 40px;position:relative;z-index:1}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(131,110,249,.1),transparent);pointer-events:none}
 .hero h1{font-family:'Syne',sans-serif;font-size:clamp(26px,6vw,56px);font-weight:900;line-height:1.1;margin-bottom:12px}
@@ -132,8 +122,9 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .hchips{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
 .hchip .hv{font-family:'Syne',sans-serif;font-size:28px;font-weight:900;color:var(--monad-l);filter:drop-shadow(0 0 8px rgba(131,110,249,.45))}
 .hchip .hl{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
-
-/* FILTERS */
+.rpc-indicator{display:inline-flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:9px;padding:3px 8px;border-radius:999px;background:rgba(0,255,136,.08);color:var(--green);border:1px solid rgba(0,255,136,.2);margin-top:6px}
+.rpc-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
 .sec-title{text-align:center;font-family:'Syne',sans-serif;font-size:19px;font-weight:800;margin:38px 0 18px;position:relative;z-index:1}
 .sec-title .h{color:var(--monad-l)}
 .filter-bar{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:22px;padding:0 16px;position:relative;z-index:1}
@@ -144,11 +135,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 #search-box{font-family:'Space Mono',monospace;font-size:11px;padding:7px 13px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:20px;outline:none;width:190px;transition:border-color .15s,box-shadow .15s}
 #search-box:focus{border-color:var(--monad);box-shadow:0 0 0 3px rgba(131,110,249,.15)}
 #search-box::placeholder{color:var(--text3)}
-
-/* GRID */
 .nft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;padding:0 16px 20px;position:relative;z-index:1;max-width:1400px;margin:0 auto}
-
-/* NFT CARD */
 .nft-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .22s cubic-bezier(.34,1.56,.64,1),border-color .2s,box-shadow .2s;cursor:pointer;position:relative}
 .nft-card:hover{transform:translateY(-7px) scale(1.022);border-color:var(--monad);box-shadow:0 0 28px rgba(131,110,249,.28),0 18px 36px rgba(0,0,0,.45)}
 .nft-card:hover .nft-glow{opacity:1}
@@ -188,8 +175,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .btn-avail:hover{filter:brightness(1.18);transform:scale(1.03);box-shadow:0 0 24px rgba(131,110,249,.55)}
 .btn-avail:active{transform:scale(0.97)}
 .btn-staked{background:rgba(255,255,255,.04);color:var(--text3);border:1px solid var(--border);cursor:not-allowed}
-
-/* TOAST */
 #toast{position:fixed;bottom:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:6px;max-width:320px;pointer-events:none}
 .ti{font-size:11px;padding:9px 13px;border-radius:8px;border:1px solid;animation:tslide .2s ease;word-break:break-all;pointer-events:auto}
 @keyframes tslide{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
@@ -197,8 +182,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 .terr{background:rgba(255,71,87,.1);color:var(--red);border-color:rgba(255,71,87,.3)}
 .tinf{background:rgba(131,110,249,.1);color:var(--monad-l);border-color:rgba(131,110,249,.3)}
 .tnear{background:rgba(0,195,255,.1);color:var(--blue);border-color:rgba(0,195,255,.3)}
-
-/* NFT MODAL */
 #modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:16px}
 #modal-bg.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:24px;width:100%;max-width:410px;position:relative;box-shadow:0 0 36px rgba(131,110,249,.18);max-height:90vh;overflow-y:auto}
@@ -218,8 +201,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:14p
 #modal-buy:active{transform:scale(0.97)}
 #modal-cancel{font-family:'Space Mono',monospace;font-size:10px;padding:12px 14px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:10px;cursor:pointer;transition:border-color .15s,color .15s,transform .15s}
 #modal-cancel:hover{border-color:var(--monad);color:var(--monad-l);transform:scale(1.03)}
-
-/* FOOTER */
 footer{margin-top:56px;background:var(--bg2);border-top:1px solid var(--border);padding:38px 20px;position:relative;z-index:1}
 footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--monad),var(--teal),transparent)}
 .fi{max-width:880px;margin:0 auto;text-align:center}
@@ -241,12 +222,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--monad);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:640px){header{flex-direction:column;align-items:flex-start}.wbar{top:90px}}
-
-/* ASTEROID RAIN */
 #asteroid-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 body>*:not(#asteroid-canvas){position:relative;z-index:1}
-
-/* NEON FIRE */
 @keyframes fire0{0%,100%{box-shadow:0 0 8px 2px #FF4500,0 0 20px 6px #FF6A00,0 0 40px 10px rgba(255,100,0,.3)}50%{box-shadow:0 0 12px 4px #FF2200,0 0 28px 10px #FF8000,0 0 55px 16px rgba(255,60,0,.4)}}
 @keyframes fire1{0%,100%{box-shadow:0 0 8px 2px #00FFFF,0 0 20px 6px #0088FF,0 0 40px 10px rgba(0,150,255,.3)}50%{box-shadow:0 0 12px 4px #00DDFF,0 0 28px 10px #0044FF,0 0 55px 16px rgba(0,100,255,.4)}}
 @keyframes fire2{0%,100%{box-shadow:0 0 8px 2px #FF00FF,0 0 20px 6px #AA00FF,0 0 40px 10px rgba(180,0,255,.3)}50%{box-shadow:0 0 12px 4px #FF00DD,0 0 28px 10px #8800FF,0 0 55px 16px rgba(150,0,255,.4)}}
@@ -364,7 +341,7 @@ body>*:not(#asteroid-canvas){position:relative;z-index:1}
 
     <div class="env-field">
       <div class="env-label"><span class="env-dot env-dot-p"></span>Primary RPC</div>
-      <input class="env-input" type="text" id="env-rpc-primary" placeholder="https://rpc.monad.xyz"/>
+      <input class="env-input" type="text" id="env-rpc-primary" placeholder="https://monad-mainnet.g.alchemy.com/v2/…"/>
     </div>
     <div class="env-field">
       <div class="env-label"><span class="env-dot env-dot-b"></span>Fallback / Oracle RPC</div>
@@ -381,6 +358,11 @@ body>*:not(#asteroid-canvas){position:relative;z-index:1}
 <!-- HERO -->
 <section class="hero">
   <h1><span class="g1">GoldCoins</span><br><span class="g2">NFT Collection</span></h1>
+  <div style="margin-bottom:18px">
+    <div class="rpc-indicator" id="rpc-active-label">
+      <span class="rpc-dot"></span><span id="rpc-label-text">Connecting to Alchemy RPC…</span>
+    </div>
+  </div>
   <div class="hchips">
     <div class="hchip"><div class="hv" id="hv-count">82</div><div class="hl">Total NFTs</div></div>
     <div class="hchip"><div class="hv" id="hv-price">…</div><div class="hl">Base Price</div></div>
@@ -451,12 +433,19 @@ const CONTRACT    = "0x588273B8bC50E5A16E6286D4e63EBa7C3E69e948";
 const ORACLE      = "0x723d62bef5eeb3f0d2255e5cab6ae763c59ca0e6";
 const OWNER_ADDR  = "0x592B35c8917eD36c39Ef73D0F5e92B0173560b2e";
 const MONAD_ID    = 143;
-const DEF_RPC     = "https://rpc.monad.xyz";
-const DEF_DRPC    = "https://monad-mainnet.drpc.org";
-const REOWN_PID   = "83764e5a442fd38d9827e3302a37517a";
-const BASE_CID    = "Qma9ayc43qUbrfAaZFYhD47Dgi5ZwVjFw94gG7RvWQUJhT";
-const GATEWAYS    = ["https://ipfs.io/ipfs/","https://dweb.link/ipfs/","https://w3s.link/ipfs/","https://nftstorage.link/ipfs/","https://gateway.pinata.cloud/ipfs/","https://4everland.io/ipfs/"];
-const RARITY      = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
+
+// ─── RPC CONFIG: Alchemy primary, drpc fallback, public last resort ─────────
+const ALCHEMY_RPC = "https://monad-mainnet.g.alchemy.com/v2/Uwb7T0DbXMQHjiJBNf9_b005qYjLmJqk";
+const DRPC_RPC    = "https://monad-mainnet.drpc.org";
+const PUBLIC_RPC  = "https://rpc.monad.xyz";
+
+const DEF_RPC  = ALCHEMY_RPC;
+const DEF_DRPC = DRPC_RPC;
+
+const REOWN_PID = "83764e5a442fd38d9827e3302a37517a";
+const BASE_CID  = "Qma9ayc43qUbrfAaZFYhD47Dgi5ZwVjFw94gG7RvWQUJhT";
+const GATEWAYS  = ["https://ipfs.io/ipfs/","https://dweb.link/ipfs/","https://w3s.link/ipfs/","https://nftstorage.link/ipfs/","https://gateway.pinata.cloud/ipfs/","https://4everland.io/ipfs/"];
+const RARITY    = ["Common","Uncommon","Rare","Epic","Legendary","Mythic"];
 const ABI = [
   "function ownerOf(uint256 tokenId) view returns (address)",
   "function stats(uint256 tokenId) view returns (uint256 attack,uint256 defense,uint256 speed)",
@@ -495,10 +484,50 @@ const NFTS = [
 let provider=null, signer=null, userAddr=null, chainId=null;
 let nearAcc=null, oracleUSD=null, basePriceWei=null;
 let cdata={}, filt="all", srch="", modalId=null, wcUri=null;
-let customRPC  = localStorage.getItem("custom_rpc")  || DEF_RPC;
-let customDRPC = localStorage.getItem("custom_drpc") || DEF_DRPC;
+let activeRPC   = localStorage.getItem("custom_rpc")   || DEF_RPC;
+let activeDRPC  = localStorage.getItem("custom_drpc")  || DEF_DRPC;
 
-// ─── PRICE FORMATTING  (fixed: always use formatEther for any BigNumber) ──────
+// ─── SMART RPC SELECTOR WITH AUTO-FALLBACK ────────────────────────────────────
+// Tries each RPC in order; returns the first that responds OK
+const RPC_LIST = [activeRPC, DRPC_RPC, PUBLIC_RPC].filter((v,i,a)=>a.indexOf(v)===i);
+
+function rpcLabel(url) {
+  if (url.includes("alchemy"))    return "Alchemy RPC ✓";
+  if (url.includes("drpc"))       return "dRPC Fallback ✓";
+  if (url.includes("monad.xyz"))  return "Public RPC (rate-limited)";
+  return url.slice(0,28)+"…";
+}
+
+async function pingRPC(url) {
+  try {
+    const r = await fetch(url, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_blockNumber",params:[]}),
+      signal: AbortSignal.timeout(4000)
+    }).then(x=>x.json());
+    return !!r.result;
+  } catch(e) { return false; }
+}
+
+async function getBestRPC() {
+  for (const url of RPC_LIST) {
+    const ok = await pingRPC(url);
+    if (ok) {
+      document.getElementById("rpc-label-text").textContent = rpcLabel(url);
+      return url;
+    }
+  }
+  // Last resort fallback
+  document.getElementById("rpc-label-text").textContent = "Public RPC (degraded)";
+  return PUBLIC_RPC;
+}
+
+// ─── THROTTLED RPC PROVIDER (prevents 429) ────────────────────────────────────
+// Queue-based: at most MAX_CONCURRENT calls at once, with MIN_DELAY between batches
+const MAX_CONCURRENT = 3;   // max simultaneous eth_call
+const BATCH_DELAY    = 400; // ms between NFT batch loads (was 600)
+
+// ─── PRICE FORMATTING ─────────────────────────────────────────────────────────
 function monFmt(w) {
   if (w == null) return "—";
   try {
@@ -572,38 +601,53 @@ async function loadImgWithFallback(imgEl, id) {
 
 // ─── ORACLE + BASE ────────────────────────────────────────────────────────────
 async function loadOracle() {
-  try {
-    const r = await fetch(customDRPC,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_call",params:[{to:ORACLE,data:"0x50d25bcd"},"latest"]})
-    }).then(x=>x.json());
-    if (!r.result || r.result==="0x") return;
-    const p = parseInt(r.result,16);
-    if (p>0) {
-      oracleUSD = p/1e8;
-      document.getElementById("pill-oracle").textContent = "MON $"+oracleUSD.toFixed(2);
-      document.getElementById("hv-oracle").textContent   = "$"+oracleUSD.toFixed(2);
-    }
-  } catch(e){}
+  const rpcs = [activeDRPC, activeRPC, PUBLIC_RPC].filter((v,i,a)=>a.indexOf(v)===i);
+  for (const rpc of rpcs) {
+    try {
+      const r = await fetch(rpc, {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_call",params:[{to:ORACLE,data:"0x50d25bcd"},"latest"]}),
+        signal: AbortSignal.timeout(5000)
+      }).then(x=>x.json());
+      if (!r.result || r.result==="0x") continue;
+      const p = parseInt(r.result,16);
+      if (p>0) {
+        oracleUSD = p/1e8;
+        document.getElementById("pill-oracle").textContent = "MON $"+oracleUSD.toFixed(2);
+        document.getElementById("hv-oracle").textContent   = "$"+oracleUSD.toFixed(2);
+        return;
+      }
+    } catch(e){}
+  }
 }
 
 async function loadBase() {
-  try {
-    const rp = new ethers.providers.JsonRpcProvider(customRPC);
-    basePriceWei = await new ethers.Contract(CONTRACT,ABI,rp).basePrice();
-    document.getElementById("hv-price").textContent = monFmt(basePriceWei);
-  } catch(e){}
+  const rpcs = [activeRPC, DRPC_RPC, PUBLIC_RPC].filter((v,i,a)=>a.indexOf(v)===i);
+  for (const rpc of rpcs) {
+    try {
+      const rp = new ethers.providers.JsonRpcProvider(rpc);
+      basePriceWei = await new ethers.Contract(CONTRACT,ABI,rp).basePrice();
+      document.getElementById("hv-price").textContent = monFmt(basePriceWei);
+      return;
+    } catch(e){}
+  }
 }
 
-// ─── LOAD NFTs ────────────────────────────────────────────────────────────────
+// ─── LOAD NFTs — THROTTLED TO AVOID 429 ──────────────────────────────────────
 async function loadAll() {
   document.getElementById("nft-grid").innerHTML = '<div class="loader"><div class="spinner"></div>Scanning '+NFTS.length+' NFTs…</div>';
-  const rp = new ethers.providers.JsonRpcProvider(customRPC);
-  const rc = new ethers.Contract(CONTRACT,ABI,rp);
+
+  // Pick best available RPC first
+  const bestRPC = await getBestRPC();
+  const rp = new ethers.providers.JsonRpcProvider(bestRPC);
+  const rc = new ethers.Contract(CONTRACT, ABI, rp);
+
   let loaded = 0;
-  for (let s=0;s<NFTS.length;s+=5) {
-    await Promise.allSettled(NFTS.slice(s,s+5).map(async n=>{
+  // Batch size reduced to MAX_CONCURRENT to stay within rate limits
+  for (let s = 0; s < NFTS.length; s += MAX_CONCURRENT) {
+    await Promise.allSettled(NFTS.slice(s, s + MAX_CONCURRENT).map(async n => {
       try {
-        const [own,st,lr,stk,lp,rar,pow,co]=await Promise.all([
+        const [own,st,lr,stk,lp,rar,pow,co] = await Promise.all([
           rc.ownerOf(n.id).catch(()=>null),
           rc.stats(n.id).catch(()=>null),
           rc.lore(n.id).catch(()=>""),
@@ -613,7 +657,7 @@ async function loadAll() {
           rc.power(n.id).catch(()=>0),
           rc.coins(n.id).catch(()=>null),
         ]);
-        cdata[n.id]={
+        cdata[n.id] = {
           id:n.id, owner:own,
           atk:st?Number(st.attack):0, def:st?Number(st.defense):0, spd:st?Number(st.speed):0,
           lore:lr||"", staked:!!stk, livePrice:lp,
@@ -623,28 +667,29 @@ async function loadAll() {
           isOwnerNFT:own&&own.toLowerCase()===OWNER_ADDR.toLowerCase(),
         };
         document.getElementById("hv-loaded").textContent = ++loaded;
-        if (loaded%10===0) renderGrid();
+        if (loaded % 9 === 0) renderGrid();
       } catch(e){}
     }));
-    await new Promise(r=>setTimeout(r,600));
+    // Throttle: wait between each batch to avoid 429
+    await new Promise(r => setTimeout(r, BATCH_DELAY));
   }
   renderGrid();
-  toast("Loaded "+loaded+" NFTs ✓","ok");
+  toast("Loaded " + loaded + " NFTs ✓", "ok");
 }
 
 // ─── RENDER ───────────────────────────────────────────────────────────────────
 function renderGrid() {
   const grid = document.getElementById("nft-grid");
-  const list = NFTS.filter(n=>{
-    const d=cdata[n.id]||{};
-    if (filt==="staked") return d.staked;
-    if (filt!=="all"&&Number(filt)!==(d.rarity||0)) return false;
-    if (srch){const q=srch.toLowerCase();return n.name.toLowerCase().includes(q)||String(n.id).includes(q);}
+  const list = NFTS.filter(n => {
+    const d = cdata[n.id] || {};
+    if (filt === "staked") return d.staked;
+    if (filt !== "all" && Number(filt) !== (d.rarity||0)) return false;
+    if (srch) { const q=srch.toLowerCase(); return n.name.toLowerCase().includes(q)||String(n.id).includes(q); }
     return true;
   });
-  if (!list.length){grid.innerHTML='<div class="loader">No NFTs match filter.</div>';return;}
+  if (!list.length) { grid.innerHTML='<div class="loader">No NFTs match filter.</div>'; return; }
 
-  grid.innerHTML = list.map(n=>{
+  grid.innerHTML = list.map(n => {
     const d=cdata[n.id]||{}, r=Math.min(d.rarity||0,5);
     const name=NFTS.find(x=>x.id===n.id)?.name||d.coinName||n.name;
     const canBuy=!d.staked&&(!d.isMinted||d.isOwnerNFT);
@@ -652,7 +697,7 @@ function renderGrid() {
     const statusTag=d.staked?'<div class="stag">⚡ Staked</div>'
       :(!d.isMinted||d.isOwnerNFT)?""
       :'<div class="stag" style="background:rgba(0,195,255,.07);color:var(--blue);border-color:rgba(0,195,255,.2)">✓ Sold</div>';
-    return`<div class="nft-card fire-${n.id%6}" data-id="${n.id}">
+    return `<div class="nft-card fire-${n.id%6}" data-id="${n.id}">
       <div class="nft-glow"></div>
       <div class="nft-img-wrap">
         <div class="img-loading" id="il-${n.id}"><div class="img-loading-spin"></div></div>
@@ -676,27 +721,28 @@ function renderGrid() {
           </div>
           <div class="price-usd">${canBuy?usdFmt(pw):""}</div>
         </div>
-        ${canBuy?`<button class="btn-buy btn-avail" data-id="${n.id}">⚡ Buy Now</button>`
-                :`<button class="btn-buy btn-staked" disabled>${d.staked?"⚡ Staked":"✓ Sold"}</button>`}
+        ${canBuy
+          ? `<button class="btn-buy btn-avail" data-id="${n.id}">⚡ Buy Now</button>`
+          : `<button class="btn-buy btn-staked" disabled>${d.staked?"⚡ Staked":"✓ Sold"}</button>`}
       </div>
     </div>`;
   }).join("");
 
-  list.forEach(n=>{
-    const img=document.getElementById("img-"+n.id);
-    if(img&&img.style.opacity!=="1") loadImgWithFallback(img,n.id);
+  list.forEach(n => {
+    const img = document.getElementById("img-"+n.id);
+    if (img && img.style.opacity !== "1") loadImgWithFallback(img, n.id);
   });
-  grid.querySelectorAll(".nft-card").forEach(c=>{
-    c.addEventListener("touchstart",()=>{
+  grid.querySelectorAll(".nft-card").forEach(c => {
+    c.addEventListener("touchstart", () => {
       c.classList.remove("vibrating"); void c.offsetWidth; c.classList.add("vibrating");
-      c.addEventListener("animationend",()=>c.classList.remove("vibrating"),{once:true});
-    },{passive:true});
+      c.addEventListener("animationend", () => c.classList.remove("vibrating"), {once:true});
+    }, {passive:true});
   });
-  grid.querySelectorAll(".btn-buy:not([disabled])").forEach(b=>
-    b.addEventListener("click",e=>{e.stopPropagation();openModal(+b.dataset.id);})
+  grid.querySelectorAll(".btn-buy:not([disabled])").forEach(b =>
+    b.addEventListener("click", e => { e.stopPropagation(); openModal(+b.dataset.id); })
   );
-  grid.querySelectorAll(".nft-card").forEach(c=>
-    c.addEventListener("click",()=>openModal(+c.dataset.id))
+  grid.querySelectorAll(".nft-card").forEach(c =>
+    c.addEventListener("click", () => openModal(+c.dataset.id))
   );
 }
 
@@ -766,8 +812,8 @@ function openNearModal()   {document.getElementById("near-modal-bg").classList.a
 function closeNearModal()  {document.getElementById("near-modal-bg").classList.remove("open");}
 function openEnvModal()    {
   document.getElementById("env-addr-input").value   = (!signer&&userAddr)?userAddr:"";
-  document.getElementById("env-rpc-primary").value  = customRPC!==DEF_RPC?customRPC:"";
-  document.getElementById("env-rpc-fallback").value = customDRPC!==DEF_DRPC?customDRPC:"";
+  document.getElementById("env-rpc-primary").value  = activeRPC!==DEF_RPC?activeRPC:"";
+  document.getElementById("env-rpc-fallback").value = activeDRPC!==DEF_DRPC?activeDRPC:"";
   document.getElementById("env-status").className   = "env-status";
   document.getElementById("env-modal-bg").classList.add("open");
 }
@@ -792,7 +838,7 @@ document.getElementById("env-addr-set").onclick=()=>{
   const v=document.getElementById("env-addr-input").value.trim();
   if(!v||!v.startsWith("0x")||v.length!==42){envStatus("Invalid address — must be 0x… 42 chars","err");return;}
   userAddr=v; signer=null; chainId=MONAD_ID;
-  provider=new ethers.providers.JsonRpcProvider(customRPC);
+  provider=new ethers.providers.JsonRpcProvider(activeRPC);
   updateUI();
   envStatus("Read-only: "+v.slice(0,10)+"…","ok");
   toast("Address set (read-only): "+v.slice(0,10)+"…","ok");
@@ -806,20 +852,20 @@ document.getElementById("env-addr-clear").onclick=()=>{
 document.getElementById("env-rpc-save").onclick=()=>{
   const p=document.getElementById("env-rpc-primary").value.trim();
   const d=document.getElementById("env-rpc-fallback").value.trim();
-  if(p){customRPC=p; localStorage.setItem("custom_rpc",p);}
-  if(d){customDRPC=d; localStorage.setItem("custom_drpc",d);}
+  if(p){activeRPC=p; localStorage.setItem("custom_rpc",p);}
+  if(d){activeDRPC=d; localStorage.setItem("custom_drpc",d);}
   envStatus("RPC saved — click Refresh to apply","ok");
   toast("RPC saved ✓","ok");
 };
 document.getElementById("env-rpc-reset").onclick=()=>{
-  customRPC=DEF_RPC; customDRPC=DEF_DRPC;
+  activeRPC=DEF_RPC; activeDRPC=DEF_DRPC;
   localStorage.removeItem("custom_rpc"); localStorage.removeItem("custom_drpc");
   document.getElementById("env-rpc-primary").value="";
   document.getElementById("env-rpc-fallback").value="";
-  envStatus("RPC reset to defaults","ok");
+  envStatus("RPC reset to Alchemy defaults ✓","ok");
 };
 
-// ─── UI UPDATE (single source of truth for connect/disconnect visibility) ─────
+// ─── UI UPDATE ────────────────────────────────────────────────────────────────
 function updateUI(){
   const ap=document.getElementById("pill-addr");
   const cp=document.getElementById("pill-chain");
@@ -857,7 +903,8 @@ async function switchToMonad(){
         await window.ethereum.request({method:"wallet_addEthereumChain",params:[{
           chainId:"0x8F",chainName:"Monad Mainnet",
           nativeCurrency:{name:"MON",symbol:"MON",decimals:18},
-          rpcUrls:["https://rpc.monad.xyz"],blockExplorerUrls:["https://explorer.monad.xyz"]
+          rpcUrls:["https://monad-mainnet.g.alchemy.com/v2/Uwb7T0DbXMQHjiJBNf9_b005qYjLmJqk","https://rpc.monad.xyz"],
+          blockExplorerUrls:["https://explorer.monad.xyz"]
         }]});
         toast("Monad chain added ✓","ok");
       }catch(e2){toast("Add chain error: "+e2.message,"err");}
@@ -883,14 +930,10 @@ async function connectInjected(label, eth) {
   }catch(e){toast("Connect error: "+(e.message||"").slice(0,80),"err");}
 }
 
-// Detect specific provider in multi-provider env
 function findProvider(flag){
   if(window.ethereum){
     if(window.ethereum[flag]) return window.ethereum;
-    if(window.ethereum.providers){
-      const p=window.ethereum.providers.find(x=>x[flag]);
-      if(p) return p;
-    }
+    if(window.ethereum.providers){ const p=window.ethereum.providers.find(x=>x[flag]); if(p) return p; }
   }
   return null;
 }
@@ -938,8 +981,6 @@ function showNEAR(acc){
   p.style.display="inline-block";
   toast("✅ NEAR: "+acc,"near"); closeNearModal();
 }
-
-// MyNearWallet: redirect flow (works correctly on return)
 document.getElementById("btn-mynearwallet").onclick=()=>{
   sessionStorage.setItem("near_login_pending","1");
   toast("Redirecting to MyNearWallet…","near");
@@ -976,10 +1017,24 @@ document.getElementById("btn-near").onclick    =openNearModal;
 document.getElementById("btn-reown").onclick   =openReownModal;
 document.getElementById("btn-env").onclick     =openEnvModal;
 document.getElementById("btn-switch").onclick  =switchToMonad;
-document.getElementById("btn-refresh").onclick =async()=>{cdata={};await loadOracle();await loadBase();await loadAll();toast("Refreshed ✓","ok");};
-document.getElementById("btn-rpc").onclick     =async()=>{
-  try{const r=await fetch(customRPC,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method:"eth_blockNumber",params:[]})}).then(x=>x.json());toast("Monad block: "+parseInt(r.result,16),"ok");}
-  catch(e){toast("RPC error: "+e.message,"err");}
+document.getElementById("btn-refresh").onclick =async()=>{
+  cdata={};
+  await loadOracle();
+  await loadBase();
+  await loadAll();
+  toast("Refreshed ✓","ok");
+};
+document.getElementById("btn-rpc").onclick=async()=>{
+  // Test all RPCs and show which ones work
+  toast("Testing all RPC endpoints…","inf");
+  const results = await Promise.all(RPC_LIST.map(async url=>{
+    const ok = await pingRPC(url);
+    return {url, ok};
+  }));
+  results.forEach(({url,ok})=>{
+    const label = url.includes("alchemy")?"Alchemy":url.includes("drpc")?"dRPC":"Public";
+    toast(label+": "+(ok?"✓ OK":"✗ Failed"), ok?"ok":"err");
+  });
 };
 
 // ─── FILTERS ──────────────────────────────────────────────────────────────────
@@ -1011,7 +1066,6 @@ if(window.ethereum){
     }
   }
 
-  // Restore saved NEAR
   const sn=localStorage.getItem("near_account_id");
   if(sn&&!nearAcc){
     nearAcc=sn;
@@ -1020,7 +1074,7 @@ if(window.ethereum){
     p.style.display="inline-block";
   }
 
-  // Auto-connect (silent, no popup)
+  // Auto-connect EVM (silent, no popup)
   if(window.ethereum){
     try{
       const accs=await window.ethereum.request({method:"eth_accounts"});
@@ -1033,9 +1087,11 @@ if(window.ethereum){
     }catch(e){}
   }
 
-  await loadOracle(); await loadBase(); await loadAll();
+  await loadOracle();
+  await loadBase();
+  await loadAll();
 
-  // ─── ASTEROID RAIN ───────────────────────────────────────────────────────
+  // ─── ASTEROID RAIN ────────────────────────────────────────────────────────
   (function(){
     const canvas=document.getElementById("asteroid-canvas"), ctx=canvas.getContext("2d");
     let W,H; const asts=[];
