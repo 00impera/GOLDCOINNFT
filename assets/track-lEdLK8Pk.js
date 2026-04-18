@@ -1,0 +1,1 @@
+import{i as e}from"./domains-Bg9Wvyx3.js";import{n as t}from"./fetch-BlmyStgm.js";import{n}from"./json-DnncBP12.js";async function r({client:r,ecosystem:i,data:a}){let o=t(r,i),s={source:`sdk`,...a};return o(`${e(`analytics`)}/event`,{body:n(s),method:`POST`}).catch(()=>{})}export{r as t};

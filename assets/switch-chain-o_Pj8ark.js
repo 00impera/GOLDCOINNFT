@@ -1,0 +1,1 @@
+import{r as e}from"./chunk-CFjPhJqf.js";import{r as t}from"./utils-DfMkz9eX.js";import{r as n}from"./hex-zZIvAGKo.js";var r=e({handleSwitchChain:()=>i});async function i(e){let{wallet:r,params:i}=e;return r.getChain()?.id===n(i[0].chainId)||await r.switchChain(t(n(i[0].chainId))),`0x1`}export{r as t};

@@ -1,0 +1,1 @@
+import{d as e,r as t}from"./hex-zZIvAGKo.js";function n(n){return typeof n==`number`?n:e(n)?t(n):typeof n==`bigint`?Number(n):Number.parseInt(n,10)}export{n as t};

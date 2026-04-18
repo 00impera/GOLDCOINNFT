@@ -1,0 +1,1 @@
+import{r as e}from"./chunk-CFjPhJqf.js";var t=e({TransactionTypeMap:()=>n,prepareTransaction:()=>r}),n={eip1559:1,eip2930:2,eip4844:3,eip7702:4,legacy:0};function r(e,t){return t&&(e.__preparedMethod=t.preparedMethod,e.__contract=t.contract),e}export{t as n,r as t};

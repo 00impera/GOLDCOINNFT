@@ -1,0 +1,1 @@
+import{o as e,r as t}from"./hex-zZIvAGKo.js";async function n(n,r){return t(await n({method:`eth_getTransactionCount`,params:[r.address,r.blockNumber?e(r.blockNumber):r.blockTag||`pending`]}))}export{n as eth_getTransactionCount};

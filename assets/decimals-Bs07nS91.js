@@ -1,0 +1,1 @@
+import{r as e}from"./chunk-CFjPhJqf.js";import{t}from"./withCache-6FDfEx7K.js";import{n,t as r}from"./decimals-BpxYqt0o.js";var i=e({decimals:()=>a,isDecimalsSupported:()=>n});async function a(e){return t(()=>r(e),{cacheKey:`${e.contract.chain.id}:${e.contract.address}:decimals`,cacheTime:1/0})}export{i as n,a as t};

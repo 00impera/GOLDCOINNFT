@@ -1,0 +1,1 @@
+import{r as e}from"./utils-DfMkz9eX.js";var t=e({blockExplorers:[{name:`Etherscan`,url:`https://etherscan.io`}],id:1,name:`Ethereum`,nativeCurrency:{decimals:18,name:`Ether`,symbol:`ETH`}});export{t};

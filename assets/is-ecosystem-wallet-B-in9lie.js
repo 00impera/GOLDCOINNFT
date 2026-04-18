@@ -1,0 +1,1 @@
+function e(e){return typeof e==`string`?e.startsWith(`ecosystem.`):e.id.startsWith(`ecosystem.`)}export{e as t};

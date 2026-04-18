@@ -1,0 +1,1 @@
+import{Bi as e}from"./ccip-B38LCf50.js";function t(t){let n=Array.isArray(t.method)?t.method[0]:e(t.method);return t.availableSelectors.includes(n)}export{t};

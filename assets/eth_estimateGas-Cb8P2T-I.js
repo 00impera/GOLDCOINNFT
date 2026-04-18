@@ -1,0 +1,1 @@
+import{n as e}from"./hex-zZIvAGKo.js";async function t(t,n){return e(await t({method:`eth_estimateGas`,params:[n]}))}export{t as eth_estimateGas};

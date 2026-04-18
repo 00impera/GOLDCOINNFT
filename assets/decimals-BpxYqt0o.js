@@ -1,0 +1,1 @@
+import{t as e}from"./read-contract-BpUlAhMY.js";import{t}from"./detectExtension-DSu45cq0.js";var n=`0x313ce567`,r=[],i=[{type:`uint8`}];function a(e){return t({availableSelectors:e,method:[n,r,i]})}async function o(t){return e({contract:t.contract,method:[n,r,i],params:[]})}export{a as n,o as t};

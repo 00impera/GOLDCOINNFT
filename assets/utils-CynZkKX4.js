@@ -1,0 +1,1 @@
+import{r as e}from"./chunk-CFjPhJqf.js";var t=e({showCoinbasePopup:()=>n});async function n(e){await e?.communicator?.waitForPopupLoaded?.()}export{t as n,n as t};

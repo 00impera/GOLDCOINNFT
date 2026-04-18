@@ -1,0 +1,1 @@
+import{u as e}from"./hex-zZIvAGKo.js";function t(t=32){return e(n(t))}function n(e=32){return globalThis.crypto.getRandomValues(new Uint8Array(e))}export{t};
